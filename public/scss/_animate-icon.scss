@@ -1,0 +1,517 @@
+
+/*** 
+
+====================================================================
+  Anim Icons
+====================================================================
+
+***/
+
+
+.bounce-y{
+    animation: bounce-y 10s infinite linear;
+}
+
+.bounce-x{
+    animation: bounce-x 10s infinite linear;
+}
+
+.zoom-one{
+    animation: zoom-one 10s infinite linear;
+}
+
+@keyframes float{
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce-y {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-30px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce-x {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(30px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes zoom-one {
+    0% {
+        transform: scale(.95);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(.95);
+    }
+}
+
+
+.overlay-anim {
+    position: relative;
+    &:after {
+        background: rgba(255, 255, 255, 0.3);
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 0;
+        opacity: 1;
+        z-index: 9;
+        pointer-events: none;
+    }
+    &:hover{
+        &:after {
+            height: 100%;
+            opacity: 0;
+            transition: all 400ms linear;
+        }
+    }
+    
+}
+
+
+.float-bob-y {
+	-webkit-animation-name: float-bob-y;
+	animation-name: float-bob-y;
+	-webkit-animation-duration: 3s;
+	animation-duration: 3s;
+	-webkit-animation-iteration-count: infinite;
+	animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+	animation-timing-function: linear;
+}
+  
+  @-webkit-keyframes float-bob-y {
+	0% {
+	  -webkit-transform: translateY(-30px);
+	  transform: translateY(-30px);
+	}
+	50% {
+	  -webkit-transform: translateY(-10px);
+	  transform: translateY(-10px);
+	}
+	100% {
+	  -webkit-transform: translateY(-30px);
+	  transform: translateY(-30px);
+	}
+}
+
+  @keyframes float-bob-y {
+	0% {
+	  -webkit-transform: translateY(-30px);
+	  transform: translateY(-30px);
+	}
+	50% {
+	  -webkit-transform: translateY(-10px);
+	  transform: translateY(-10px);
+	}
+	100% {
+	  -webkit-transform: translateY(-30px);
+	  transform: translateY(-30px);
+	}
+}
+  
+.float-bob-x {
+	-webkit-animation-name: float-bob-x;
+	animation-name: float-bob-x;
+	-webkit-animation-duration: 3s;
+	animation-duration: 3s;
+	-webkit-animation-iteration-count: infinite;
+	animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+	animation-timing-function: linear;
+}
+  
+  @-webkit-keyframes float-bob-x {
+	0% {
+	  -webkit-transform: translateX(-0px);
+	  transform: translateX(30px);
+	}
+	50% {
+	  -webkit-transform: translateX(10px);
+	  transform: translateX(10px);
+	}
+	100% {
+	  -webkit-transform: translateX(30px);
+	  transform: translateX(30px);
+	}
+}
+
+  @keyframes float-bob-x {
+	0% {
+	  -webkit-transform: translateX(30px);
+	  transform: translateX(30px);
+	}
+	50% {
+	  -webkit-transform: translateX(10px);
+	  transform: translateX(10px);
+	}
+	100% {
+	  -webkit-transform: translateX(30px);
+	  transform: translateX(30px);
+	}
+}
+
+@keyframes bounce-x {
+	0% {
+	  -webkit-transform: translateX(0);
+			  transform: translateX(0);
+	}
+	50% {
+	  -webkit-transform: translateX(30px);
+			  transform: translateX(30px);
+	}
+	100% {
+	  -webkit-transform: translateX(0);
+			  transform: translateX(0);
+	}
+}
+
+
+ /*img-animation**********************/
+ .img-custom-anim-right {
+	animation: img-anim-right 1.3s forwards cubic-bezier(0.645, 0.045, 0.355, 1) 0.4s;
+	opacity: 0;
+}
+
+@keyframes img-anim-right {
+	0% {
+		transform: translateX(5%);
+		clip-path: inset(0 0 0 100%);
+		opacity: 0;
+	}
+
+	100% {
+		transform: translateX(0);
+		clip-path: inset(0 0 0 0);
+		opacity: 1;
+	}
+}
+
+.img-custom-anim-left {
+	animation: img-anim-left 1.3s forwards cubic-bezier(0.645, 0.045, 0.355, 1) 0.4s;
+	opacity: 0;
+}
+
+@keyframes img-anim-left {
+	0% {
+		transform: translateX(-5%);
+		clip-path: inset(0 100% 0 0);
+		opacity: 0;
+	}
+
+	100% {
+		transform: translateX(0);
+		clip-path: inset(0 0 0 0);
+		opacity: 1;
+	}
+}
+
+.img-custom-anim-top {
+	animation: img-anim-top 1.3s forwards cubic-bezier(0.645, 0.045, 0.355, 1);
+	opacity: 0;
+}
+
+@keyframes img-anim-top {
+	0% {
+		transform: translateY(-5%);
+		clip-path: inset(0 0 100% 0);
+		opacity: 0;
+	}
+
+	100% {
+		transform: translateY(0);
+		clip-path: inset(0 0 0 0);
+		opacity: 1;
+	}
+	
+}
+
+.float-bob-y {
+	-webkit-animation-name: float-bob-y;
+	animation-name: float-bob-y;
+	-webkit-animation-duration: 3s;
+	animation-duration: 3s;
+	-webkit-animation-iteration-count: infinite;
+	animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+	animation-timing-function: linear;
+}
+  
+  @-webkit-keyframes float-bob-y {
+	0% {
+	  -webkit-transform: translateY(-30px);
+	  transform: translateY(-30px);
+	}
+	50% {
+	  -webkit-transform: translateY(-10px);
+	  transform: translateY(-10px);
+	}
+	100% {
+	  -webkit-transform: translateY(-30px);
+	  transform: translateY(-30px);
+	}
+}
+
+  @keyframes float-bob-y {
+	0% {
+	  -webkit-transform: translateY(-30px);
+	  transform: translateY(-30px);
+	}
+	50% {
+	  -webkit-transform: translateY(-10px);
+	  transform: translateY(-10px);
+	}
+	100% {
+	  -webkit-transform: translateY(-30px);
+	  transform: translateY(-30px);
+	}
+}
+  
+.float-bob-x {
+	-webkit-animation-name: float-bob-x;
+	animation-name: float-bob-x;
+	-webkit-animation-duration: 3s;
+	animation-duration: 3s;
+	-webkit-animation-iteration-count: infinite;
+	animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+	animation-timing-function: linear;
+}
+  
+  @-webkit-keyframes float-bob-x {
+	0% {
+	  -webkit-transform: translateX(-0px);
+	  transform: translateX(30px);
+	}
+	50% {
+	  -webkit-transform: translateX(10px);
+	  transform: translateX(10px);
+	}
+	100% {
+	  -webkit-transform: translateX(30px);
+	  transform: translateX(30px);
+	}
+}
+
+  @keyframes float-bob-x {
+	0% {
+	  -webkit-transform: translateX(30px);
+	  transform: translateX(30px);
+	}
+	50% {
+	  -webkit-transform: translateX(10px);
+	  transform: translateX(10px);
+	}
+	100% {
+	  -webkit-transform: translateX(30px);
+	  transform: translateX(30px);
+	}
+}
+
+
+//animation
+@keyframes rounded {
+    50%{
+        transform: rotate(20deg);
+    }
+}
+
+@keyframes cir36 {
+	100% {
+			  transform: rotate(360deg);
+	}
+}
+
+
+//>>>>> Preloader Animation Start <<<<<//
+@-webkit-keyframes spinner {
+	to {
+		-webkit-transform: rotateZ(360deg);
+		transform: rotateZ(360deg);
+	}
+}
+
+@keyframes spinner {
+	to {
+		-webkit-transform: rotateZ(360deg);
+		transform: rotateZ(360deg);
+	}
+}
+
+@-webkit-keyframes letters-loading {
+	0%,
+	75%,
+	100% {
+		opacity: 0;
+		transform: rotateY(-90deg);
+	}
+	25%,
+	50% {
+		opacity: 1;
+		transform: rotateY(0deg);
+	}
+}
+
+@keyframes letters-loading {
+	0%,
+	75%,
+	100% {
+		opacity: 0;
+		transform: rotateY(-90deg);
+	}
+	25%,
+	50% {
+		opacity: 1;
+		transform: rotateY(0deg);
+	}
+}
+
+//>>>>> Preloader Animation Start <<<<<//
+@keyframes loaderspin {
+	0% {
+	  transform: translate(-50%, -50%) rotate(0deg);
+	}
+	100% {
+	  transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
+
+
+@keyframes tpswing{
+	0% {
+    -webkit-transform: rotate(20deg);
+    -ms-transform:rotate(20deg);
+    transform: rotate(20deg);
+	}
+    100% { 
+      -webkit-transform: rotate(0deg);
+      -ms-transform:rotate(0deg);
+      transform: rotate(0deg);
+	}
+}
+
+
+@keyframes width {
+	0% {
+	  width: 0%;
+	}
+	100% {
+	  width: 100%;
+	}
+}
+
+@-webkit-keyframes width {
+	0% {
+		width: 0%;
+	  }
+	  100% {
+		width: 100%;
+	}
+}
+
+@-webkit-keyframes loaderspin {
+0% {
+	transform: translate(-50%, -50%) rotate(0deg);
+}
+100% {
+	transform: translate(-50%, -50%) rotate(360deg);
+}
+}
+
+@keyframes loaderpulse {
+0% {
+	transform: scale(1);
+}
+100% {
+	transform: scale(1.2);
+}
+}
+//>>>>> Preloader Animation End <<<<<//
+
+@keyframes sway_Y {
+  0% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(20px);
+  }
+}
+.sway_Y__animation {
+  animation: sway_Y 3s linear infinite alternate;
+}
+
+@keyframes sway_YY {
+  0% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(-20px);
+  }
+}
+.sway_Y__animationY {
+  animation: sway_YY 3s linear infinite alternate;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.animation__rotate {
+  animation: rotate 30s linear infinite;
+}
+
+// This is for Progress bar animation also has a js code
+@keyframes animate-positive {
+    0% {
+        width: 0;
+    }
+}
+
+@keyframes rotateAndScale {
+	0% {
+		transform: rotate(0deg) scale(1);
+	}
+	50% {
+		transform: rotate(180deg) scale(0.8);
+	}
+	100% {
+		transform: rotate(360deg) scale(1);
+	}
+}
+
+.animation__rotateAndScale {
+	animation: rotateAndScale 20s linear infinite;
+}

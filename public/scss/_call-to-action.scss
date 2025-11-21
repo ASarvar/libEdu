@@ -1,0 +1,486 @@
+// /*** 
+
+// ====================================================================
+// 		Call To Action
+// ====================================================================
+
+// ***/
+
+// .call-to-action{
+//   position: relative;
+//   padding: 140px 0 120px;
+//   @include background;
+//   z-index: 2;
+//   &:before{
+//     @include overlay;
+//     background-color: var(--bg-theme-color1);
+//     opacity: .5;
+//     content: "";
+//     pointer-events: none;
+//   }
+//   &:after{
+//     position: absolute;
+//     left: 30px;
+//     top: 30px;
+//     right: 30px;
+//     bottom: 30px;
+//     border: 1px solid #fff;
+//     opacity: .1;
+//     pointer-events: none;
+//     content: "";
+//   }
+//   .title-box {
+//     position: relative;
+//     text-align: center;
+//     .icon{
+//       position: absolute;
+//       top: -15px;
+//       left: 0;
+//       right: 0;
+//       margin: 0 auto;
+//       max-width: 200px;
+//     }
+//     .title{
+//       font-size: 60px;
+//       line-height: 1.2em;
+//       color: #fff;
+//       margin-bottom: 0;
+//     }
+//     .theme-btn {
+//       margin-top: 45px;
+//     }
+//   }
+//   &.alternate::before{
+//     background-color: #090909;
+//     opacity: .80;
+//   }
+// }
+
+
+// /*** 
+
+// ====================================================================
+// 		Call To Action Two
+// ====================================================================
+
+// ***/
+
+// .call-to-action-two{
+//   position: relative;
+//   padding: 120px 0;
+//   z-index: 2;
+//   .outer-box{
+//     position: relative;
+//     display: flex;
+//     align-items: center;
+//     background-color: var(--bg-theme-color2);
+//     overflow: hidden;
+//     &::before{
+//       position: absolute;
+//       right: 0;
+//       top: 0;
+//       height: 100%;
+//       width: 50%;
+//       background-image: url(../images/icons/shape-3.png);
+//       background-position: center right;
+//       background-repeat: no-repeat;
+//       content: "";
+//     }
+//   }
+//   .content-box{
+//     position: relative;
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+//     width: 100%;
+//     padding: 30px 80px;
+//   }
+//   .image-box{
+//     position: relative;
+//     height: 100%;
+//     .image{
+//       position: relative;
+//       margin-bottom: 0;
+//       img{
+//         height: 100%;
+//         min-width: 340px;
+//         object-fit: cover;
+//       }
+//     }
+//   }
+//   .title-box{
+//     .title{
+//       font-size: 28px;
+//       color: var(--theme-color4);
+//       font-weight: 700;
+//       line-height: 36px;
+//       margin-bottom: 0;
+//     }
+//   }
+//   .btn-box {
+//     position: relative;
+//     z-index: 8;
+//   }
+
+//   &.alternate{
+//     &::before{
+//       position: absolute;
+//       right: 0;
+//       top: 0px;
+//       height: 477px;
+//       width: 470px;
+//       border-radius: 0 0 0 500px;
+//       background-color: var(--bg-theme-color3);
+//       content: "";
+//       z-index: -1;
+//       animation: bounce-x 10s infinite linear;
+//     }
+//   }
+// }
+
+
+// /*** 
+
+// ====================================================================
+// 		Call To Action Three
+// ====================================================================
+
+// ***/
+
+// .call-to-action-three{
+//   position: relative;
+//   padding: 120px 0;
+//   z-index: 2;
+//   .outer-box {
+//     position: relative;
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+//     overflow: hidden;
+//     background-color: var(--bg-theme-color2);
+//     width: 100%;
+//     padding: 30px 100px;
+//     padding-right: 30px;
+//     &::before {
+//       position: absolute;
+//       left: 0;
+//       top: 0;
+//       height: 100%;
+//       width: 90px;
+//       background-image: url(../images/icons/icon-shpae.png);
+//       background-position: top left;
+//       background-repeat: no-repeat;
+//       content: "";
+//     }
+//   }
+//   .title-box {
+//     display: flex;
+//     align-items: center;
+//     .icon{
+//       margin-right: 20px;
+//       font-size: 30px;
+//       line-height: 1em;
+//       color: var(--theme-color1);
+//     }
+//     .title {
+//       font-weight: 700;
+//       margin-bottom: 0;
+//     }
+//   }
+
+//   .btn-box {
+//     position: relative;
+//     z-index: 8;
+//     .theme-btn{
+//       padding: 11px 40px 9px;
+//       font-size: 11px;
+//     }
+//   }
+// }
+
+// /*** 
+
+// ====================================================================
+// 		Call To Action Four
+// ====================================================================
+
+// ***/
+
+// .call-to-action-four{
+//   position: relative;
+//   padding: 100px 0;
+//   @include background;
+//   background-color: var(--bg-theme-color2);
+//   z-index: 2;
+//   &.style-two {
+//     padding: 76px 0;
+//   }
+//   &.style-three {
+//     background-color: transparent;
+//     padding: 120px 0;
+//     .outer-box {
+//       background-color: var(--bg-theme-color2);
+//       text-align: center;
+//       display: block;
+//       padding: 110px 0;
+//       .anim-icons {
+//         max-width: none;
+//         .shape-image1 {
+//           position: absolute;
+//           left: 0;
+//           bottom: 0;
+//         }
+//         .shape-image2 {
+//           position: absolute;
+//           right: 0;
+//           top: 0;
+//         }
+//       }
+//       .title-box {
+//         .title {
+//           font-size: 50px;
+//           font-weight: 700;
+//           line-height: 60px;
+//           margin-bottom: 30px;
+//         }
+//       }
+//     }
+//   }
+//   .outer-box {
+//     position: relative;
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+//     overflow: hidden;
+//     background-color: var(--bg-theme-color2);
+//     width: 100%;
+//   }
+
+//   .title-box {
+//     .sub-title {
+//       position: relative;
+//       font-size: 20px;
+//       line-height: 1em;
+//       font-weight: 700;
+//       color: var(--theme-color1);
+//       margin-bottom: 20px;
+//     }
+
+//     .title {
+//       font-weight: 700;
+//       margin-bottom: 0;
+//     }
+//   }
+
+//   .btn-box {
+//     position: relative;
+//     z-index: 8;
+//   }
+// }
+
+// /*** 
+
+// ====================================================================
+// 		Call To Action Five
+// ====================================================================
+
+// ***/
+
+// .call-to-action-five{
+//   position: relative;
+//   z-index: 2;
+//   .outer-box {
+//     position: relative;
+//     display: flex;
+//   }
+//   .title-box {
+//     position: relative;
+//     text-align: center;
+//     padding: 110px 20px;
+//     background-color: var(--bg-theme-color2);
+//     overflow: hidden;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     flex-direction: column;
+//     height: 100%;
+//     &::before{
+//       position: absolute;
+//       left: -120px;
+//       bottom: -20px;
+//       width: 538px;
+//       height: 287px; 
+//       background-image: url(../images/icons/shape-9.png);
+//       content: "";
+//       animation: bounce-x 10s infinite linear;
+//     }
+//     .title {
+//       font-weight: 700;
+//       margin-bottom: 0;
+//       &:hover{
+//         color: #fff;
+//       }
+//     }
+
+//     &.style-two{
+//       background-color: #2c2e33;
+//       &::before{
+//         background-image: url(../images/icons/shape-8.png);
+//         left: auto;
+//         right: -70px;
+//       }
+//       .title{
+//         color: #fff;
+//         &:hover{
+//           color: var(--theme-color2);
+//         }
+//       }
+//     }
+//   }
+// }
+
+// /*** 
+
+// ====================================================================
+//     Call To Action Six
+// ====================================================================
+
+// ***/
+
+// .call-to-action-six {
+//   position: relative;
+//   &.pull-down {
+//     margin-bottom: -90px;
+//   }
+//   .outer-box {
+//     background-color: var(--theme-color2);
+//     position: relative;
+//     padding: 90px 60px 40px;
+//     z-index: 2;
+//     @include media-breakpoint-down(xxl){
+//       padding: 90px 60px 20px;
+//     }
+//     @include media-breakpoint-down(md){
+//       padding: 90px 30px 20px;
+//     }
+//     .bg-shape{
+//       position: absolute;
+//       left: 0;
+//       top: 0;
+//       height: 100%;
+//       width: 100%;
+//       background-image: url(../images/icons/shape-14.png);
+//       background-repeat: no-repeat;
+//       background-position: 290px -80px;
+//       background-size: cover;
+//       @include for-lg{
+//         display: none;
+//       }
+//     }
+//   }
+
+//   .sec-title{
+//     margin-bottom: 40px;
+//     h2{
+//       font-size: 40px;
+//       @include media-breakpoint-down(xxl){
+//         font-size: 30px;
+//       }
+//       @include for-md{
+//         font-size: 34px;
+//       }
+//       @include for-sm{
+//         font-size: 30px;
+//         br{
+//           display: none;
+//         }
+//       }
+//     }
+//   }
+
+//   .title-column{
+//     .inner-column{
+//       padding-right: 40px;
+//       @include for-md{
+//         padding: 0;
+//         text-align: center;
+//       }
+//     }
+//   }
+
+//   .btn-column{
+//     margin-bottom: 40px;
+//     .inner-column{
+//       text-align: right;
+//       padding-top: 20px;
+//       margin-right: 40px;
+//       @include for-md{
+//         text-align: center;
+//         padding-top: 0;
+//         margin-right: 0;
+//       }
+//     }
+//   }
+
+// }
+
+// /*** 
+
+// ====================================================================
+//     Call To Action Seven
+// ====================================================================
+
+// ***/
+
+// .call-to-action-seven {
+//   position: relative;
+//   padding: 120px 0;
+//   z-index: 2;
+//   .bg-image{
+//     &:before{
+//       @include overlay;
+//       background: linear-gradient(180deg, #222429 0%, #2224299C 100%);
+//       opacity: .6;
+//       content: "";
+//     }
+//   }
+//   .outer-box{
+//     position: relative;
+//     max-width: 1010px;
+//     margin: 0 auto;
+//     @include media-breakpoint-down(lg){
+//       text-align: center;
+//     }
+//     .small-image{
+//       position: absolute;
+//       right: 0px;
+//       top:100px;
+//       border-radius: 100px;
+//       overflow: hidden;
+//       margin-bottom: 0;
+//       max-height: 97px;
+//       max-width: 292px;
+//       @include media-breakpoint-down(lg){
+//         display: none;
+//       }
+//     }
+//     .title{
+//       font-size: 60px;
+//       color: var(--theme-color-light);
+//       margin-bottom: 35px;
+//       @include media-breakpoint-down(xl){
+//         font-size: 50px;
+//       }
+//       @include media-breakpoint-down(lg){
+//         br{display: none;}
+//       }
+//       @include media-breakpoint-down(md){
+//         font-size: 42px;
+//         line-height: 1.2em;
+//       }
+//       @include media-breakpoint-down(sm){
+//         font-size: 36px;
+//       }
+//     }       
+//   }
+// }

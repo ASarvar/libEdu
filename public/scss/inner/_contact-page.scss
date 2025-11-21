@@ -1,0 +1,218 @@
+/***
+
+====================================================================
+        Contact
+====================================================================
+
+***/
+.contact-details-block {
+	background-color: var(--theme-color-white);
+	box-shadow: 0px 15px 10px 0px #bcc2c62e;
+	border-radius: 8px;
+	padding: 65px 20px;
+	transition: all 500ms ease;
+	text-align: center;
+	.inner-box {
+		max-width: 260px;
+		margin: 0 auto;
+	}
+	.icon {
+		margin-bottom: 20px;
+		transition: all 700ms ease;
+		font-size: 50px;
+		line-height: 1;
+		color: var(--headings-color);
+		svg,
+		i {
+			transition: all 300ms ease;
+			path {
+				transition: all 300ms ease;
+			}
+		}
+	}
+	.title {
+		transition: all 300ms ease;
+		margin-bottom: 20px;
+		text-transform: capitalize;
+	}
+	.text {
+		margin-bottom: 0;
+		color: var(--text-color2);
+		font-weight: 500;
+		transition: all 300ms ease;
+		line-height: 28px;
+		font-size: 18px;
+	}
+	&:hover {
+		.icon {
+			transform: rotateY(360deg);
+			svg,
+			i {
+				path {
+					fill: var(--theme-color-white);
+				}
+				color: var(--theme-color-white);
+			}
+		}
+		.title {
+			color: var(--theme-color-white);
+		}
+		.text {
+			color: var(--theme-color-white);
+		}
+		background-color: var(--theme-color2);
+	}
+}
+
+
+// Contact six area start here ***
+.contact-six {
+	&-aera {
+		overflow: hidden;
+	}
+	&__wrp {
+		position: relative;
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center center;
+		padding: 130px 100px;
+		margin-right: -20px;
+		@include media-breakpoint-down(xl){
+			padding: 60px 30px;
+		}
+		&:before{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			content: '';
+			background-color: rgb(6 50 50 / 80%);
+		}
+	}
+	&__image {
+		position: relative;
+		z-index: 1;
+		height: 100%;
+		margin-left: 20px;
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+		.circle-btn {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 200px;
+			height: 200px;
+			line-height: 200px;
+			text-align: center;
+			border-radius: 50%;
+			transition: all 700ms ease;
+			backdrop-filter: blur(20px);
+			background-color: rgb(255 255 255 / 20%);
+			padding-top: 70px;
+			@include media-breakpoint-down(md){
+				padding-top: 40px;
+			}
+			span {
+				display: block;
+				color: var(--theme-color-white);
+				font-size: 16px;
+				line-height: 24px;
+				font-weight: 500;
+				i {
+					transform: rotate(-45deg);
+					transition: all 500ms ease;
+				}
+			}
+			&:hover {
+				span {
+					i {
+						transform: rotate(0);
+					}
+				}
+			}
+		}
+	}
+	&__item {
+		.section-header {
+			max-width: 860px;
+			.title {
+				font-size: 80px;
+				line-height: 90px;
+				font-weight: 600;
+				@include media-breakpoint-down(md){
+					font-size: 30px;
+					line-height: 40px;
+				}
+			}
+			.text{
+				font-size: 16px;
+			}
+		}
+		.wrp {
+			max-width: 640px;
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 80px;
+			padding-top: 60px;
+			margin-top: 60px;
+			border-top: 1px solid rgb(255 255 255 / 20%);
+			@include media-breakpoint-down(md){
+				gap: 20px;
+			}
+		}
+	}
+}
+// Contact six area end here ***
+
+.contact-details {
+	overflow: hidden;
+
+	.content-column {
+		.inner-column {
+			.google-map {
+				iframe {
+					width: 100%;
+					height: 350px;
+				}
+			}
+			form {
+				.type-feild {
+					position: relative;
+					z-index: 1;
+					margin-bottom: 45px;
+					input {
+						padding-bottom: 15px;
+						padding-left: 35px;
+						width: 100%;
+						border-bottom: 1px solid rgba(92, 92, 91, 0.3);
+					}
+					textarea {
+						padding-bottom: 15px;
+						padding-left: 35px;
+						width: 100%;
+						border-bottom: 1px solid rgba(92, 92, 91, 0.3);
+						height: 130px;
+					}
+					i {
+						position: absolute;
+						top: 0;
+						left: 0;
+					}
+				}
+			}
+			&.right-column {
+				max-width: 590px;
+				margin-left: auto;
+				.sec-title {
+					margin-bottom: 55px !important;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,113 @@
+
+/*** 
+
+====================================================================
+    Fun Fact Section
+====================================================================
+
+***/
+.counter-section{
+    position: relative;
+    &.theme-color-bg{
+        background-color: var(--theme-color2);
+    }
+    .counter-wrapper2{
+        display: flex;
+        align-items: center;
+        gap: 70px;
+        margin: 0px 50px;
+        border-bottom: 1px solid rgba(var(--theme-color-white-rgb), 0.1);
+        font-size: 50px;
+        @include media-breakpoint-down (xl){
+            margin: 0;
+        }
+        @include media-breakpoint-down (lg){
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .icon-box {
+            font-size: 60px;
+            background: linear-gradient(to left, var(--theme-color1) 0%, var(--theme-color7) 50%, var(--theme-color1) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+    }
+}
+.counter-block-one{
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    max-width: 30%;
+    width: 100%;
+    @include media-breakpoint-down (lg){
+        max-width: 47%;
+    }
+    @include media-breakpoint-down (sm){
+        max-width: 100%;
+    }
+    &::before{
+        position: absolute;
+        top: 0;
+        right: 0;
+        content: '';
+        width: 15px;
+        height: 15px;
+        background: linear-gradient(180deg, #85A6A6 0%, #A68585 100%);
+        clip-path: polygon(0 0, 100% 100%, 100% 0);        
+    }    
+    .count-box{
+        .counter{
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 57.6px;
+            font-family: var(--heading-font-family);
+            color: var(--theme-color-white);
+            [data-tm-layout="dark"] & {
+                color: #ffffff;
+            }
+        }
+        .counter-title{
+            font-size: 16px;
+            line-height: 30px;
+            font-weight: 400;
+            font-family: var(--heading-font-family);
+            color: var(--theme-color-white);
+            [data-tm-layout="dark"] & {
+                color: #ffffff;
+            }
+        }
+    }
+}
+
+.counter-section{
+    .separator{
+        width: 1px;
+        height: 108px;
+        background: #D2D2D2;
+        @include media-breakpoint-down (lg){
+            display: none;
+        }
+    }
+}
+.counter-box-one {
+    position: relative;
+    text-align: center;    
+    h2 {
+        font-size: 96px;
+        font-weight: 400;
+        margin-bottom: 0;
+    }
+    p {
+        font-size: 18px;
+        font-weight: 500;
+        max-width: 140px;
+        line-height: 133%;
+        margin: 0 auto;
+        color: #144443;
+        [data-tm-layout="dark"] & {
+            color: #ffffff;
+        }
+    }
+}

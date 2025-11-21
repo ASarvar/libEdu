@@ -1,0 +1,320 @@
+/*** 
+
+====================================================================
+    Growth Section
+====================================================================
+
+***/
+
+
+.growth-section {
+	@include background;
+	border-radius: 25px;
+	margin: 0 30px;
+	overflow: hidden;
+	position: relative;
+	z-index: 1;
+	@include media-breakpoint-down (xxl){
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+	@include media-breakpoint-down (md){
+		margin: 0 20px;
+		padding-left: 18px;
+		padding-right: 18px;
+	}
+	.sec-shape {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		z-index: 0;
+	}
+	&::after {
+		background: radial-gradient(
+			95.51% 264.21% at 92.63% 41.85%,
+			rgba(0, 7, 31, 0) 0%,
+			rgba(4, 44, 42, 0.98) 99.98%,
+			rgba(4, 44, 42, 0.98) 99.99%
+			);
+		content: "";
+		height: 100%;
+		left: 0;
+		position: absolute;
+		top: 0;
+		width: 100%;
+		z-index: -1;
+	}
+	.sec-title {
+		border-bottom: 1px solid rgba(230, 230, 230, 0.212);
+		padding-bottom: 50px;
+		margin-bottom: 30px;
+	}
+	.theme-btn {
+		position: relative;
+		&.btn-style-one {
+			align-items: center;
+			background-image: linear-gradient(to left, var(--theme-color1) 0%, var(--theme-color7) 50%, var(--theme-color1) 100%);
+			background-size: 200%;
+			border-radius: 100px;
+			color: var(--theme-color-white);
+			height: 70px;
+			padding: 26px 60px;
+			padding-right: 100px;
+			[data-tm-layout="dark"] & {
+				color: var(--headings-color);
+			}
+			@include for-sm {
+				height: 60px;
+				padding-right: 80px;
+				.icon {
+					width: 40px;
+					height: 40px;
+					line-height: 40px;
+					right: 10px;
+					top: 8px;
+					svg {
+						width: 15px;
+						height: 15px;
+					} 
+				}
+			}
+			@include media-breakpoint-down(sm) {
+				padding: 26px 42px;
+				padding-right: 42px;
+				padding-right: 88px;
+				height: 57px;
+			}
+			&:before{
+				display: none;
+			}
+			&:hover {
+				background-position: 100% 0;
+				.icon {
+				background-color: var(--theme-color2);
+				color: var(--theme-color-white);
+				}
+			}
+		}
+		.icon {
+			background-color: var(--theme-color-white);
+      		color: var(--theme-color-black);
+			[data-tm-layout="dark"] & {
+				color: var(--headings-color);
+			}
+			border-radius: 50%;
+			bottom: 4px;
+			font-size: 50px;
+			height: 62px;
+			line-height: 72px;
+			position: absolute;
+			right: 4px;
+			top: 4px;
+	    	transition: all 300ms ease;
+			width: 62px;
+			&:hover {
+				[data-tm-layout="dark"] & {
+					color: var(--headings-color);
+				}
+			}
+		}
+	}
+}
+
+.growth-block {
+	display: flex;
+	align-items: center;
+	gap: 30px;
+	.pie-graph {
+		position: relative;
+		z-index: 1;
+		width: fit-content;
+		height: 122px;
+		.inner-text {
+			width: 80px;
+			height: 80px;
+			line-height: 80px;
+      background-image: linear-gradient(to left, var(--theme-color1) 0%, var(--theme-color7) 50%, var(--theme-color1) 100%);
+      background-size: 200%;
+	    transition: all 300ms ease;
+			font-weight: 700;
+			font-size: 20px;
+			color: var(--theme-color-white);
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			text-align: center;
+			border-radius: 50%;
+			font-family: var(--heading-font-family);
+			[data-tm-layout="dark"] & {
+				color: var(--headings-color);
+			}
+		}
+	}
+	.content-box {
+		.title {
+			font-size: 20px;
+			text-transform: capitalize;
+			color: var(--theme-color-white);
+			margin-bottom: 10px;
+			[data-tm-layout="dark"] & {
+				color: var(--headings-color);
+			}
+		}
+		.text {
+			font-size: 16px;
+			line-height: 28.8px;
+			color: #d1d5db;
+			margin-bottom: 0;			
+		}
+	}
+	&:hover{
+		.pie-graph {
+			.inner-text {
+        background-position: 100% 0;
+			}
+		}
+	}
+}
+// Growth area end here ***
+
+// Growth area start here ***
+.growth-section-two {
+	position: relative;
+	z-index: 1;
+	overflow: hidden;
+	background-size: cover;
+	background-position: bottom;
+	background-repeat: no-repeat;
+	height: 710px;
+
+	@include media-breakpoint-down(xxl) {
+		height: 600px;
+	}
+
+	@include media-breakpoint-down(xl) {
+		height: auto;
+		background-image: none !important;
+		background-color: var(--theme-color-gray2);
+	}
+
+	.bg-shape {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		z-index: -1;
+	}
+
+	.outer-box {
+		max-width: 1250px;
+		margin: 0 auto;
+	}
+
+	.growth-block {
+		.pie-graph{
+			.inner-text{
+				background-color: var(--theme-color2);
+				color: var(--theme-color-white);
+			}
+		}
+		.content-box {
+			.title {
+				color: var(--headings-color);
+			}
+			.text {
+				color: var(--body-font-family);
+			}
+		}
+	}
+}
+// Growth area end here ***
+
+
+
+.feature-growth-box-items {
+	margin-top: 30px;
+	padding: 34px 25px;
+	padding-top: 0;
+	position: relative;
+	text-align: center;
+	z-index: 9;
+	&::before {
+		background-color: var(--theme-color-white);
+		border-radius: 15px;
+		height: initial;		
+		@include before;
+		top: 50px;
+		z-index: -1;
+		height: initial;
+	}
+	&::after {
+		background-color: var(--headings-color);
+		border-radius: 15px;
+		@include before;
+		height: initial;
+		transform: scale(1, 0);
+		transition: transform 500ms ease;
+		transform-origin: bottom center;
+		top: 50px;
+		z-index: -1;
+		[data-tm-layout="dark"] & {
+			opacity: 0.5;
+			background-color: var(--dark-color1);
+		}
+	}
+	.icon {
+		background-image: linear-gradient(to left, var(--theme-color1) 0%, var(--theme-color7) 50%, var(--theme-color1) 100%);
+		background-size: 200%;
+		border-radius: 50%;
+		font-size: 40px;
+		color: var(--theme-color-white);
+		height: 103px;
+		line-height: 103px;
+		margin: 0 auto;	   
+		text-align: center;
+		width: 103px;
+		transition: all 300ms ease;
+		
+		i {
+			    transition: all 900ms ease;
+    		display: inline-block;
+		}
+	}
+	.content {
+		margin-top: 25px;
+		h3 {
+			margin-bottom: 15px;
+			@include transition;
+		}
+		p {
+			@include transition;
+		}
+	}
+	&.style-top {
+		margin-top: 60px;
+		@include media-breakpoint-down (xl){
+			margin-top: 30px;
+		}
+	}
+	&:hover {
+		&::after {
+			transform: scale(1, 1);
+			transform-origin: top center;
+		}
+		i {
+			transform: rotateY(360deg);
+		}
+		.icon {
+			background-position: 100% 0;
+		}
+		.content {
+			h3 {
+				color: #fff;
+			}
+			p {
+				color: #F5F5F5;
+			}
+		}
+	}
+}
