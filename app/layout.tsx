@@ -7,6 +7,7 @@ import "../public/css/style.css";
 import "../public/css/style-dark.css";
 import "../public/css/responsive.css";
 import Preloader from "@/components/elements/Preloader";
+import I18nProvider from "@/components/providers/I18nProvider";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -21,9 +22,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Finclix - Business & Finance Consulting Next.js Template",
+  title: "Respublika Kutubxonalari Yagona Veb Platformasi",
   description:
-    "Finclix is a modern business and finance consulting template built with Next.js 15 and TypeScript",
+    "O'zbekiston viloyat va tuman kutubxonalari uchun yagona raqamli platforma. Elektron katalog, kitob bronlash, raqamli kutubxona va tadbirlar.",
 };
 
 export default function RootLayout({
@@ -32,10 +33,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={`${dmSans.variable} ${inter.variable}`}>
-      <body>
-        <Preloader />
-        {children}
+    <html lang="uz" data-scroll-behavior="smooth" className={`${dmSans.variable} ${inter.variable}`}>
+      <body suppressHydrationWarning>
+        <I18nProvider>
+          <Preloader />
+          {children}
+        </I18nProvider>
       </body>
     </html>
   );

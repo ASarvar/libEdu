@@ -1,8 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
+import Layout from "@/components/layout/Layout";
 
 export default function NotFound() {
   return (
+    <Layout>
     <section className="error-section">
       <div className="auto-container">
         <div className="row">
@@ -27,6 +29,7 @@ export default function NotFound() {
         </div>
       </div>
     </section>
+    </Layout>
   );
 }
 

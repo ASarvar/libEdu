@@ -1,0 +1,144 @@
+{
+  "header": {
+    "home": "Asosiy",
+    "catalog": "Katalog",
+    "digitalLibrary": "Raqamli kutubxona",
+    "events": "Tadbirlar",
+    "news": "Yangiliklar",
+    "about": "Biz haqimizda",
+    "contact": "Aloqa",
+    "login": "Kirish",
+    "register": "Ro'yxatdan o'tish",
+    "profile": "Shaxsiy kabinet",
+    "freeConsultation": "Bepul maslahat",
+    "callNow": "Hozir qo'ng'iroq qiling",
+    "sendEmail": "Email yuboring",
+    "workingHours": "Ish vaqti",
+    "workingHoursText": "Dush - Shan 8:00 - 18:30, Yakshanba - YOPIQ"
+  },
+  "footer": {
+    "copyright": "Barcha huquqlar himoyalangan",
+    "about": "Biz haqimizda",
+    "quickLinks": "Tezkor havolalar",
+    "contact": "Bog'lanish",
+    "followUs": "Bizni kuzating",
+    "address": "Manzil",
+    "phone": "Telefon",
+    "email": "Elektron pochta"
+  },
+  "catalog": {
+    "title": "Elektron katalog",
+    "search": "Qidirish",
+    "searchPlaceholder": "Kitob nomi, muallif yoki mavzu...",
+    "filter": "Filtrlash",
+    "author": "Muallif",
+    "year": "Yil",
+    "language": "Til",
+    "genre": "Janr",
+    "available": "Mavjud",
+    "reserved": "Band",
+    "viewDetails": "Batafsil",
+    "reserve": "Bron qilish"
+  },
+  "digitalLibrary": {
+    "books": "Kitoblar",
+    "audioBooks": "Audio kitoblar",
+    "videoLectures": "Video ma'ruzalar"
+  },
+  "booking": {
+    "title": "Kitob bronlash",
+    "myBookings": "Mening bronlarim",
+    "bookingDate": "Bron sanasi",
+    "pickupDate": "Olish sanasi",
+    "status": "Holati",
+    "pending": "Kutilmoqda",
+    "approved": "Tasdiqlangan",
+    "rejected": "Rad etilgan",
+    "completed": "Tugallangan",
+    "cancel": "Bekor qilish"
+  },
+  "events": {
+    "title": "Tadbirlar",
+    "upcomingEvents": "Yaqinlashayotgan tadbirlar",
+    "pastEvents": "O'tgan tadbirlar",
+    "date": "Sana",
+    "time": "Vaqt",
+    "location": "Manzil",
+    "register": "Ro'yxatdan o'tish",
+    "details": "Batafsil ma'lumot"
+  },
+  "news": {
+    "title": "Yangiliklar",
+    "latestNews": "So'nggi yangiliklar",
+    "readMore": "Batafsil o'qish",
+    "publishedOn": "E'lon qilingan",
+    "category": "Turkum"
+  },
+  "profile": {
+    "title": "Shaxsiy kabinet",
+    "personalInfo": "Shaxsiy ma'lumotlar",
+    "myBooks": "Mening kitoblarim",
+    "readingHistory": "O'qish tarixi",
+    "recommendations": "Tavsiyalar",
+    "settings": "Sozlamalar",
+    "logout": "Chiqish"
+  },
+  "banner": {
+    "subtitle": "Ishonchli va Tez Kutubxona Xizmatlari",
+    "title": "Bilim Dunyosiga Xush Kelibsiz",
+    "description": "Zamonaviy kutubxona xizmatlari orqali kitoblar, raqamli resurslar va tadbirlarga oson kirish imkoniyati",
+    "cta": "Biz bilan bog'laning"
+  },
+  "services": {
+    "title": "Eng Yaxshi Kutubxona Xizmatlarini Taqdim Etamiz",
+    "happyReaders": "Mamnun O'quvchilar",
+    "rating": "Reyting",
+    "catalog": {
+      "title": "Elektron Katalog",
+      "description": "Minglab kitoblar va resurslarni tezkor qidirish va topish imkoniyati"
+    },
+    "digital": {
+      "title": "Raqamli Kutubxona",
+      "description": "Har qanday joydan elektron kitoblar va multimedia resurslarga kirish"
+    }
+  },
+  "about": {
+    "aboutUs": "Biz haqimizda",
+    "team": "Jamoa",
+    "branches": "Filiallar",
+    "subtitle": "Biz haqimizda",
+    "title": "Zamonaviy Kutubxona Xizmatlarini Taqdim Etamiz",
+    "description": "Tajribali mutaxassislar jamoamiz har bir o'quvchi uchun maxsus va samarali kutubxona xizmatlarini taqdim etadi",
+    "featureTitle": "Bizning xizmatlarimiz o'quvchilarga quyidagilarni taqdim etadi",
+    "features": {
+      "feature1": "Elektron kitoblar va resurslarni bepul foydalanish",
+      "feature2": "Kitoblarni onlayn bron qilish va olib ketish",
+      "feature3": "Madaniy va ta'lim tadbirlariga qatnashish",
+      "feature4": "Shaxsiy kutubxona akkaunt va tavsiyalar",
+      "feature5": "Yangi nashrlar va xizmatlar haqida xabarlar"
+    },
+    "counterTitle": "Faol A'zolar",
+    "counterBtn": "Ro'yxatdan o'ting"
+  },
+  "common": {
+    "search": "Qidirish",
+    "filter": "Filtrlash",
+    "sort": "Saralash",
+    "show": "Ko'rsatish",
+    "hide": "Yashirish",
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "edit": "Tahrirlash",
+    "delete": "O'chirish",
+    "submit": "Yuborish",
+    "back": "Orqaga",
+    "next": "Keyingi",
+    "previous": "Oldingi",
+    "loading": "Yuklanmoqda...",
+    "error": "Xatolik yuz berdi",
+    "success": "Muvaffaqiyatli",
+    "confirmation": "Tasdiqlash",
+    "yes": "Ha",
+    "no": "Yo'q"
+  }
+}

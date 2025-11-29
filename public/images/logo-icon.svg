@@ -1,0 +1,20 @@
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Book pages -->
+  <rect x="20" y="15" width="40" height="50" rx="2" fill="#F3EDE3"/>
+  
+  <!-- Book cover -->
+  <path d="M22 15 L22 65 L58 65 L58 15 L55 15 L55 60 L25 60 L25 15 Z" fill="#144443"/>
+  
+  <!-- Book spine -->
+  <rect x="22" y="15" width="4" height="50" fill="#0B3130"/>
+  
+  <!-- Decorative lines (pages) -->
+  <line x1="30" y1="25" x2="52" y2="25" stroke="#144443" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="30" y1="32" x2="52" y2="32" stroke="#144443" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="30" y1="39" x2="48" y2="39" stroke="#144443" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="30" y1="46" x2="50" y2="46" stroke="#144443" stroke-width="1.5" stroke-linecap="round"/>
+  
+  <!-- Small accent circle (representing knowledge/light) -->
+  <circle cx="45" cy="52" r="6" fill="#C8F169" opacity="0.8"/>
+  <path d="M45 49 L45 55 M42 52 L48 52" stroke="#144443" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

@@ -1,11 +1,28 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Image from "next/image";
 
 export default function Preloader() {
   const [loading, setLoading] = useState(true);
+  const [currentLanguage, setCurrentLanguage] = useState<string>('Uz');
+  const { i18n } = useTranslation();
 
   useEffect(() => {
+    // Get saved language from localStorage
+    if (typeof window !== 'undefined') {
+      const savedLang = localStorage.getItem('lang') || 'Uz';
+      setCurrentLanguage(savedLang);
+    }
+
+    // Listen for language changes
+    const handleLanguageChange = (lng: string) => {
+      setCurrentLanguage(lng);
+    };
+
+    i18n.on('languageChanged', handleLanguageChange);
+    
     // Wait for actual document load state
     if (document.readyState === "complete") {
       setLoading(false);
@@ -15,40 +32,40 @@ export default function Preloader() {
       };
 
       window.addEventListener("load", handleLoad);
-      return () => window.removeEventListener("load", handleLoad);
+      return () => {
+        window.removeEventListener("load", handleLoad);
+        i18n.off('languageChanged', handleLanguageChange);
+      };
     }
-  }, []);
+  }, [i18n]);
 
   if (!loading) return null;
+
+  // Get the current language's loading text
+  const getLoadingText = () => {
+    if (currentLanguage === 'Uz') return 'Yuklanmoqda...';
+    if (currentLanguage === 'Ru') return 'Загрузка...';
+    return 'Loading...';
+  };
 
   return (
     <div id="preloader" className="preloader">
       <div className="animation-preloader">
-        <div className="spinner"></div>
-        <div className="txt-loading">
-          <span data-text-preloader="F" className="letters-loading">
-            F
-          </span>
-          <span data-text-preloader="I" className="letters-loading">
-            I
-          </span>
-          <span data-text-preloader="N" className="letters-loading">
-            N
-          </span>
-          <span data-text-preloader="C" className="letters-loading">
-            C
-          </span>
-          <span data-text-preloader="L" className="letters-loading">
-            L
-          </span>
-          <span data-text-preloader="I" className="letters-loading">
-            I
-          </span>
-          <span data-text-preloader="X" className="letters-loading">
-            X
-          </span>
+        <div className="preloader-visual" aria-hidden="true">
+          <div className="spinner" />
+          <div className="preloader-logo">
+            <Image
+              src="/images/logo_short.svg"
+              alt="Library Logo"
+              width={80}
+              height={80}
+              priority
+            />
+          </div>
         </div>
-        <p className="text-center">Loading</p>
+        <p className="text-center preloader-text" suppressHydrationWarning>
+          {getLoadingText()}
+        </p>
       </div>
       <div className="loader">
         <div className="row">

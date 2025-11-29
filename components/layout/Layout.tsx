@@ -53,20 +53,18 @@ const Layout = ({
   }, []);
 
   useEffect(() => {
-    // Dynamically import and initialize WOW.js only on client side
-    const initWOW = async () => {
-      if (typeof window !== "undefined") {
-        try {
-          const WOW = (await import("wowjs")).WOW;
-          const wowInstance = new WOW({ live: false });
-          wowInstance.init();
-        } catch (error) {
-          console.error("Failed to initialize WOW.js:", error);
+    // Initialize WOW.js
+    if (typeof window !== "undefined") {
+      import('wowjs').then((module) => {
+        const WOW = module.WOW || module.default;
+        if (WOW) {
+          const wow = new WOW({
+            live: false
+          });
+          wow.init();
         }
-      }
-    };
-
-    initWOW();
+      });
+    }
   }, []);
 
   useEffect(() => {

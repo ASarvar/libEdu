@@ -18,7 +18,6 @@ export default function Home() {
   return (
     <Layout>
       <Banner />
-      <Solution />
       <About />
       <Counter />
       <Service />

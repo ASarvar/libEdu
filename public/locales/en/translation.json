@@ -1,0 +1,144 @@
+{
+  "header": {
+    "home": "Home",
+    "catalog": "Catalog",
+    "digitalLibrary": "Digital Library",
+    "events": "Events",
+    "news": "News",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Register",
+    "profile": "Profile",
+    "freeConsultation": "Free Consultation",
+    "callNow": "Call Now",
+    "sendEmail": "Send Email",
+    "workingHours": "Working Hours",
+    "workingHoursText": "Mon - Sat 8:00 - 18:30, Sunday - CLOSED"
+  },
+  "footer": {
+    "copyright": "All rights reserved",
+    "about": "About Us",
+    "quickLinks": "Quick Links",
+    "contact": "Contact",
+    "followUs": "Follow Us",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email"
+  },
+  "catalog": {
+    "title": "Electronic Catalog",
+    "search": "Search",
+    "searchPlaceholder": "Book title, author or subject...",
+    "filter": "Filter",
+    "author": "Author",
+    "year": "Year",
+    "language": "Language",
+    "genre": "Genre",
+    "available": "Available",
+    "reserved": "Reserved",
+    "viewDetails": "View Details",
+    "reserve": "Reserve"
+  },
+  "digitalLibrary": {
+    "books": "Books",
+    "audioBooks": "Audio Books",
+    "videoLectures": "Video Lectures"
+  },
+  "booking": {
+    "title": "Book Reservation",
+    "myBookings": "My Reservations",
+    "bookingDate": "Booking Date",
+    "pickupDate": "Pickup Date",
+    "status": "Status",
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "completed": "Completed",
+    "cancel": "Cancel"
+  },
+  "events": {
+    "title": "Events",
+    "upcomingEvents": "Upcoming Events",
+    "pastEvents": "Past Events",
+    "date": "Date",
+    "time": "Time",
+    "location": "Location",
+    "register": "Register",
+    "details": "Details"
+  },
+  "news": {
+    "title": "News",
+    "latestNews": "Latest News",
+    "readMore": "Read More",
+    "publishedOn": "Published on",
+    "category": "Category"
+  },
+  "profile": {
+    "title": "Profile",
+    "personalInfo": "Personal Information",
+    "myBooks": "My Books",
+    "readingHistory": "Reading History",
+    "recommendations": "Recommendations",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "banner": {
+    "subtitle": "Reliable and Fast Library Services",
+    "title": "Welcome to the World of Knowledge",
+    "description": "Easy access to books, digital resources and events through modern library services",
+    "cta": "Contact Us"
+  },
+  "services": {
+    "title": "Providing the Best Library Services",
+    "happyReaders": "Happy Readers",
+    "rating": "Rating",
+    "catalog": {
+      "title": "Electronic Catalog",
+      "description": "Fast search and access to thousands of books and resources"
+    },
+    "digital": {
+      "title": "Digital Library",
+      "description": "Access e-books and multimedia resources from anywhere"
+    }
+  },
+  "about": {
+    "aboutUs": "About Us",
+    "team": "Team",
+    "branches": "Branches",
+    "subtitle": "Who We Are",
+    "title": "Providing Modern Library Services",
+    "description": "Our team of experienced professionals delivers personalized and effective library services tailored to each reader",
+    "featureTitle": "Our services deliver value to our readers",
+    "features": {
+      "feature1": "Free access to e-books and resources",
+      "feature2": "Online book reservation and pickup",
+      "feature3": "Participation in cultural and educational events",
+      "feature4": "Personal library account and recommendations",
+      "feature5": "Notifications about new publications and services"
+    },
+    "counterTitle": "Active Members",
+    "counterBtn": "Register Now"
+  },
+  "common": {
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "show": "Show",
+    "hide": "Hide",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "confirmation": "Confirmation",
+    "yes": "Yes",
+    "no": "No"
+  }
+}
