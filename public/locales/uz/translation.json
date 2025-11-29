@@ -22,7 +22,7 @@
     "quickLinks": "Tezkor havolalar",
     "contact": "Bog'lanish",
     "followUs": "Bizni kuzating",
-    "address": "Manzil",
+    "address": "Toshkent shahar, Amir Temur ko'chasi 108",
     "phone": "Telefon",
     "email": "Elektron pochta"
   },
@@ -120,6 +120,176 @@
     "counterTitle": "Faol A'zolar",
     "counterBtn": "Ro'yxatdan o'ting"
   },
+  "counter": {
+    "books": {
+      "count": "50",
+      "label": "Kitoblar"
+    },
+    "members": {
+      "count": "15",
+      "label": "Faol O'quvchilar"
+    },
+    "events": {
+      "count": "200",
+      "label": "Yillik Tadbirlar"
+    },
+    "branches": {
+      "count": "23",
+      "label": "Filiallar"
+    }
+  },
+  "serviceSection": {
+    "subtitle": "XIZMATLARIMIZ",
+    "title": "Biz taklif etadigan xizmatlar",
+    "satisfiedReaders": "Mamnun O'quvchilar",
+    "service1": {
+      "title": "Elektron Kutubxona",
+      "description": "Minglab elektron kitoblar, jurnallar va tadqiqot maqolalariga onlayn kirish imkoniyati"
+    },
+    "service2": {
+      "title": "Kitob Bronlash",
+      "description": "Kitoblarni onlayn bron qilish va qulay vaqtda olib ketish xizmati"
+    },
+    "service3": {
+      "title": "Ta'lim Dasturlari",
+      "description": "O'quvchilar uchun maxsus treninglar, seminarlar va o'quv kurslari"
+    },
+    "service4": {
+      "title": "Tadqiqot Yordami",
+      "description": "Akademik tadqiqotlar va kurs ishlari uchun professional maslahat va ko'mak"
+    }
+  },
+  "projectSection": {
+    "subtitle": "KUTUBXONA TADBIRLARI",
+    "title": "Bilim va Madaniyat Tadbirlari",
+    "viewAll": "Barchasini ko'rish",
+    "project1": {
+      "title": "Kitob O'qish Klubi",
+      "subtitle": "Haftalik Uchrashuv"
+    },
+    "project2": {
+      "title": "Bolalar Kutubxonasi",
+      "subtitle": "Interaktiv O'yinlar"
+    },
+    "project3": {
+      "title": "Ilmiy Tadqiqotlar",
+      "subtitle": "Talabalar uchun"
+    },
+    "project4": {
+      "title": "Yozuvchilar bilan Uchrashuv",
+      "subtitle": "Oylik Tadbir"
+    },
+    "project5": {
+      "title": "Raqamli Savodxonlik",
+      "subtitle": "Kompyuter Kurslari"
+    }
+  },
+  "marquee": {
+    "word1": "Kitoblar",
+    "word2": "Jurnallar",
+    "word3": "Audio Kitoblar",
+    "word4": "Tadbirlar",
+    "word5": "Elektron Kitoblar"
+  },
+  "whyChoose": {
+    "subtitle": "Nima uchun bizni tanlaysiz",
+    "title": "Sizga Professional Kutubxona Xizmatlari Kerak",
+    "award": "Respublika kutubxonalari yagona veb platformasi",
+    "mission": {
+      "title": "Bizning Missiyamiz",
+      "desc": "Har bir o'quvchiga sifatli bilim resurslari va qulaylik bilan ta'minlash orqali jamiyatda o'qish madaniyatini rivojlantirish",
+      "list1": "Zamonaviy kutubxona xizmatlari",
+      "list2": "Professional maslahat va yordam",
+      "list3": "Qulay va tez xizmat ko'rsatish",
+      "progress1": "Foydalanuvchi Mamnuniyati",
+      "progress2": "A'zolar O'sishi"
+    },
+    "vision": {
+      "title": "Bizning Qarashamiz",
+      "desc": "O'zbekistonda eng ilg'or va zamonaviy kutubxona tarmog'iga aylanish, raqamli va an'anaviy resurslarni birlashtirish",
+      "list1": "Innovatsion kutubxona texnologiyalari",
+      "list2": "Keng raqamli resurslar",
+      "list3": "Barcha uchun ochiq kirish",
+      "progress1": "Raqamli Kirish",
+      "progress2": "Tadbirlar Faolligi"
+    },
+    "philosophy": {
+      "title": "Bizning Falsafamiz",
+      "desc": "Bilim har bir inson uchun ochiq bo'lishi kerak. Biz kitoblar orqali kishilarni bir-biriga bog'laymiz va jamiyatni rivojlantiramiz",
+      "list1": "Barchaga teng imkoniyatlar",
+      "list2": "Sifatli va ishonchli xizmat",
+      "list3": "Davomiy takomillashtirish",
+      "progress1": "Xizmat Sifati",
+      "progress2": "Jamoatchilik Aloqasi"
+    },
+    "achievement": {
+      "title": "Yutuqlarimiz",
+      "desc": "50 yillik faoliyat davomida minglab o'quvchilarga xizmat ko'rsatdik va ko'plab milliy va xalqaro mukofotlar oldik",
+      "list1": "50+ yillik tajriba",
+      "list2": "Milliy mukofotlar sohibi",
+      "list3": "Faol ijtimoiy sherikliklar",
+      "progress1": "Muvaffaqiyat Darajasi",
+      "progress2": "Hamkorlik O'sishi"
+    }
+  },
+  "contactSection": {
+    "subtitle": "Biz bilan bog'laning",
+    "title": "Savollaringiz bo'lsa, Biz bilan bog'lanishingiz mumkin",
+    "fullName": "To'liq ism*",
+    "email": "Email manzil",
+    "phone": "Telefon raqam",
+    "message": "Xabar",
+    "submitButton": "Yuborish",
+    "questionTitle": "Savollaringiz bormi?",
+    "callUs": "Qo'ng'iroq qiling",
+    "mailUs": "Email yuboring"
+  },
+  "faqSection": {
+    "subtitle": "KO'P SO'RALADIGAN SAVOLLAR",
+    "title": "Tez-tez So'raladigan Savollar",
+    "faq1": {
+      "question": "Kutubxonaga a'zo bo'lish uchun nima kerak?",
+      "answer": "Kutubxonaga a'zo bo'lish uchun passport yoki ID kartangiz bilan kutubxonaga tashrif buyurishingiz kerak. Ro'yxatdan o'tish bepul va bir necha daqiqada tugaydi. Onlayn ro'yxatdan o'tish ham mavjud."
+    },
+    "faq2": {
+      "question": "Kitoblarni qancha vaqtga olish mumkin?",
+      "answer": "Oddiy kitoblarni 21 kungacha, ilmiy adabiyotlarni 14 kungacha olish mumkin. Muddatni uzaytirish imkoniyati ham mavjud. Raqamli kitoblar cheksiz vaqt uchun ochiq."
+    },
+    "faq3": {
+      "question": "Raqamli kutubxonadan qanday foydalanish mumkin?",
+      "answer": "Raqamli kutubxonadan foydalanish uchun kutubxona a'zosi bo'lishingiz kerak. Shaxsiy kabinetingizdan minglab elektron kitoblar, jurnallar va multimedia resurslarga kirish imkoniyati bor."
+    },
+    "faq4": {
+      "question": "Kutubxona xizmatlari pullikmi?",
+      "answer": "Kutubxona a'zoligi va asosiy xizmatlar bepul. Fotokopiya, chop etish va ba'zi maxsus tadbirlar uchun kichik to'lovlar olinadi. Student va nafaqaxo'rlar uchun chegirmalar mavjud."
+    },
+    "faq5": {
+      "question": "Kutubxona ishlash vaqti qanday?",
+      "answer": "Kutubxona dushanba-shanbagacha 8:00 dan 18:30 gacha ishlaydi. Yakshanba dam olish kuni. Ba'zi filiallar kechki soatlargacha ishlaydi. Raqamli xizmatlar 24/7 ochiq."
+    }
+  },
+  "newsSection": {
+    "subtitle": "YANGILIKLAR",
+    "title": "Kutubxonadan So'nggi Yangiliklar",
+    "author": "Admin",
+    "comments": "Izohlar",
+    "learnMore": "Batafsil",
+    "news1": {
+      "date": "20",
+      "month": "Mart",
+      "title": "Yangi Raqamli Resurslar Platformasi Ishga Tushdi"
+    },
+    "news2": {
+      "date": "25",
+      "month": "Mart",
+      "title": "Bolalar uchun Kitob O'qish Klubi Ochildi"
+    },
+    "news3": {
+      "date": "30",
+      "month": "Mart",
+      "title": "Mashhur Yozuvchi bilan Uchrashuv Tadbirida"
+    }
+  },
   "common": {
     "search": "Qidirish",
     "filter": "Filtrlash",
@@ -140,5 +310,22 @@
     "confirmation": "Tasdiqlash",
     "yes": "Ha",
     "no": "Yo'q"
+  },
+  "footerSection": {
+    "subscribeTitle": "Yangiliklar ro'yxatiga obuna bo'ling",
+    "emailPlaceholder": "Email manzilingiz",
+    "description": "Zamonaviy kutubxona xizmatlari orqali bilim va madaniyatni rivojlantirish",
+    "company": "Kompaniya",
+    "home": "Bosh sahifa",
+    "about": "Biz haqimizda",
+    "services": "Xizmatlar",
+    "contactUs": "Aloqa",
+    "support": "Yordam",
+    "customerSupport": "Foydalanuvchi yordami",
+    "privacy": "Maxfiylik siyosati",
+    "terms": "Foydalanish shartlari",
+    "helpCenter": "Yordam markazi",
+    "contactTitle": "Bog'lanish",
+    "copyright": "Barcha huquqlar himoyalangan"
   }
 }

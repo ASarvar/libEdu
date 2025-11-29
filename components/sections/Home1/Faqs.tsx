@@ -1,36 +1,34 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 
-const faqData = [
+const getFaqData = (t: any) => [
   {
-    question: "Financial consultants handle conflicts?",
-    answer:
-      "Everyone with high and useful reward for his/her trading, purchase and investment. Our goal is to make the...",
+    questionKey: "faqSection.faq1.question",
+    answerKey: "faqSection.faq1.answer",
   },
   {
-    question: "Errors with financial consequences in tax?",
-    answer:
-      "Everyone with high and useful reward for his/her trading, purchase and investment. Our goal is to make the...",
+    questionKey: "faqSection.faq2.question",
+    answerKey: "faqSection.faq2.answer",
   },
   {
-    question: "Prevention of damage of almost € 43,000?",
-    answer:
-      "Everyone with high and useful reward for his/her trading, purchase and investment. Our goal is to make the...",
+    questionKey: "faqSection.faq3.question",
+    answerKey: "faqSection.faq3.answer",
   },
   {
-    question: "Bad experience with financial service providers?",
-    answer:
-      "Everyone with high and useful reward for his/her trading, purchase and investment. Our goal is to make the...",
+    questionKey: "faqSection.faq4.question",
+    answerKey: "faqSection.faq4.answer",
   },
   {
-    question: "Monthly insurance rates far too high?",
-    answer:
-      "Everyone with high and useful reward for his/her trading, purchase and investment. Our goal is to make the...",
+    questionKey: "faqSection.faq5.question",
+    answerKey: "faqSection.faq5.answer",
   },
 ];
 
 export default function FAQAccordion() {
+  const { t } = useTranslation();
+  const faqData = getFaqData(t);
   const [activeIndex, setActiveIndex] = useState<number | null>(1);
 
   const toggleFAQ = (index: number) => {
@@ -53,9 +51,9 @@ export default function FAQAccordion() {
                 <h6 className="sub-title">
                   <span className="triangle triangle1"></span>
                   <span className="triangle triangle2"></span>
-                  FAQ’S
+                  {t('faqSection.subtitle')}
                 </h6>
-                <h2>Frequently Asked Questions</h2>
+                <h2>{t('faqSection.title')}</h2>
               </div>
               <div className="faq-image">
                 <img
@@ -63,12 +61,6 @@ export default function FAQAccordion() {
                   alt="img"
                   className="img-custom-anim-left"
                 />
-                <div className="shape-1 float-bob-y">
-                  <img src="images/home-1/faq/shape-01.png" alt="img" />
-                </div>
-                <div className="shape-2 float-bob-x">
-                  <img src="images/home-1/faq/shape-02.png" alt="img" />
-                </div>
               </div>
             </div>
           </div>
@@ -81,8 +73,8 @@ export default function FAQAccordion() {
                   <AccordionItem
                     key={index}
                     index={index}
-                    question={faq.question}
-                    answer={faq.answer}
+                    question={t(faq.questionKey)}
+                    answer={t(faq.answerKey)}
                     isActive={activeIndex === index}
                     onToggle={() => toggleFAQ(index)}
                   />

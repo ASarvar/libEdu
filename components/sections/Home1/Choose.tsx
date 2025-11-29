@@ -1,67 +1,70 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 
-const tabs = [
+const getTabs = (t: any) => [
   {
     id: "Mission",
-    title: "Our Mission",
-    desc: "everyone with high and useful reward for his/her trading, purchase investment to make the Collabo",
-    list: [
-      "Protecting your company",
-      "We offer you solutions",
-      "We take care of you",
+    titleKey: "whyChoose.mission.title",
+    descKey: "whyChoose.mission.desc",
+    listKeys: [
+      "whyChoose.mission.list1",
+      "whyChoose.mission.list2",
+      "whyChoose.mission.list3",
     ],
-    progress: [
-      { label: "Success Rate", value: 95 },
-      { label: "Business Growth", value: 85 },
+    progressKeys: [
+      { labelKey: "whyChoose.mission.progress1", value: 95 },
+      { labelKey: "whyChoose.mission.progress2", value: 85 },
     ],
   },
   {
     id: "Vision",
-    title: "Our Vision",
-    desc: "everyone with high and useful reward for his/her trading, purchase investment to make the Collabo",
-    list: [
-      "Protecting your company",
-      "We offer you solutions",
-      "We take care of you",
+    titleKey: "whyChoose.vision.title",
+    descKey: "whyChoose.vision.desc",
+    listKeys: [
+      "whyChoose.vision.list1",
+      "whyChoose.vision.list2",
+      "whyChoose.vision.list3",
     ],
-    progress: [
-      { label: "Success Rate", value: 85 },
-      { label: "Business Growth", value: 75 },
+    progressKeys: [
+      { labelKey: "whyChoose.vision.progress1", value: 85 },
+      { labelKey: "whyChoose.vision.progress2", value: 75 },
     ],
   },
   {
     id: "Philosophy",
-    title: "Our Philosophy",
-    desc: "everyone with high and useful reward for his/her trading, purchase investment to make the Collabo",
-    list: [
-      "Protecting your company",
-      "We offer you solutions",
-      "We take care of you",
+    titleKey: "whyChoose.philosophy.title",
+    descKey: "whyChoose.philosophy.desc",
+    listKeys: [
+      "whyChoose.philosophy.list1",
+      "whyChoose.philosophy.list2",
+      "whyChoose.philosophy.list3",
     ],
-    progress: [
-      { label: "Success Rate", value: 88 },
-      { label: "Business Growth", value: 78 },
+    progressKeys: [
+      { labelKey: "whyChoose.philosophy.progress1", value: 88 },
+      { labelKey: "whyChoose.philosophy.progress2", value: 78 },
     ],
   },
   {
-    id: "Acchievment",
-    title: "Achievement",
-    desc: "everyone with high and useful reward for his/her trading, purchase investment to make the Collabo",
-    list: [
-      "Protecting your company",
-      "We offer you solutions",
-      "We take care of you",
+    id: "Achievement",
+    titleKey: "whyChoose.achievement.title",
+    descKey: "whyChoose.achievement.desc",
+    listKeys: [
+      "whyChoose.achievement.list1",
+      "whyChoose.achievement.list2",
+      "whyChoose.achievement.list3",
     ],
-    progress: [
-      { label: "Success Rate", value: 92 },
-      { label: "Business Growth", value: 85 },
+    progressKeys: [
+      { labelKey: "whyChoose.achievement.progress1", value: 92 },
+      { labelKey: "whyChoose.achievement.progress2", value: 85 },
     ],
   },
 ];
 
 export default function WhyChooseUs() {
+  const { t } = useTranslation();
+  const tabs = getTabs(t);
   const [activeTab, setActiveTab] = useState("Mission");
   const [animatedProgress, setAnimatedProgress] = useState<number[]>([]);
 
@@ -70,13 +73,13 @@ export default function WhyChooseUs() {
   // Animate progress whenever tab changes
   useEffect(() => {
     if (!activeData) return;
-    let start = Array(activeData.progress.length).fill(0);
+    let start = Array(activeData.progressKeys.length).fill(0);
     const step = () => {
       let done = true;
       start = start.map((val, i) => {
-        if (val < activeData.progress[i].value) {
+        if (val < activeData.progressKeys[i].value) {
           done = false;
-          return Math.min(val + 1, activeData.progress[i].value);
+          return Math.min(val + 1, activeData.progressKeys[i].value);
         }
         return val;
       });
@@ -109,7 +112,7 @@ export default function WhyChooseUs() {
                   <div className="icon">
                     <i className="flaticon-business-006-target"></i>
                   </div>
-                  <h3>Best Business Consulting Awards</h3>
+                  <h3>{t('whyChoose.award')}</h3>
                 </div>
               </div>
             </div>
@@ -121,9 +124,9 @@ export default function WhyChooseUs() {
                   <h6 className="sub-title">
                     <span className="triangle triangle1"></span>
                     <span className="triangle triangle2"></span>
-                    Why Choose Us
+                    {t('whyChoose.subtitle')}
                   </h6>
-                  <h2>you need someone with Strategic support</h2>
+                  <h2>{t('whyChoose.title')}</h2>
                 </div>
 
                 {/* Tab Nav */}
@@ -136,7 +139,7 @@ export default function WhyChooseUs() {
                         }`}
                         onClick={() => setActiveTab(tab.id)}
                       >
-                        {tab.title}
+                        {t(tab.titleKey)}
                       </button>
                     </li>
                   ))}
@@ -145,29 +148,29 @@ export default function WhyChooseUs() {
                 {/* Tab Content */}
                 <div className="tab-content">
                   <div className="why-choose-list">
-                    <h3>{activeData.title}</h3>
-                    <p>{activeData.desc}</p>
+                    <h3>{t(activeData.titleKey)}</h3>
+                    <p>{t(activeData.descKey)}</p>
                   </div>
                   <div className="why-choose-list-items">
                     <ul className="why-list">
-                      {activeData.list.map((item, index) => (
+                      {activeData.listKeys.map((itemKey, index) => (
                         <li key={index}>
                           <span className="icon">
                             <i className="fa-solid fa-check"></i>
                           </span>
-                          {item}
+                          {t(itemKey)}
                         </li>
                       ))}
                     </ul>
 
                     {/* Animated Progress Bars */}
                     <div className="choose-us-progressbar">
-                      {activeData.progress.map((prog, index) => (
+                      {activeData.progressKeys.map((prog, index) => (
                        <div className="progress-container" key={index}>
                           <div
                             className="circular-progress"
                             style={{
-                              background: `conic-gradient(#C8F169 ${animatedProgress[index] * 3.6}deg, #D4D4D4 0deg)`,
+                              background: `conic-gradient(var(--theme-color1) ${animatedProgress[index] * 3.6}deg, #D4D4D4 0deg)`,
                               width: "150px",
                               height: "150px",
                               borderRadius: "50%",
@@ -202,7 +205,7 @@ export default function WhyChooseUs() {
                             className="text"
                             style={{ marginTop: "8px", fontWeight: "500", textAlign: "center" }}
                           >
-                            {prog.label}
+                            {t(prog.labelKey)}
                           </div>
                         </div>
 

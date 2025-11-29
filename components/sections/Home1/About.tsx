@@ -2,13 +2,14 @@
 import React from "react";
 import { useTranslation } from 'react-i18next';
 import CounterUp from "../../elements/CounterUp";
+import Link from "next/link";
 
 function About() {
   const { t } = useTranslation();
   
   return (
     <>
-	<section id="about" className="about-section-three fix pb-120">
+	<section id="about" className="about-section-three fix pb-120 pt-120">
 		<div className="auto-container">
 			<div className="row g-4 align-items-center">
 				<div className="col-md-6">
@@ -66,12 +67,12 @@ function About() {
 					<div className="image-colmun">
 						<div className="image-box">
 							<div className="about-image">
-								<img src="images/home-5/about/about-image.jpg" alt="img"/>
+								<img src="images/about/about-1.jpg" alt="img"/>
 							</div>
 							<div className="count-box">
-								<div className="counter"><span className="count-text"><CounterUp end={30} /></span>+</div>
+								<div className="counter"><span className="count-text"><CounterUp end={100} /></span>+</div>
 								<div className="counter-title">{t('about.counterTitle')}</div>
-								<div className="counter-btn">{t('about.counterBtn')}</div>
+								<Link href="#" className="theme-btn btn-style-one w-100">{t('about.counterBtn')}</Link>
 							</div>
 						</div>						
 					</div>

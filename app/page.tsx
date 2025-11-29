@@ -23,12 +23,12 @@ export default function Home() {
       <Service />
       <Project />
       <Marquee />
-      <Choose />
-      <Team />
+      {/* <Choose /> */}
+      {/* <Team /> */}
       <Contact />
-      <Testimonial />
+      {/* <Testimonial /> */}
       <Faqs />
-      <Cta />
+      {/* <Cta /> */}
       <News />
     </Layout>
   );

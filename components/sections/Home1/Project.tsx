@@ -3,56 +3,60 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslation } from 'react-i18next';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
-const projects = [
+const getProjects = (t: any) => [
   {
     id: 1,
     img: "/images/home-1/project/project-01.jpg",
-    title: "Technology IT",
-    subtitle: "Business Tech",
-    link: "/page-project-details",
+    titleKey: "projectSection.project1.title",
+    subtitleKey: "projectSection.project1.subtitle",
+    link: "/events",
     number: "01",
   },
   {
     id: 2,
     img: "/images/home-1/project/project-02.jpg",
-    title: "Orion Finance",
-    subtitle: "Orion Finance",
-    link: "/page-project-details",
+    titleKey: "projectSection.project2.title",
+    subtitleKey: "projectSection.project2.subtitle",
+    link: "/events",
     number: "02",
   },
   {
     id: 3,
     img: "/images/home-1/project/project-03.jpg",
-    title: "Business Firm",
-    subtitle: "Business Firm",
-    link: "/page-project-details",
+    titleKey: "projectSection.project3.title",
+    subtitleKey: "projectSection.project3.subtitle",
+    link: "/events",
     number: "03",
   },
   {
     id: 4,
     img: "/images/home-1/project/project-02.jpg",
-    title: "Orion Finance (Duplicate Example)",
-    subtitle: "Orion Finance",
-    link: "/page-project-details",
+    titleKey: "projectSection.project4.title",
+    subtitleKey: "projectSection.project4.subtitle",
+    link: "/events",
     number: "04",
   },
   {
     id: 5,
     img: "/images/home-1/project/project-01.jpg",
-    title: "Technology IT (Duplicate Example)",
-    subtitle: "Business Tech",
-    link: "/page-project-details",
+    titleKey: "projectSection.project5.title",
+    subtitleKey: "projectSection.project5.subtitle",
+    link: "/events",
     number: "05",
   },
 ];
 
 
 export default function ProjectSection() {
+  const { t } = useTranslation();
+  const projects = getProjects(t);
+
   return (
     <section className="project-section fix section-padding">
       {/* Shapes */}
@@ -71,10 +75,10 @@ export default function ProjectSection() {
               <h6 className="sub-title">
                 <span className="triangle triangle1"></span>
                 <span className="triangle triangle2"></span>
-                Case Studies
+                {t('projectSection.subtitle')}
               </h6>
               <h2>
-                You Prefer to Have full <br /> Control for Business Issues
+                {t('projectSection.title')}
               </h2>
             </div>
             <div className="col-xl-5 col-lg-3">
@@ -118,13 +122,13 @@ export default function ProjectSection() {
                   <div className="project-image">
                     <Image
                       src={item.img}
-                      alt={item.title}
+                      alt={t(item.titleKey)}
                       width={500}
                       height={400}
                     />
                     <Image
                       src={item.img}
-                      alt={item.title}
+                      alt={t(item.titleKey)}
                       width={500}
                       height={400}
                     />
@@ -141,9 +145,9 @@ export default function ProjectSection() {
                     </div>
                     <div className="content">
                       <h3>
-                        <Link href={item.link}>{item.title}</Link>
+                        <Link href={item.link}>{t(item.titleKey)}</Link>
                       </h3>
-                      <p>{item.subtitle}</p>
+                      <p>{t(item.subtitleKey)}</p>
                     </div>
                     <Link href={item.link} className="icon">
                       <i className="lnr-icon-arrow-right"></i>

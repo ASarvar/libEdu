@@ -1,8 +1,12 @@
+"use client";
 import React from 'react';
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 
 
 function News (){
+  const { t } = useTranslation();
+
   return (
     <>
       <section id="news" className="news-secton section-padding fix">
@@ -11,9 +15,9 @@ function News (){
             <h6 className="sub-title wow fadeInUp">
               <span className="triangle triangle1"></span>
               <span className="triangle triangle2"></span>
-              Our Blog
+              {t('newsSection.subtitle')}
             </h6>
-            <h2 className="wow fadeInUp" data-wow-delay=".3s">Insights from Latest Blog</h2>
+            <h2 className="wow fadeInUp" data-wow-delay=".3s">{t('newsSection.title')}</h2>
           </div>
           <div className="row">
             <div className="col-xl-4 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".3s">
@@ -22,20 +26,20 @@ function News (){
                   <img src="images/home-1/news/news-01.jpg" alt="img" />
                   <img src="images/home-1/news/news-01.jpg" alt="img" />
                   <span className="post-box">
-                    <span className="date">20</span>
-                    <span className="month">March</span>
+                    <span className="date">{t('newsSection.news1.date')}</span>
+                    <span className="month">{t('newsSection.news1.month')}</span>
                   </span>
                 </div>
                 <div className="news-content">
                   <ul className="comments-list">
-                    <li><i className="lnr-icon-user1"></i> Admin</li>
-                    <li><i className="lnr-icon-comment"></i> 3 Comments</li>
+                    <li><i className="lnr-icon-user1"></i> {t('newsSection.author')}</li>
+                    <li><i className="lnr-icon-comment"></i> 3 {t('newsSection.comments')}</li>
                   </ul>
                   <h3>
-                    <Link href="/news-details">Errors with financial consequences in tax ?</Link>
+                    <Link href="/news">{t('newsSection.news1.title')}</Link>
                   </h3>
-                  <Link href="/news-details" className="link-btn">
-                    Learn More
+                  <Link href="/news" className="link-btn">
+                    {t('newsSection.learnMore')}
                     <span className="icon"><i className="lnr-icon-arrow-right"></i></span>
                   </Link>
                 </div>
@@ -47,20 +51,20 @@ function News (){
                   <img src="images/home-1/news/news-02.jpg" alt="img" />
                   <img src="images/home-1/news/news-02.jpg" alt="img" />
                   <span className="post-box">
-                    <span className="date">25</span>
-                    <span className="month">March</span>
+                    <span className="date">{t('newsSection.news2.date')}</span>
+                    <span className="month">{t('newsSection.news2.month')}</span>
                   </span>
                 </div>
                 <div className="news-content">
                   <ul className="comments-list">
-                    <li><i className="lnr-icon-user1"></i> Admin</li>
-                    <li><i className="lnr-icon-comment"></i> 3 Comments</li>
+                    <li><i className="lnr-icon-user1"></i> {t('newsSection.author')}</li>
+                    <li><i className="lnr-icon-comment"></i> 3 {t('newsSection.comments')}</li>
                   </ul>
                   <h3>
-                    <Link href="/news-details">Achieving Work Life Balance in a Hectic World</Link>
+                    <Link href="/news">{t('newsSection.news2.title')}</Link>
                   </h3>
-                  <Link href="/news-details" className="link-btn">
-                    Learn More
+                  <Link href="/news" className="link-btn">
+                    {t('newsSection.learnMore')}
                     <span className="icon">
                       <i className="lnr-icon-arrow-right"></i>
                     </span>
@@ -74,20 +78,20 @@ function News (){
                   <img src="images/home-1/news/news-03.jpg" alt="img" />
                   <img src="images/home-1/news/news-03.jpg" alt="img" />
                   <span className="post-box">
-                    <span className="date">30</span>
-                    <span className="month">March</span>
+                    <span className="date">{t('newsSection.news3.date')}</span>
+                    <span className="month">{t('newsSection.news3.month')}</span>
                   </span>
                 </div>
                 <div className="news-content">
                   <ul className="comments-list">
-                    <li><i className="lnr-icon-user1"></i> Admin</li>
-                    <li><i className="lnr-icon-comment"></i> 3 Comments</li>
+                    <li><i className="lnr-icon-user1"></i> {t('newsSection.author')}</li>
+                    <li><i className="lnr-icon-comment"></i> 3 {t('newsSection.comments')}</li>
                   </ul>
                   <h3>
-                    <Link href="/news-details">Mastering Work-Life On Target Business Goal </Link>
+                    <Link href="/news">{t('newsSection.news3.title')}</Link>
                   </h3>
-                  <Link href="/news-details" className="link-btn">
-                    Learn More
+                  <Link href="/news" className="link-btn">
+                    {t('newsSection.learnMore')}
                     <span className="icon">
                       <i className="lnr-icon-arrow-right"></i>
                     </span>

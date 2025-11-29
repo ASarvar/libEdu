@@ -22,7 +22,7 @@
     "quickLinks": "Quick Links",
     "contact": "Contact",
     "followUs": "Follow Us",
-    "address": "Address",
+    "address": "Tashkent city, Amir Temur street 108",
     "phone": "Phone",
     "email": "Email"
   },
@@ -120,6 +120,176 @@
     "counterTitle": "Active Members",
     "counterBtn": "Register Now"
   },
+  "counter": {
+    "books": {
+      "count": "50",
+      "label": "Books"
+    },
+    "members": {
+      "count": "15",
+      "label": "Active Readers"
+    },
+    "events": {
+      "count": "200",
+      "label": "Events Per Year"
+    },
+    "branches": {
+      "count": "23",
+      "label": "Branches"
+    }
+  },
+  "serviceSection": {
+    "subtitle": "OUR SERVICES",
+    "title": "Services We Offer",
+    "satisfiedReaders": "Satisfied Readers",
+    "service1": {
+      "title": "Digital Library",
+      "description": "Online access to thousands of e-books, journals, and research articles"
+    },
+    "service2": {
+      "title": "Book Reservation",
+      "description": "Online book reservation service and pickup at your convenience"
+    },
+    "service3": {
+      "title": "Educational Programs",
+      "description": "Special trainings, seminars and educational courses for readers"
+    },
+    "service4": {
+      "title": "Research Assistance",
+      "description": "Professional consultation and help with academic research and coursework"
+    }
+  },
+  "projectSection": {
+    "subtitle": "LIBRARY EVENTS",
+    "title": "Knowledge and Culture Events",
+    "viewAll": "View All",
+    "project1": {
+      "title": "Book Reading Club",
+      "subtitle": "Weekly Meeting"
+    },
+    "project2": {
+      "title": "Children's Library",
+      "subtitle": "Interactive Games"
+    },
+    "project3": {
+      "title": "Scientific Research",
+      "subtitle": "For Students"
+    },
+    "project4": {
+      "title": "Meet the Authors",
+      "subtitle": "Monthly Event"
+    },
+    "project5": {
+      "title": "Digital Literacy",
+      "subtitle": "Computer Courses"
+    }
+  },
+  "marquee": {
+    "word1": "Books",
+    "word2": "Journals",
+    "word3": "Audiobooks",
+    "word4": "Events",
+    "word5": "E-books"
+  },
+  "whyChoose": {
+    "subtitle": "Why Choose Us",
+    "title": "You Need Professional Library Services",
+    "award": "Republic of Uzbekistan Unified Library Web Platform",
+    "mission": {
+      "title": "Our Mission",
+      "desc": "Developing a reading culture in society by providing quality knowledge resources and convenience to every reader",
+      "list1": "Modern library services",
+      "list2": "Professional consultation and support",
+      "list3": "Convenient and fast service",
+      "progress1": "User Satisfaction",
+      "progress2": "Membership Growth"
+    },
+    "vision": {
+      "title": "Our Vision",
+      "desc": "Becoming the most advanced and modern library network in Uzbekistan, combining digital and traditional resources",
+      "list1": "Innovative library technologies",
+      "list2": "Extensive digital resources",
+      "list3": "Open access for everyone",
+      "progress1": "Digital Access",
+      "progress2": "Event Activity"
+    },
+    "philosophy": {
+      "title": "Our Philosophy",
+      "desc": "Knowledge should be accessible to everyone. We connect people through books and develop society",
+      "list1": "Equal opportunities for all",
+      "list2": "Quality and reliable service",
+      "list3": "Continuous improvement",
+      "progress1": "Service Quality",
+      "progress2": "Community Engagement"
+    },
+    "achievement": {
+      "title": "Our Achievements",
+      "desc": "Over 50 years of service to thousands of readers and numerous national and international awards",
+      "list1": "50+ years of experience",
+      "list2": "National award winner",
+      "list3": "Active social partnerships",
+      "progress1": "Success Rate",
+      "progress2": "Partnership Growth"
+    }
+  },
+  "contactSection": {
+    "subtitle": "Contact Us",
+    "title": "Please Keep in Touch With Us When You Have Questions",
+    "fullName": "Full Name*",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "message": "Message",
+    "submitButton": "Submit Now",
+    "questionTitle": "Still Have Any Questions?",
+    "callUs": "Call Us",
+    "mailUs": "Mail Us"
+  },
+  "faqSection": {
+    "subtitle": "FREQUENTLY ASKED QUESTIONS",
+    "title": "Frequently Asked Questions",
+    "faq1": {
+      "question": "What do I need to become a library member?",
+      "answer": "To become a library member, you need to visit the library with your passport or ID card. Registration is free and takes just a few minutes. Online registration is also available."
+    },
+    "faq2": {
+      "question": "How long can I borrow books?",
+      "answer": "Regular books can be borrowed for up to 21 days, scientific literature for 14 days. Extension is possible. Digital books are available indefinitely."
+    },
+    "faq3": {
+      "question": "How can I use the digital library?",
+      "answer": "To use the digital library, you need to be a library member. Through your personal account, you can access thousands of e-books, journals, and multimedia resources."
+    },
+    "faq4": {
+      "question": "Are library services paid?",
+      "answer": "Library membership and basic services are free. Small fees are charged for photocopying, printing, and some special events. Discounts are available for students and seniors."
+    },
+    "faq5": {
+      "question": "What are the library hours?",
+      "answer": "The library is open Monday to Saturday from 8:00 AM to 6:30 PM. Sunday is closed. Some branches have extended evening hours. Digital services are available 24/7."
+    }
+  },
+  "newsSection": {
+    "subtitle": "NEWS",
+    "title": "Latest News from the Library",
+    "author": "Admin",
+    "comments": "Comments",
+    "learnMore": "Learn More",
+    "news1": {
+      "date": "20",
+      "month": "March",
+      "title": "New Digital Resources Platform Launched"
+    },
+    "news2": {
+      "date": "25",
+      "month": "March",
+      "title": "Children's Book Reading Club Opened"
+    },
+    "news3": {
+      "date": "30",
+      "month": "March",
+      "title": "Meet the Famous Author Event"
+    }
+  },
   "common": {
     "search": "Search",
     "filter": "Filter",
@@ -140,5 +310,22 @@
     "confirmation": "Confirmation",
     "yes": "Yes",
     "no": "No"
+  },
+  "footerSection": {
+    "subscribeTitle": "Subscribe to Newsletter",
+    "emailPlaceholder": "Your email address",
+    "description": "Developing knowledge and culture through modern library services",
+    "company": "Company",
+    "home": "Home",
+    "about": "About Us",
+    "services": "Services",
+    "contactUs": "Contact Us",
+    "support": "Support",
+    "customerSupport": "Customer Support",
+    "privacy": "Privacy Policy",
+    "terms": "Terms & Conditions",
+    "helpCenter": "Help Center",
+    "contactTitle": "Contact Us",
+    "copyright": "All Rights Reserved"
   }
 }
