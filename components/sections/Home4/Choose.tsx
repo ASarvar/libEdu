@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion"; // 👈 Import Framer Motion
 
 // Import image assets
-import service01 from "/public/images/home-4/service/service-01.png";
+import service01 from "../../../public/images/home-4/service/service-01.png";
 
 const services = [
   {
