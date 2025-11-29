@@ -327,5 +327,66 @@
     "helpCenter": "Help Center",
     "contactTitle": "Contact Us",
     "copyright": "All Rights Reserved"
+  },
+  "login": {
+    "title": "Login",
+    "subtitle": "Sign in to your account",
+    "email": "Email Address",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "loginButton": "Sign In",
+    "noAccount": "Don't have an account?",
+    "signUpLink": "Sign up",
+    "orLoginWith": "Or sign in with",
+    "loginWithGoogle": "Sign in with Google",
+    "loginWithFacebook": "Sign in with Facebook",
+    "backToHome": "Back to Home"
+  },
+  "signup": {
+    "title": "Sign Up",
+    "subtitle": "Create a new account",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "email": "Email Address",
+    "emailPlaceholder": "Enter your email",
+    "phone": "Phone Number",
+    "phonePlaceholder": "+998 (__) ___-__-__",
+    "password": "Password",
+    "passwordPlaceholder": "Create a password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter your password",
+    "agreeTerms": "I agree to the ",
+    "termsLink": "Terms of Service",
+    "and": "and",
+    "privacyLink": "Privacy Policy",
+    "agreeEnd": "",
+    "signupButton": "Sign Up",
+    "haveAccount": "Already have an account?",
+    "loginLink": "Sign in",
+    "orSignupWith": "Or sign up with",
+    "signupWithGoogle": "Sign up with Google",
+    "signupWithFacebook": "Sign up with Facebook",
+    "backToHome": "Back to Home"
+  },
+  "auth": {
+    "errors": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "passwordMismatch": "Passwords do not match",
+      "fullNameRequired": "Full name is required",
+      "phoneRequired": "Phone number is required",
+      "phoneInvalid": "Invalid phone number",
+      "termsRequired": "You must agree to the terms and conditions"
+    },
+    "success": {
+      "loginSuccess": "Successfully logged in!",
+      "signupSuccess": "Registration successful! Please verify your email",
+      "passwordReset": "Password reset link sent to your email"
+    }
   }
 }

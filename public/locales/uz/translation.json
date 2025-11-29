@@ -327,5 +327,66 @@
     "helpCenter": "Yordam markazi",
     "contactTitle": "Bog'lanish",
     "copyright": "Barcha huquqlar himoyalangan"
+  },
+  "login": {
+    "title": "Kirish",
+    "subtitle": "Shaxsiy kabinetingizga kiring",
+    "email": "Email manzil",
+    "emailPlaceholder": "Email manzilingizni kiriting",
+    "password": "Parol",
+    "passwordPlaceholder": "Parolingizni kiriting",
+    "rememberMe": "Meni eslab qol",
+    "forgotPassword": "Parolni unutdingizmi?",
+    "loginButton": "Kirish",
+    "noAccount": "Hisobingiz yo'qmi?",
+    "signUpLink": "Ro'yxatdan o'ting",
+    "orLoginWith": "Yoki quyidagilar orqali kiring",
+    "loginWithGoogle": "Google orqali kirish",
+    "loginWithFacebook": "Facebook orqali kirish",
+    "backToHome": "Bosh sahifaga qaytish"
+  },
+  "signup": {
+    "title": "Ro'yxatdan o'tish",
+    "subtitle": "Yangi hisob yarating",
+    "fullName": "To'liq ism",
+    "fullNamePlaceholder": "Ismingizni kiriting",
+    "email": "Email manzil",
+    "emailPlaceholder": "Email manzilingizni kiriting",
+    "phone": "Telefon raqam",
+    "phonePlaceholder": "+998 (__) ___-__-__",
+    "password": "Parol",
+    "passwordPlaceholder": "Parol yarating",
+    "confirmPassword": "Parolni tasdiqlash",
+    "confirmPasswordPlaceholder": "Parolni qayta kiriting",
+    "agreeTerms": "Men ",
+    "termsLink": "foydalanish shartlari",
+    "and": "va",
+    "privacyLink": "maxfiylik siyosati",
+    "agreeEnd": "ga roziman",
+    "signupButton": "Ro'yxatdan o'tish",
+    "haveAccount": "Hisobingiz bormi?",
+    "loginLink": "Kirish",
+    "orSignupWith": "Yoki quyidagilar orqali ro'yxatdan o'ting",
+    "signupWithGoogle": "Google orqali ro'yxatdan o'tish",
+    "signupWithFacebook": "Facebook orqali ro'yxatdan o'tish",
+    "backToHome": "Bosh sahifaga qaytish"
+  },
+  "auth": {
+    "errors": {
+      "emailRequired": "Email manzil kiritilishi shart",
+      "emailInvalid": "Email manzil noto'g'ri",
+      "passwordRequired": "Parol kiritilishi shart",
+      "passwordMinLength": "Parol kamida 8 ta belgidan iborat bo'lishi kerak",
+      "passwordMismatch": "Parollar mos kelmaydi",
+      "fullNameRequired": "To'liq ism kiritilishi shart",
+      "phoneRequired": "Telefon raqam kiritilishi shart",
+      "phoneInvalid": "Telefon raqam noto'g'ri",
+      "termsRequired": "Foydalanish shartlariga rozilik bildirish shart"
+    },
+    "success": {
+      "loginSuccess": "Muvaffaqiyatli kirdingiz!",
+      "signupSuccess": "Ro'yxatdan o'tdingiz! Emailingizni tasdiqlang",
+      "passwordReset": "Parolni tiklash havolasi emailingizga yuborildi"
+    }
   }
 }

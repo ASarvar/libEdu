@@ -327,5 +327,66 @@
     "helpCenter": "Центр помощи",
     "contactTitle": "Связаться",
     "copyright": "Все права защищены"
+  },
+  "login": {
+    "title": "Вход",
+    "subtitle": "Войдите в свой личный кабинет",
+    "email": "Email адрес",
+    "emailPlaceholder": "Введите ваш email",
+    "password": "Пароль",
+    "passwordPlaceholder": "Введите пароль",
+    "rememberMe": "Запомнить меня",
+    "forgotPassword": "Забыли пароль?",
+    "loginButton": "Войти",
+    "noAccount": "Нет аккаунта?",
+    "signUpLink": "Зарегистрироваться",
+    "orLoginWith": "Или войдите через",
+    "loginWithGoogle": "Войти через Google",
+    "loginWithFacebook": "Войти через Facebook",
+    "backToHome": "Вернуться на главную"
+  },
+  "signup": {
+    "title": "Регистрация",
+    "subtitle": "Создайте новый аккаунт",
+    "fullName": "Полное имя",
+    "fullNamePlaceholder": "Введите ваше имя",
+    "email": "Email адрес",
+    "emailPlaceholder": "Введите ваш email",
+    "phone": "Номер телефона",
+    "phonePlaceholder": "+998 (__) ___-__-__",
+    "password": "Пароль",
+    "passwordPlaceholder": "Создайте пароль",
+    "confirmPassword": "Подтверждение пароля",
+    "confirmPasswordPlaceholder": "Повторите пароль",
+    "agreeTerms": "Я согласен с ",
+    "termsLink": "условиями использования",
+    "and": "и",
+    "privacyLink": "политикой конфиденциальности",
+    "agreeEnd": "",
+    "signupButton": "Зарегистрироваться",
+    "haveAccount": "Уже есть аккаунт?",
+    "loginLink": "Войти",
+    "orSignupWith": "Или зарегистрируйтесь через",
+    "signupWithGoogle": "Регистрация через Google",
+    "signupWithFacebook": "Регистрация через Facebook",
+    "backToHome": "Вернуться на главную"
+  },
+  "auth": {
+    "errors": {
+      "emailRequired": "Email обязателен",
+      "emailInvalid": "Неверный email адрес",
+      "passwordRequired": "Пароль обязателен",
+      "passwordMinLength": "Пароль должен содержать минимум 8 символов",
+      "passwordMismatch": "Пароли не совпадают",
+      "fullNameRequired": "Полное имя обязательно",
+      "phoneRequired": "Номер телефона обязателен",
+      "phoneInvalid": "Неверный номер телефона",
+      "termsRequired": "Необходимо согласие с условиями использования"
+    },
+    "success": {
+      "loginSuccess": "Вы успешно вошли!",
+      "signupSuccess": "Регистрация успешна! Подтвердите ваш email",
+      "passwordReset": "Ссылка для сброса пароля отправлена на ваш email"
+    }
   }
 }
