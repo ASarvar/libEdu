@@ -14,16 +14,12 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
 
-  // ESLint configuration
-  eslint: {
-    // Recommended to keep this false to ensure code quality
-    ignoreDuringBuilds: false,
-  },
-
   // Experimental features for App Router
   experimental: {
     // Optimize package imports
     optimizePackageImports: ["swiper", "framer-motion"],
+    // Disable Turbopack to avoid crashes
+    turbo: false,
   },
 };
 

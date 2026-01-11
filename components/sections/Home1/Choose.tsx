@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const getTabs = (t: any) => [
   {
@@ -93,8 +93,7 @@ export default function WhyChooseUs() {
     <section
       className="why-choose-section fix section-bg"
       style={{
-        backgroundImage:
-          "url('images/home-1/choose-us/choose-us-shape.png')",
+        backgroundImage: "url('images/home-1/choose-us/choose-us-shape.png')",
       }}
     >
       <div className="auto-container">
@@ -112,7 +111,7 @@ export default function WhyChooseUs() {
                   <div className="icon">
                     <i className="flaticon-business-006-target"></i>
                   </div>
-                  <h3>{t('whyChoose.award')}</h3>
+                  <h3>{t("whyChoose.award")}</h3>
                 </div>
               </div>
             </div>
@@ -124,9 +123,9 @@ export default function WhyChooseUs() {
                   <h6 className="sub-title">
                     <span className="triangle triangle1"></span>
                     <span className="triangle triangle2"></span>
-                    {t('whyChoose.subtitle')}
+                    {t("whyChoose.subtitle")}
                   </h6>
-                  <h2>{t('whyChoose.title')}</h2>
+                  <h2>{t("whyChoose.title")}</h2>
                 </div>
 
                 {/* Tab Nav */}
@@ -166,11 +165,13 @@ export default function WhyChooseUs() {
                     {/* Animated Progress Bars */}
                     <div className="choose-us-progressbar">
                       {activeData.progressKeys.map((prog, index) => (
-                       <div className="progress-container" key={index}>
+                        <div className="progress-container" key={index}>
                           <div
                             className="circular-progress"
                             style={{
-                              background: `conic-gradient(var(--theme-color1) ${animatedProgress[index] * 3.6}deg, #D4D4D4 0deg)`,
+                              background: `conic-gradient(var(--theme-color1) ${
+                                animatedProgress[index] * 3.6
+                              }deg, #D4D4D4 0deg)`,
                               width: "150px",
                               height: "150px",
                               borderRadius: "50%",
@@ -203,12 +204,15 @@ export default function WhyChooseUs() {
                           {/* Label under progress bar */}
                           <div
                             className="text"
-                            style={{ marginTop: "8px", fontWeight: "500", textAlign: "center" }}
+                            style={{
+                              marginTop: "8px",
+                              fontWeight: "500",
+                              textAlign: "center",
+                            }}
                           >
                             {t(prog.labelKey)}
                           </div>
                         </div>
-
                       ))}
                     </div>
                   </div>

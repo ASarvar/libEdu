@@ -81,17 +81,29 @@ const SignupPage = () => {
     setIsSubmitting(true);
 
     try {
-      // TODO: Implement actual signup logic here
-      console.log("Signup data:", formData);
-      
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      // Show success message
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password,
+          confirmPassword: formData.confirmPassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErrors({ submit: data.error || 'Registration failed' });
+        return;
+      }
+
       alert(t("auth.success.signupSuccess"));
-      
-      // Redirect to login or verification page
-      // router.push("/login");
+      window.location.href = '/login';
     } catch (error) {
       console.error("Signup error:", error);
       setErrors({ submit: "Registration failed. Please try again." });

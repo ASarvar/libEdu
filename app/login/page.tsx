@@ -58,20 +58,33 @@ const LoginPage = () => {
     setIsSubmitting(true);
 
     try {
-      // TODO: Implement actual login logic here
-      console.log("Login data:", formData);
-      
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      // Show success message (you can replace this with proper notification)
-      alert(t("auth.success.loginSuccess"));
-      
-      // Redirect to home or dashboard
-      // router.push("/");
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErrors({ submit: data.error || 'Login failed' });
+        return;
+      }
+
+      // Redirect based on role
+      if (data.user.role === 'superadmin' || data.user.role === 'admin') {
+        window.location.href = '/admin/dashboard';
+      } else {
+        window.location.href = '/profile';
+      }
     } catch (error) {
-      console.error("Login error:", error);
-      setErrors({ submit: "Login failed. Please try again." });
+      console.error('Login error:', error);
+      setErrors({ submit: 'Login failed. Please try again.' });
     } finally {
       setIsSubmitting(false);
     }

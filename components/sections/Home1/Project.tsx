@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
@@ -36,7 +36,7 @@ const getProjects = (t: any) => [
   },
   {
     id: 4,
-    img: "/images/home-1/project/project-02.jpg",
+    img: "/images/home-1/project/project-04.jpg",
     titleKey: "projectSection.project4.title",
     subtitleKey: "projectSection.project4.subtitle",
     link: "/events",
@@ -44,14 +44,13 @@ const getProjects = (t: any) => [
   },
   {
     id: 5,
-    img: "/images/home-1/project/project-01.jpg",
+    img: "/images/home-1/project/project-05.jpg",
     titleKey: "projectSection.project5.title",
     subtitleKey: "projectSection.project5.subtitle",
     link: "/events",
     number: "05",
   },
 ];
-
 
 export default function ProjectSection() {
   const { t } = useTranslation();
@@ -75,11 +74,9 @@ export default function ProjectSection() {
               <h6 className="sub-title">
                 <span className="triangle triangle1"></span>
                 <span className="triangle triangle2"></span>
-                {t('projectSection.subtitle')}
+                {t("projectSection.subtitle")}
               </h6>
-              <h2>
-                {t('projectSection.title')}
-              </h2>
+              <h2>{t("projectSection.title")}</h2>
             </div>
             <div className="col-xl-5 col-lg-3">
               <div className="array-button justify-content-end">
