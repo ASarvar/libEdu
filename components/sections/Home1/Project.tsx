@@ -122,12 +122,16 @@ export default function ProjectSection() {
                       alt={t(item.titleKey)}
                       width={500}
                       height={400}
+                      unoptimized
+                      priority={index < 3}
                     />
                     <Image
                       src={item.img}
                       alt={t(item.titleKey)}
                       width={500}
                       height={400}
+                      unoptimized
+                      priority={index < 3}
                     />
                     <span className="number">{item.number}</span>
                   </div>
