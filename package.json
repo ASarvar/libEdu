@@ -50,6 +50,10 @@
   "overrides": {
     "glob": "^10.4.5",
     "rimraf": "^5.0.10",
-    "inflight": "^2.0.0"
+    "inflight": "^2.0.0",
+    "react-modal-video": {
+      "react": "$react",
+      "react-dom": "$react-dom"
+    }
   }
 }
