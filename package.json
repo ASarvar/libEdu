@@ -54,6 +54,10 @@
     "react-modal-video": {
       "react": "$react",
       "react-dom": "$react-dom"
+    },
+    "react-slider": {
+      "react": "$react",
+      "react-dom": "$react-dom"
     }
   }
 }
