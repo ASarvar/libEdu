@@ -18,8 +18,6 @@ const nextConfig = {
   experimental: {
     // Optimize package imports
     optimizePackageImports: ["swiper", "framer-motion"],
-    // Disable Turbopack to avoid crashes
-    turbo: false,
   },
 };
 
