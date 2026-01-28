@@ -4,17 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import PageHead from "@/components/layout/PageHead";
-
-interface User {
-  id: string;
-  full_name: string;
-  email: string;
-  role: string;
-  is_active: boolean;
-  created_at: string;
-  last_login?: string;
-}
+import AdminLayout from "@/components/admin/AdminLayout";
 
 interface CurrentUser {
   id: string;
@@ -23,13 +13,40 @@ interface CurrentUser {
   role: string;
 }
 
+interface DashboardStats {
+  totalUsers: number;
+  activeUsers: number;
+  totalAdmins: number;
+  totalSites: number;
+  totalBooks: number;
+  totalCategories: number;
+  newUsersThisMonth: number;
+  newBooksThisMonth: number;
+}
+
+interface RecentActivity {
+  id: string;
+  type: string;
+  description: string;
+  timestamp: string;
+}
+
 const AdminDashboard = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
-  const [users, setUsers] = useState<User[]>([]);
+  const [stats, setStats] = useState<DashboardStats>({
+    totalUsers: 0,
+    activeUsers: 0,
+    totalAdmins: 0,
+    totalSites: 0,
+    totalBooks: 0,
+    totalCategories: 0,
+    newUsersThisMonth: 0,
+    newBooksThisMonth: 0,
+  });
+  const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState({ role: "", search: "" });
 
   useEffect(() => {
     checkAuth();
@@ -37,9 +54,9 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     if (currentUser) {
-      fetchUsers();
+      fetchDashboardStats();
     }
-  }, [currentUser, filter]);
+  }, [currentUser]);
 
   const checkAuth = async () => {
     try {
@@ -62,205 +79,225 @@ const AdminDashboard = () => {
     }
   };
 
-  const fetchUsers = async () => {
+  const fetchDashboardStats = async () => {
     try {
       setLoading(true);
-      const params = new URLSearchParams();
-      if (filter.role) params.append('role', filter.role);
-      if (filter.search) params.append('search', filter.search);
-
-      const response = await fetch(`/api/admin/users?${params}`);
-      if (!response.ok) throw new Error('Failed to fetch users');
-
-      const data = await response.json();
-      setUsers(data.users);
+      const response = await fetch('/api/admin/dashboard/stats');
+      console.log('Dashboard stats response status:', response.status);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Dashboard stats data:', data);
+        setStats(data.stats);
+        setRecentActivity(data.recentActivity || []);
+      } else {
+        const errorData = await response.json();
+        console.error('Dashboard stats error:', errorData);
+      }
     } catch (error) {
-      console.error('Fetch users error:', error);
+      console.error('Fetch stats error:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await fetch('/api/auth/logout', { method: 'POST' });
-      router.push('/login');
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-  };
-
-  const handleDeleteUser = async (userId: string) => {
-    if (!confirm(t('admin.confirmDelete') || 'Are you sure you want to delete this user?')) {
-      return;
-    }
-
-    try {
-      const response = await fetch(`/api/admin/users/${userId}`, {
-        method: 'DELETE',
-      });
-
-      if (response.ok) {
-        alert(t('admin.deleteSuccess') || 'User deleted successfully');
-        fetchUsers();
-      } else {
-        const data = await response.json();
-        alert(data.error || 'Failed to delete user');
-      }
-    } catch (error) {
-      console.error('Delete user error:', error);
-      alert('Failed to delete user');
-    }
-  };
-
   if (loading && !currentUser) {
-    return <div>Loading...</div>;
+    return (
+      <div className="preloader">
+        <div className="animation-preloader">
+          <div className="spinner"></div>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <>
-      <PageHead headTitle="Admin Dashboard" />
-      
+    <AdminLayout>
       <section className="admin-dashboard">
         <div className="auto-container">
           {/* Header */}
-          <div className="dashboard-header">
-            <div className="row align-items-center mb-40">
-              <div className="col-md-6">
-                <h1>{t('admin.dashboard')}</h1>
-                <p>{t('common.welcome', { name: currentUser?.full_name })} ({currentUser?.role})</p>
-              </div>
-              <div className="col-md-6 text-right">
-                <Link href="/" className="theme-btn btn-style-two mr-2">
-                  <span className="btn-title">{t('login.backToHome')}</span>
-                </Link>
-                <button onClick={handleLogout} className="theme-btn btn-style-one">
-                  <span className="btn-title">{t('admin.logout')}</span>
-                </button>
-              </div>
+          <div className="sec-title text-center mb-50">
+            <h2>{t('admin.dashboard')}</h2>
+            <div className="text-desc">
+              {t('common.welcome', { name: currentUser?.full_name })} - {currentUser?.role}
             </div>
           </div>
 
-          {/* Statistics */}
+          {/* Main Statistics */}
           <div className="row mb-40">
-            <div className="col-lg-3 col-md-6">
+            <div className="col-lg-3 col-md-6 mb-30">
               <div className="stat-card">
-                <h3>{users.length}</h3>
+                <div className="stat-icon">
+                  <i className="fa fa-users"></i>
+                </div>
+                <h3>{stats.totalUsers}</h3>
                 <p>{t('admin.totalUsers')}</p>
+                <div className="stat-footer">
+                  <span className="text-success">
+                    <i className="fa fa-arrow-up"></i> {stats.activeUsers} {t('admin.active')}
+                  </span>
+                </div>
               </div>
             </div>
-            <div className="col-lg-3 col-md-6">
-              <div className="stat-card">
-                <h3>{users.filter(u => u.role === 'admin' || u.role === 'superadmin').length}</h3>
-                <p>{t('admin.totalAdmins')}</p>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6">
-              <div className="stat-card">
-                <h3>{users.filter(u => u.role === 'user').length}</h3>
-                <p>{t('admin.totalRegularUsers')}</p>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6">
-              <div className="stat-card">
-                <h3>{users.filter(u => u.is_active).length}</h3>
-                <p>{t('admin.activeUsers')}</p>
-              </div>
-            </div>
-          </div>
 
-          {/* Filters and Actions */}
-          <div className="row mb-30">
-            <div className="col-md-4">
-              <input
-                type="text"
-                className="form-control"
-                placeholder={t('admin.searchPlaceholder')}
-                value={filter.search}
-                onChange={(e) => setFilter({ ...filter, search: e.target.value })}
-              />
-            </div>
-            <div className="col-md-3">
-              <select
-                className="form-control"
-                value={filter.role}
-                onChange={(e) => setFilter({ ...filter, role: e.target.value })}
-              >
-                <option value="">{t('admin.allRoles')}</option>
-                <option value="admin">{t('admin.admin')}</option>
-                <option value="user">{t('admin.user')}</option>
-              </select>
-            </div>
-            <div className="col-md-5 text-right">
-              <Link href="/admin/users/create" className="theme-btn btn-style-one">
-                <i className="fa fa-plus mr-2"></i>
-                <span className="btn-title">{t('admin.createUser')}</span>
-              </Link>
-            </div>
-          </div>
-
-          {/* Users Table */}
-          <div className="users-table-wrapper">
-            <table className="users-table">
-              <thead>
-                <tr>
-                  <th>{t('admin.name')}</th>
-                  <th>{t('admin.email')}</th>
-                  <th>{t('admin.role')}</th>
-                  <th>{t('admin.status')}</th>
-                  <th>{t('admin.createdAt')}</th>
-                  <th>{t('admin.lastLogin')}</th>
-                  <th>{t('admin.actions')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user.id}>
-                    <td>{user.full_name}</td>
-                    <td>{user.email}</td>
-                    <td>
-                      <span className={`role-badge role-${user.role}`}>
-                        {t(`admin.${user.role}`)}
-                      </span>
-                    </td>
-                    <td>
-                      <span className={`status-badge ${user.is_active ? 'active' : 'inactive'}`}>
-                        {user.is_active ? t('admin.active') : t('admin.inactive')}
-                      </span>
-                    </td>
-                    <td>{new Date(user.created_at).toLocaleDateString()}</td>
-                    <td>{user.last_login ? new Date(user.last_login).toLocaleDateString() : t('admin.never')}</td>
-                    <td>
-                      <div className="action-buttons">
-                        <Link
-                          href={`/admin/users/${user.id}`}
-                          className="btn-action btn-edit"
-                          title={t('admin.edit')}
-                        >
-                          <i className="fa fa-edit"></i>
-                        </Link>
-                        {user.role !== 'superadmin' && user.id !== currentUser?.id && (
-                          <button
-                            onClick={() => handleDeleteUser(user.id)}
-                            className="btn-action btn-delete"
-                            title={t('admin.delete')}
-                          >
-                            <i className="fa fa-trash"></i>
-                          </button>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            {users.length === 0 && !loading && (
-              <div className="no-data">{t('admin.noUsersFound', 'No users found')}</div>
+            {currentUser?.role === 'superadmin' && (
+              <div className="col-lg-3 col-md-6 mb-30">
+                <div className="stat-card">
+                  <div className="stat-icon">
+                    <i className="fa fa-globe"></i>
+                  </div>
+                  <h3>{stats.totalSites}</h3>
+                  <p>{t('admin.sites.title')}</p>
+                  <div className="stat-footer">
+                    <Link href="/admin/sites" className="stat-link">
+                      {t('admin.viewAll')} <i className="fa fa-arrow-right"></i>
+                    </Link>
+                  </div>
+                </div>
+              </div>
             )}
+
+            <div className="col-lg-3 col-md-6 mb-30">
+              <div className="stat-card">
+                <div className="stat-icon">
+                  <i className="fa fa-book"></i>
+                </div>
+                <h3>{stats.totalBooks}</h3>
+                <p>{t('admin.books')}</p>
+                <div className="stat-footer">
+                  <span className="text-info">
+                    <i className="fa fa-plus"></i> {stats.newBooksThisMonth} {t('admin.thisMonth')}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-lg-3 col-md-6 mb-30">
+              <div className="stat-card">
+                <div className="stat-icon">
+                  <i className="fa fa-tags"></i>
+                </div>
+                <h3>{stats.totalCategories}</h3>
+                <p>{t('admin.categories')}</p>
+                <div className="stat-footer">
+                  <Link href="/admin/categories" className="stat-link">
+                    {t('admin.manage')} <i className="fa fa-arrow-right"></i>
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
+
+          {/* Secondary Statistics */}
+          <div className="row mb-40">
+            <div className="col-lg-4 col-md-6 mb-30">
+              <div className="stat-card secondary">
+                <div className="stat-content">
+                  <h4>{stats.totalAdmins}</h4>
+                  <p>{t('admin.administrators')}</p>
+                </div>
+                <div className="stat-icon-small">
+                  <i className="fa fa-user-shield"></i>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-lg-4 col-md-6 mb-30">
+              <div className="stat-card secondary">
+                <div className="stat-content">
+                  <h4>{stats.newUsersThisMonth}</h4>
+                  <p>{t('admin.newUsersThisMonth')}</p>
+                </div>
+                <div className="stat-icon-small">
+                  <i className="fa fa-user-plus"></i>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-lg-4 col-md-6 mb-30">
+              <div className="stat-card secondary">
+                <div className="stat-content">
+                  <h4>{stats.activeUsers}</h4>
+                  <p>{t('admin.activeUsers')}</p>
+                </div>
+                <div className="stat-icon-small">
+                  <i className="fa fa-check-circle"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="row mb-40">
+            <div className="col-12">
+              <div className="dashboard-card">
+                <div className="card-header">
+                  <h3>{t('admin.quickActions')}</h3>
+                </div>
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col-lg-3 col-md-6 mb-20">
+                      <Link href="/admin/users" className="quick-action-btn">
+                        <i className="fa fa-users"></i>
+                        <span>{t('admin.manageUsers')}</span>
+                      </Link>
+                    </div>
+                    <div className="col-lg-3 col-md-6 mb-20">
+                      <Link href="/admin/books" className="quick-action-btn">
+                        <i className="fa fa-book"></i>
+                        <span>{t('admin.manageBooks')}</span>
+                      </Link>
+                    </div>
+                    <div className="col-lg-3 col-md-6 mb-20">
+                      <Link href="/admin/categories" className="quick-action-btn">
+                        <i className="fa fa-tags"></i>
+                        <span>{t('admin.manageCategories')}</span>
+                      </Link>
+                    </div>
+                    {currentUser?.role === 'superadmin' && (
+                      <div className="col-lg-3 col-md-6 mb-20">
+                        <Link href="/admin/sites" className="quick-action-btn">
+                          <i className="fa fa-globe"></i>
+                          <span>{t('admin.manageSites')}</span>
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Recent Activity */}
+          {recentActivity.length > 0 && (
+            <div className="row">
+              <div className="col-12">
+                <div className="dashboard-card">
+                  <div className="card-header">
+                    <h3>{t('admin.recentActivity')}</h3>
+                  </div>
+                  <div className="card-body">
+                    <div className="activity-list">
+                      {recentActivity.map((activity) => (
+                        <div key={activity.id} className="activity-item">
+                          <div className="activity-icon">
+                            <i className={`fa fa-${activity.type === 'user' ? 'user' : activity.type === 'book' ? 'book' : 'circle'}`}></i>
+                          </div>
+                          <div className="activity-content">
+                            <p>{activity.description}</p>
+                            <span className="activity-time">{new Date(activity.timestamp).toLocaleString()}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
-    </>
+    </AdminLayout>
   );
 };
 

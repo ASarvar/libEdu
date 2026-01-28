@@ -5,6 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import PageHead from "@/components/layout/PageHead";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 interface User {
   id: string;
@@ -159,7 +160,7 @@ const EditUser = () => {
   }
 
   return (
-    <>
+    <AdminLayout>
       <PageHead headTitle="Edit User" />
       
       <section className="admin-section">
@@ -295,7 +296,7 @@ const EditUser = () => {
           </div>
         </div>
       </section>
-    </>
+    </AdminLayout>
   );
 };
 

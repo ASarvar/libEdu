@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 import NavLinks from "./NavLinks";
 import MobileMenu from "../layout/MobileMenu";
 import MobileLogo from "../../public/images/logo_short.svg";
@@ -18,6 +19,13 @@ interface Header1Props {
   scroll: boolean;
 }
 
+interface User {
+  id: string;
+  full_name: string;
+  email: string;
+  role: string;
+}
+
 const Header1 = ({
   handleOpen,
   handleRemove,
@@ -25,7 +33,53 @@ const Header1 = ({
   scroll,
 }: Header1Props) => {
   const { t } = useTranslation();
+  const router = useRouter();
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (showDropdown && !target.closest('.user-dropdown')) {
+        setShowDropdown(false);
+      }
+    };
+
+    if (showDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showDropdown]);
+
+  const checkAuth = async () => {
+    try {
+      const response = await fetch('/api/auth/me');
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+      }
+    } catch (error) {
+      console.error('Auth check error:', error);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      setUser(null);
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
   useEffect(() => {
     const updateDarkMode = () => {
@@ -78,10 +132,85 @@ const Header1 = ({
                     </div>
                   </div>
                 </div>
-                <Link href="/login" className="theme-btn btn-style-one wow fadeInRight" data-wow-delay="200ms">
-                  <i className="icon fa fa-user pr-10"> </i>
-                  {t("header.login")}
-                </Link>
+                {user ? (
+                  <div className="user-menu-wrapper" style={{ position: 'relative' }}>
+                    <button 
+                      className="theme-btn btn-style-one wow fadeInRight" 
+                      data-wow-delay="200ms"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setShowDropdown(!showDropdown);
+                      }}
+                      style={{ cursor: 'pointer' }}
+                      type="button"
+                    >
+                      <i className="icon fa fa-user pr-10"> </i>
+                      {user.full_name}
+                      <i className="fa fa-chevron-down pl-10" style={{ fontSize: '10px' }}></i>
+                    </button>
+                    {showDropdown && (
+                      <div 
+                        className="user-dropdown" 
+                        style={{
+                          position: 'absolute',
+                          top: '100%',
+                          right: 0,
+                          marginTop: '10px',
+                          backgroundColor: 'white',
+                          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                          borderRadius: '4px',
+                          minWidth: '200px',
+                          zIndex: 1000
+                        }}
+                      >
+                        <Link 
+                          href={user.role === 'admin' || user.role === 'superadmin' ? '/admin/dashboard' : '/profile'} 
+                          className="dropdown-item"
+                          style={{
+                            display: 'block',
+                            padding: '12px 20px',
+                            color: '#333',
+                            textDecoration: 'none',
+                            borderBottom: '1px solid #eee'
+                          }}
+                          onClick={() => setShowDropdown(false)}
+                        >
+                          <i className="fa fa-user pr-10"></i>
+                          {user.role === 'admin' || user.role === 'superadmin' ? t('admin.dashboard') : t('header.profile')}
+                        </Link>
+                        <button 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShowDropdown(false);
+                            handleLogout();
+                          }}
+                          className="dropdown-item"
+                          type="button"
+                          style={{
+                            display: 'block',
+                            width: '100%',
+                            padding: '12px 20px',
+                            color: '#dc3545',
+                            textDecoration: 'none',
+                            border: 'none',
+                            background: 'none',
+                            textAlign: 'left',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <i className="fa fa-sign-out pr-10"></i>
+                          {t('profile.logout')}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link href="/login" className="theme-btn btn-style-one wow fadeInRight" data-wow-delay="200ms">
+                    <i className="icon fa fa-user pr-10"> </i>
+                    {t("header.login")}
+                  </Link>
+                )}
                 {/* <!-- Mobile Nav toggler --> */}
                 <div className="mobile-nav-toggler" onClick={handleOpen}>
                   <span className="icon lnr-icon-bars"></span>
@@ -117,10 +246,31 @@ const Header1 = ({
               <LanguageSelector />
             </div>
             <div className="mobile-login-btn" style={{ padding: '20px 30px' }}>
-              <Link href="/login" className="theme-btn btn-style-one" style={{ width: '100%', display: 'block', textAlign: 'center' }}>
-                <i className="icon fa fa-user pr-10"> </i>
-                {t("header.login")}
-              </Link>
+              {user ? (
+                <>
+                  <Link 
+                    href={user.role === 'admin' || user.role === 'superadmin' ? '/admin/dashboard' : '/profile'}
+                    className="theme-btn btn-style-one" 
+                    style={{ width: '100%', display: 'block', textAlign: 'center', marginBottom: '10px' }}
+                  >
+                    <i className="icon fa fa-user pr-10"></i>
+                    {user.full_name}
+                  </Link>
+                  <button 
+                    onClick={handleLogout}
+                    className="theme-btn btn-style-two" 
+                    style={{ width: '100%', display: 'block', textAlign: 'center' }}
+                  >
+                    <i className="icon fa fa-sign-out-alt pr-10"></i>
+                    {t('profile.logout')}
+                  </button>
+                </>
+              ) : (
+                <Link href="/login" className="theme-btn btn-style-one" style={{ width: '100%', display: 'block', textAlign: 'center' }}>
+                  <i className="icon fa fa-user pr-10"> </i>
+                  {t("header.login")}
+                </Link>
+              )}
             </div>
             <ul className="contact-list-one">
               <li>
@@ -204,8 +354,19 @@ const Header1 = ({
                 <div className="header-contact">
                   <LanguageSelector />
                 </div>
-                <Link href="/login" className="icon fa fa-user pr-10"> 
-                </Link>
+                {user ? (
+                  <Link 
+                    href={user.role === 'admin' || user.role === 'superadmin' ? '/admin/dashboard' : '/profile'}
+                    className="user-link"
+                    style={{ marginLeft: '15px', color: '#fff', display: 'flex', alignItems: 'center', gap: '5px' }}
+                  >
+                    <i className="icon fa fa-user"></i>
+                    <span>{user.full_name}</span>
+                  </Link>
+                ) : (
+                  <Link href="/login" className="icon fa fa-user" style={{ marginLeft: '15px' }}> 
+                  </Link>
+                )}
                 {/* <!--Mobile Navigation Toggler--> */}
                 <div className="mobile-nav-toggler" onClick={handleOpen}>
                   <span className="icon lnr-icon-bars"></span>

@@ -89,7 +89,7 @@ export async function authenticateUser(
   password: string
 ): Promise<{ user: User; sessionToken: string } | null> {
   const result = await query(
-    `SELECT id, full_name, email, phone, password_hash, role, is_active, email_verified, created_at, updated_at
+    `SELECT id, full_name, email, phone, password_hash, role, is_active, email_verified, created_at, updated_at, last_login
      FROM users WHERE email = $1 AND is_active = true`,
     [email]
   );

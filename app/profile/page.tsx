@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import PageHead from "@/components/layout/PageHead";
+import Layout from "@/components/layout/Layout";
+import PageTitle from "@/components/sections/PageTitle";
 
 interface User {
   id: string;
@@ -76,29 +77,11 @@ const UserProfile = () => {
   }
 
   return (
-    <>
-      <PageHead headTitle={t('profile.title')} />
+    <Layout>
+      <PageTitle title={t('profile.title')} />
       
       <section className="profile-section">
         <div className="auto-container">
-          {/* Header */}
-          <div className="profile-header mb-40">
-            <div className="row align-items-center">
-              <div className="col-md-6">
-                <h1>{t('profile.title')}</h1>
-                <p>{t('profile.subtitle')}</p>
-              </div>
-              <div className="col-md-6 text-right">
-                <Link href="/" className="theme-btn btn-style-two mr-2">
-                  <span className="btn-title">{t('common.backToHome')}</span>
-                </Link>
-                <button onClick={handleLogout} className="theme-btn btn-style-one">
-                  <span className="btn-title">{t('admin.logout')}</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
           <div className="row">
             {/* Sidebar */}
             <div className="col-lg-3">
@@ -135,6 +118,17 @@ const UserProfile = () => {
                         <i className="fa fa-history mr-2"></i>
                         {t('profile.history')}
                       </Link>
+                    </li>
+                    <li>
+                      <a 
+                        onClick={handleLogout} 
+                        style={{ cursor: 'pointer' }}
+                        onMouseEnter={(e) => e.currentTarget.style.color = 'white'}
+                        onMouseLeave={(e) => e.currentTarget.style.color = ''}
+                      >
+                        <i className="fa fa-sign-out mr-2"></i>
+                        {t('profile.logout')}
+                      </a>
                     </li>
                   </ul>
                 </nav>
@@ -249,7 +243,7 @@ const UserProfile = () => {
           </div>
         </div>
       </section>
-    </>
+    </Layout>
   );
 };
 

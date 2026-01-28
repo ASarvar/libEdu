@@ -63,9 +63,6 @@ export default function Preloader() {
             />
           </div>
         </div>
-        <p className="text-center preloader-text" suppressHydrationWarning>
-          {getLoadingText()}
-        </p>
       </div>
       <div className="loader">
         <div className="row">

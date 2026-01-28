@@ -10,15 +10,21 @@ const nextConfig = {
 
   // TypeScript configuration
   typescript: {
-    // Recommended to keep this true in production to catch type errors
     ignoreBuildErrors: false,
+  },
+
+  // Compiler optimizations
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
   },
 
   // Experimental features for App Router
   experimental: {
-    // Optimize package imports
-    optimizePackageImports: ["swiper", "framer-motion"],
+    optimizePackageImports: ["swiper", "framer-motion", "react-i18next", "i18next"],
   },
+
+  // Turbopack configuration for Next.js 16+
+  turbopack: {},
 };
 
 export default nextConfig;

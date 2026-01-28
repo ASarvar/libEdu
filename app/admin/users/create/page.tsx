@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import PageHead from "@/components/layout/PageHead";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 const CreateUser = () => {
   const { t } = useTranslation();
@@ -116,7 +117,7 @@ const CreateUser = () => {
   }
 
   return (
-    <>
+    <AdminLayout>
       <PageHead headTitle={t('admin.createUser') || 'Create User'} />
       
       <section className="admin-section">
@@ -239,7 +240,7 @@ const CreateUser = () => {
           </div>
         </div>
       </section>
-    </>
+    </AdminLayout>
   );
 };
 

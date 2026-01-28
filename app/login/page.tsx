@@ -199,30 +199,6 @@ const LoginPage = () => {
                     </p>
                   </div>
 
-                  {/* Social Login */}
-                  <div className="social-login">
-                    <div className="divider">
-                      <span>{t("login.orLoginWith")}</span>
-                    </div>
-                    <div className="social-buttons">
-                      <button
-                        type="button"
-                        className="social-btn google-btn"
-                        onClick={() => console.log("Google login")}
-                      >
-                        <i className="fab fa-google"></i>
-                        {t("login.loginWithGoogle")}
-                      </button>
-                      <button
-                        type="button"
-                        className="social-btn facebook-btn"
-                        onClick={() => console.log("Facebook login")}
-                      >
-                        <i className="fab fa-facebook-f"></i>
-                        {t("login.loginWithFacebook")}
-                      </button>
-                    </div>
-                  </div>
                 </form>
 
                 {/* Back to Home */}

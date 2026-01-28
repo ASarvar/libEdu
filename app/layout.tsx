@@ -8,6 +8,7 @@ import "../public/css/style-dark.css";
 import "../public/css/responsive.css";
 import Preloader from "@/components/elements/Preloader";
 import I18nProvider from "@/components/providers/I18nProvider";
+import { SiteProvider } from "@/lib/useSite";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -36,8 +37,10 @@ export default function RootLayout({
     <html lang="uz" data-scroll-behavior="smooth" className={`${dmSans.variable} ${inter.variable}`}>
       <body suppressHydrationWarning>
         <I18nProvider>
-          <Preloader />
-          {children}
+          <SiteProvider>
+            <Preloader />
+            {children}
+          </SiteProvider>
         </I18nProvider>
       </body>
     </html>

@@ -31,8 +31,11 @@ export async function GET() {
         id: user.id,
         full_name: user.full_name,
         email: user.email,
+        phone: user.phone,
         role: user.role,
         email_verified: user.email_verified,
+        created_at: user.created_at,
+        last_login: user.last_login,
       },
     });
   } catch (error) {

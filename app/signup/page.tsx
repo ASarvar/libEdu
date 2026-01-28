@@ -279,31 +279,6 @@ const SignupPage = () => {
                       </Link>
                     </p>
                   </div>
-
-                  {/* Social Login */}
-                  <div className="social-login">
-                    <div className="divider">
-                      <span>{t("signup.orSignupWith")}</span>
-                    </div>
-                    <div className="social-buttons">
-                      <button
-                        type="button"
-                        className="social-btn google-btn"
-                        onClick={() => console.log("Google signup")}
-                      >
-                        <i className="fab fa-google"></i>
-                        {t("signup.signupWithGoogle")}
-                      </button>
-                      <button
-                        type="button"
-                        className="social-btn facebook-btn"
-                        onClick={() => console.log("Facebook signup")}
-                      >
-                        <i className="fab fa-facebook-f"></i>
-                        {t("signup.signupWithFacebook")}
-                      </button>
-                    </div>
-                  </div>
                 </form>
 
                 {/* Back to Home */}
