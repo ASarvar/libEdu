@@ -20,7 +20,15 @@ const nextConfig = {
 
   // Experimental features for App Router
   experimental: {
-    optimizePackageImports: ["swiper", "framer-motion", "react-i18next", "i18next"],
+    optimizePackageImports: [
+      "swiper", 
+      "framer-motion", 
+      "react-i18next", 
+      "i18next",
+      "react-circular-progressbar",
+      "react-countup",
+      "gsap"
+    ],
   },
 
   // Turbopack configuration for Next.js 16+

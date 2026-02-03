@@ -1,0 +1,27 @@
+{
+  "site": {
+    "name": "Samarqand viloyat kutubxonasi",
+    "welcome": "Samarqand viloyat kutubxonasiga xush kelibsiz",
+    "description": "Ulug'bek va Mirzo Ulug'bek an'analarini davom ettiruvchi kutubxona"
+  },
+  "banner": {
+    "title": "Samarqand - Bilim markazi",
+    "subtitle": "Ulug'bek maktabining vorisi",
+    "description": "Samarqand viloyati kutubxonalari - ming yillik ilm-fan an'analarining davomchisi. Tarixiy va zamonaviy adabiyotlar.",
+    "cta": "Kitoblarni ko'rish"
+  },
+  "services": {
+    "title": "Xizmatlarimiz",
+    "library": "Kutubxona fondi",
+    "digital": "Elektron kutubxona",
+    "events": "Ma'rifiy tadbirlar",
+    "children": "Yoshlar bo'limi"
+  },
+  "contact": {
+    "title": "Aloqa",
+    "address": "Samarqand viloyati, Samarqand shahri, Registon maydoni",
+    "phone": "+998 66 234-56-78",
+    "email": "info@samarkand.kutubxona.uz",
+    "workingHours": "Har kuni: 9:00 - 19:00"
+  }
+}

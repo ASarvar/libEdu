@@ -23370,6 +23370,27 @@ body.dark-mode .profile-nav ul li.active a {
   color: var(--theme-color-white);
 }
 
+.action-btn.delete-btn {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.action-btn.delete-btn:hover {
+  background-color: #c82333;
+}
+
+.alert-success-admin {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+  padding: 12px 20px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 /* Modal Styles */
 .modal-overlay {
   display: block;

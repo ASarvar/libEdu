@@ -15,6 +15,11 @@ interface Site {
   contact_phone?: string;
   is_active: boolean;
   created_at: string;
+  created_by?: string;
+  header_style?: string;
+  footer_style?: string;
+  home_style?: string;
+  logo_path?: string;
 }
 
 const SitesManagementPage = () => {
@@ -28,6 +33,7 @@ const SitesManagementPage = () => {
     name: '',
     description: '',
     logo_url: '',
+    logo_file: null as File | null,
     primary_color: '#3498db',
     secondary_color: '#2ecc71',
     contact_email: '',
@@ -36,6 +42,9 @@ const SitesManagementPage = () => {
     facebook_url: '',
     instagram_url: '',
     twitter_url: '',
+    header_style: 'header1',
+    footer_style: 'footer1',
+    home_style: 'home1',
   });
   const [error, setError] = useState('');
 
@@ -81,10 +90,39 @@ const SitesManagementPage = () => {
     setError('');
 
     try {
+      let logo_path = '';
+      
+      // Upload logo if file is selected
+      if (formData.logo_file) {
+        const logoFormData = new FormData();
+        logoFormData.append('logo', formData.logo_file);
+        
+        const uploadResponse = await fetch('/api/admin/upload-logo', {
+          method: 'POST',
+          body: logoFormData,
+        });
+        
+        if (uploadResponse.ok) {
+          const uploadData = await uploadResponse.json();
+          logo_path = uploadData.path;
+        } else {
+          const uploadError = await uploadResponse.json();
+          setError(uploadError.error || 'Logo yuklashda xatolik');
+          return;
+        }
+      }
+
+      // Create site with logo path
+      const siteData = {
+        ...formData,
+        logo_path,
+        logo_file: undefined, // Remove file from payload
+      };
+
       const response = await fetch('/api/admin/sites', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(siteData),
       });
 
       const data = await response.json();
@@ -97,6 +135,7 @@ const SitesManagementPage = () => {
           name: '',
           description: '',
           logo_url: '',
+          logo_file: null,
           primary_color: '#3498db',
           secondary_color: '#2ecc71',
           contact_email: '',
@@ -105,6 +144,9 @@ const SitesManagementPage = () => {
           facebook_url: '',
           instagram_url: '',
           twitter_url: '',
+          header_style: 'header1',
+          footer_style: 'footer1',
+          home_style: 'home1',
         });
       } else {
         setError(data.error || t('admin.createError'));
@@ -130,6 +172,39 @@ const SitesManagementPage = () => {
     } catch (error) {
       console.error('Error toggling site status:', error);
     }
+  };
+
+  const handleDeleteSite = async (id: string, siteName: string) => {
+    const confirmed = window.confirm(
+      `Haqiqatdan ham "${siteName}" saytini o'chirmoqchimisiz?\n\n` +
+      `Bu sayt butunlay o'chiriladi va qaytarib bo'lmaydi!\n` +
+      `Barcha ma'lumotlar (yangiliklar, tadbirlar) ham o'chadi.`
+    );
+    
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/admin/sites/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        setSites(sites.filter(site => site.id !== id));
+      } else {
+        const data = await response.json();
+        setError(data.error || 'Saytni o\'chirishda xatolik');
+      }
+    } catch (error) {
+      console.error('Error deleting site:', error);
+      setError('Saytni o\'chirishda xatolik');
+    }
+  };
+
+  const handleViewSite = (subdomain: string) => {
+    const url = `http://${subdomain}.localhost:3000`;
+    window.open(url, '_blank');
   };
 
   if (loading) {
@@ -175,6 +250,7 @@ const SitesManagementPage = () => {
                     <th>{t('admin.sites.subdomain')}</th>
                     <th>{t('admin.sites.name')}</th>
                     <th>{t('admin.sites.contact')}</th>
+                    <th>Yaratuvchi</th>
                     <th>{t('admin.sites.status')}</th>
                     <th>{t('admin.sites.created')}</th>
                     <th>{t('admin.sites.actions')}</th>
@@ -204,6 +280,11 @@ const SitesManagementPage = () => {
                         )}
                       </td>
                       <td>
+                        <small style={{ color: '#666' }}>
+                          {site.created_by || 'System'}
+                        </small>
+                      </td>
+                      <td>
                         <span className={`status-badge ${site.is_active ? 'active' : 'inactive'}`}>
                           {site.is_active ? t('admin.sites.active') : t('admin.sites.inactive')}
                         </span>
@@ -211,6 +292,13 @@ const SitesManagementPage = () => {
                       <td>{new Date(site.created_at).toLocaleDateString()}</td>
                       <td>
                         <div className="actions-cell">
+                          <button
+                            onClick={() => handleViewSite(site.subdomain)}
+                            className="theme-btn btn-style-one action-btn"
+                            title="Saytni ko'rish"
+                          >
+                            <i className="fa fa-external-link-alt"></i>
+                          </button>
                           <Link
                             href={`/admin/sites/${site.id}`}
                             className="theme-btn btn-style-one action-btn"
@@ -221,9 +309,16 @@ const SitesManagementPage = () => {
                           <button
                             onClick={() => handleToggleActive(site.id, site.is_active)}
                             className={`action-btn ${site.is_active ? 'toggle-active' : 'toggle-inactive'}`}
-                            title={t('admin.sites.toggleStatus')}
+                            title={site.is_active ? 'O\'chirish' : 'Faollashtirish'}
                           >
                             <i className={`fa fa-${site.is_active ? 'ban' : 'check'}`}></i>
+                          </button>
+                          <button
+                            onClick={() => handleDeleteSite(site.id, site.name)}
+                            className="action-btn delete-btn"
+                            title="Butunlay o'chirish"
+                          >
+                            <i className="fa fa-trash"></i>
                           </button>
                         </div>
                       </td>
@@ -330,6 +425,45 @@ const SitesManagementPage = () => {
                     {t('admin.sites.theme')}
                   </h5>
 
+                  {/* Logo Upload */}
+                  <div className="form-group-admin">
+                    <label className="form-label-admin">
+                      <i className="fa fa-image"></i> Logo yuklash
+                    </label>
+                    <input
+                      type="file"
+                      className="form-control form-input-admin"
+                      accept=".png,.svg,image/png,image/svg+xml"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          // Validate file size
+                          if (file.size > 1024 * 1024) {
+                            setError('Logo hajmi 1MB dan oshmasligi kerak');
+                            e.target.value = '';
+                            return;
+                          }
+                          // Validate file type
+                          if (!['image/png', 'image/svg+xml'].includes(file.type)) {
+                            setError('Faqat PNG va SVG formatlar qo\'llab-quvvatlanadi');
+                            e.target.value = '';
+                            return;
+                          }
+                          setError('');
+                          setFormData({ ...formData, logo_file: file });
+                        }
+                      }}
+                    />
+                    <small className="form-help-text">
+                      PNG yoki SVG format, maksimal 1MB
+                    </small>
+                    {formData.logo_file && (
+                      <div style={{ marginTop: '10px', color: 'green' }}>
+                        <i className="fa fa-check-circle"></i> {formData.logo_file.name}
+                      </div>
+                    )}
+                  </div>
+
                   <div className="form-group-admin">
                     <label className="form-label-admin">
                       {t('admin.sites.logoUrl')}
@@ -340,10 +474,71 @@ const SitesManagementPage = () => {
                       value={formData.logo_url}
                       onChange={(e) => setFormData({ ...formData, logo_url: e.target.value })}
                       placeholder="https://example.com/logo.png"
+                      disabled={!!formData.logo_file}
                     />
                     <small className="form-help-text">
-                      {t('admin.sites.logoHelp')}
+                      {formData.logo_file ? 'Logo fayl tanlanganda URL o\'chiriladi' : 'Yoki logo URL manzilini kiriting'}
                     </small>
+                  </div>
+
+                  {/* Layout Selection */}
+                  <div className="row">
+                    <div className="col-md-4">
+                      <div className="form-group-admin">
+                        <label className="form-label-admin">
+                          <i className="fa fa-th-large"></i> Header Style
+                        </label>
+                        <select
+                          className="form-control form-input-admin"
+                          value={formData.header_style}
+                          onChange={(e) => setFormData({ ...formData, header_style: e.target.value })}
+                        >
+                          <option value="header1">Header 1 - Classic</option>
+                          <option value="header2">Header 2 - Modern</option>
+                          <option value="header3">Header 3 - Minimal</option>
+                          <option value="header4">Header 4 - Bold</option>
+                          <option value="header5">Header 5 - Creative</option>
+                          <option value="header6">Header 6 - Professional</option>
+                          <option value="header7">Header 7 - Dynamic</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-4">
+                      <div className="form-group-admin">
+                        <label className="form-label-admin">
+                          <i className="fa fa-th-large"></i> Footer Style
+                        </label>
+                        <select
+                          className="form-control form-input-admin"
+                          value={formData.footer_style}
+                          onChange={(e) => setFormData({ ...formData, footer_style: e.target.value })}
+                        >
+                          <option value="footer1">Footer 1 - Standard</option>
+                          <option value="footer2">Footer 2 - Compact</option>
+                          <option value="footer3">Footer 3 - Extended</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-4">
+                      <div className="form-group-admin">
+                        <label className="form-label-admin">
+                          <i className="fa fa-home"></i> Home Page Style
+                        </label>
+                        <select
+                          className="form-control form-input-admin"
+                          value={formData.home_style}
+                          onChange={(e) => setFormData({ ...formData, home_style: e.target.value })}
+                        >
+                          <option value="home1">Home 1 - Corporate</option>
+                          <option value="home2">Home 2 - Educational</option>
+                          <option value="home3">Home 3 - Modern</option>
+                          <option value="home4">Home 4 - Creative</option>
+                          <option value="home5">Home 5 - Elegant</option>
+                          <option value="home6">Home 6 - Professional</option>
+                          <option value="home7">Home 7 - Dynamic</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="row">

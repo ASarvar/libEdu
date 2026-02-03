@@ -1,0 +1,27 @@
+{
+  "site": {
+    "name": "Toshkent viloyat kutubxonasi",
+    "welcome": "Toshkent viloyat kutubxonasiga xush kelibsiz",
+    "description": "Toshkent viloyatidagi eng katta kutubxona tarmog'i"
+  },
+  "banner": {
+    "title": "Toshkent viloyat kutubxonasi",
+    "subtitle": "Bilim - kuch",
+    "description": "Toshkent viloyati kutubxonalari tizimiga xush kelibsiz. 50,000 dan ortiq kitob, raqamli kutubxona va professional xizmatlar.",
+    "cta": "Batafsil ma'lumot"
+  },
+  "services": {
+    "title": "Bizning xizmatlarimiz",
+    "library": "Kutubxona xizmatlari",
+    "digital": "Raqamli kutubxona",
+    "events": "Tadbirlar va seminarlar",
+    "children": "Bolalar kutubxonasi"
+  },
+  "contact": {
+    "title": "Biz bilan bog'laning",
+    "address": "Toshkent viloyati, Toshkent shahri",
+    "phone": "+998 71 123-45-67",
+    "email": "info@tashkent.kutubxona.uz",
+    "workingHours": "Dushanba-Shanba: 9:00 - 18:00"
+  }
+}

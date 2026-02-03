@@ -7,6 +7,7 @@ export interface Site {
   name: string;
   description?: string;
   logo_url?: string;
+  logo_path?: string;
   primary_color: string;
   secondary_color: string;
   contact_email?: string;
@@ -18,6 +19,29 @@ export interface Site {
   is_active: boolean;
   created_at: Date;
   updated_at: Date;
+  created_by?: string;
+  // Layout and theme settings
+  header_style?: string;
+  footer_style?: string;
+  home_style?: string;
+  enable_dark_mode?: boolean;
+  custom_css?: string;
+}
+
+export type UserRole = 'superadmin' | 'admin' | 'moderator' | 'user';
+
+export interface User {
+  id: string;
+  full_name: string;
+  email: string;
+  phone?: string;
+  role: UserRole;
+  site_id?: string;
+  is_active: boolean;
+  email_verified: boolean;
+  created_at: Date;
+  updated_at: Date;
+  last_login?: Date;
 }
 
 // Get site by subdomain
@@ -80,6 +104,7 @@ export async function createSite(data: {
   name: string;
   description?: string;
   logo_url?: string;
+  logo_path?: string;
   primary_color?: string;
   secondary_color?: string;
   contact_email?: string;
@@ -88,21 +113,29 @@ export async function createSite(data: {
   facebook_url?: string;
   instagram_url?: string;
   twitter_url?: string;
+  header_style?: string;
+  footer_style?: string;
+  home_style?: string;
+  enable_dark_mode?: boolean;
+  custom_css?: string;
   created_by: string;
 }): Promise<Site> {
   const result = await query(
     `INSERT INTO sites (
-      subdomain, name, description, logo_url, primary_color, secondary_color,
+      subdomain, name, description, logo_url, logo_path, primary_color, secondary_color,
       contact_email, contact_phone, contact_address,
-      facebook_url, instagram_url, twitter_url, created_by
+      facebook_url, instagram_url, twitter_url,
+      header_style, footer_style, home_style, enable_dark_mode, custom_css,
+      created_by
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
     RETURNING *`,
     [
       data.subdomain,
       data.name,
       data.description,
       data.logo_url,
+      data.logo_path,
       data.primary_color || '#3498db',
       data.secondary_color || '#2ecc71',
       data.contact_email,
@@ -111,6 +144,11 @@ export async function createSite(data: {
       data.facebook_url,
       data.instagram_url,
       data.twitter_url,
+      data.header_style || 'header1',
+      data.footer_style || 'footer1',
+      data.home_style || 'home1',
+      data.enable_dark_mode || false,
+      data.custom_css,
       data.created_by,
     ]
   );
@@ -135,8 +173,10 @@ export async function updateSite(
   return result.rows[0];
 }
 
-// List all sites (superadmin)
+// List all sites (superadmin) - only active sites
 export async function getAllSites(): Promise<Site[]> {
-  const result = await query(`SELECT * FROM sites ORDER BY created_at DESC`);
+  const result = await query(
+    `SELECT * FROM sites WHERE is_active = true ORDER BY created_at DESC`
+  );
   return result.rows;
 }

@@ -15,13 +15,13 @@ function Banner() {
   return (
       <section id="home" className="hero-section hero-1">
         <div className="hero-image wow img-custom-anim-right">
-          <Image src={BannerImage} alt="img" />
+          <Image src={BannerImage} alt="img" priority placeholder="blur" />
         </div>
         <div className="shape-1 float-bob-x">
-          <Image src={BannerShape1} alt="img" />
+          <Image src={BannerShape1} alt="img" loading="lazy" />
         </div>
         <div className="shape-3">
-          <Image src={BannerShape3} alt="img" />
+          <Image src={BannerShape3} alt="img" loading="lazy" />
         </div>
         <div className="auto-container">
           <div className="row g-4">

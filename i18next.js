@@ -26,7 +26,7 @@ i18n
     resources,
     lng: getSavedLanguage(), // Use client-only function to access localStorage
     fallbackLng: 'Uz',
-    debug: true,
+    debug: false, // Disabled for better performance
     interpolation: {
       escapeValue: false,
     },

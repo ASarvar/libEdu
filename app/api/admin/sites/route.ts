@@ -50,6 +50,7 @@ export async function POST(request: Request) {
       name, 
       description, 
       logo_url,
+      logo_path,
       primary_color,
       secondary_color,
       contact_email, 
@@ -57,7 +58,12 @@ export async function POST(request: Request) {
       contact_address,
       facebook_url,
       instagram_url,
-      twitter_url
+      twitter_url,
+      header_style,
+      footer_style,
+      home_style,
+      enable_dark_mode,
+      custom_css
     } = body;
 
     // Validate required fields
@@ -96,6 +102,7 @@ export async function POST(request: Request) {
       name,
       description,
       logo_url,
+      logo_path,
       primary_color,
       secondary_color,
       contact_email,
@@ -104,6 +111,11 @@ export async function POST(request: Request) {
       facebook_url,
       instagram_url,
       twitter_url,
+      header_style,
+      footer_style,
+      home_style,
+      enable_dark_mode,
+      custom_css,
       created_by: user.id,
     });
 

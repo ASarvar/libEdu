@@ -58,9 +58,15 @@ function extractSubdomain(hostname: string, mainDomain: string): string | null {
   // Remove port if present
   const host = hostname.split(':')[0];
   
-  // For localhost development
+  // For localhost development - support subdomain.localhost format
   if (host === 'localhost' || host === '127.0.0.1') {
     return null;
+  }
+  
+  // Support subdomain.localhost for local development
+  if (host.endsWith('.localhost')) {
+    const subdomain = host.replace('.localhost', '');
+    return subdomain || null;
   }
 
   // Check if hostname ends with main domain

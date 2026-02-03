@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, ReactNode } from "react";
+import { useSite } from "@/lib/useSite";
 import BackToTop from "../elements/BackToTop";
 import Footer from "./Footer";
 import Footer2 from "./Footer2";
@@ -34,6 +35,7 @@ const Layout = ({
   menuType,
   wrapperClass,
 }: LayoutProps) => {
+  const { site } = useSite();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [scroll, setScroll] = useState(false);
 
@@ -69,14 +71,40 @@ const Layout = ({
 
   useEffect(() => {
     const htmlEl = document.documentElement;
-    if (darkMode === "1" || darkMode === 1) {
+    // Use site's dark mode setting if available, otherwise use prop
+    const isDark = site?.enable_dark_mode || darkMode === "1" || darkMode === 1;
+    
+    if (isDark) {
       htmlEl.setAttribute("data-tm-layout", "dark");
       document.body.classList.add("dark-mode");
     } else {
       htmlEl.setAttribute("data-tm-layout", "light");
       document.body.classList.remove("dark-mode");
     }
-  }, [darkMode]);
+    
+    // Apply custom CSS if available
+    if (site?.custom_css) {
+      const styleId = 'site-custom-css';
+      let styleEl = document.getElementById(styleId);
+      if (!styleEl) {
+        styleEl = document.createElement('style');
+        styleEl.id = styleId;
+        document.head.appendChild(styleEl);
+      }
+      styleEl.textContent = site.custom_css;
+    }
+    
+    // Apply site colors as CSS variables
+    if (site) {
+      const root = document.documentElement;
+      if (site.primary_color) {
+        root.style.setProperty('--theme-color1', site.primary_color);
+      }
+      if (site.secondary_color) {
+        root.style.setProperty('--theme-color7', site.secondary_color);
+      }
+    }
+  }, [darkMode, site]);
 
   useEffect(() => {
     if (menuType === "single") {
@@ -102,21 +130,53 @@ const Layout = ({
     six: <Header6 {...headerProps} />,
     seven: <Header7 {...headerProps} />,
   };
+  
+  // Determine which header to use based on site settings or props
+  const getHeader = () => {
+    if (site?.header_style) {
+      const styleMap: Record<string, ReactNode> = {
+        header1: <Header1 {...headerProps} />,
+        header2: <Header2 {...headerProps} />,
+        header3: <Header3 {...headerProps} />,
+        header4: <Header4 {...headerProps} />,
+        header5: <Header5 {...headerProps} />,
+        header6: <Header6 {...headerProps} />,
+        header7: <Header7 {...headerProps} />,
+      };
+      return styleMap[site.header_style] || <Header1 {...headerProps} />;
+    }
+    
+    // Fallback to prop-based selection
+    if (HeaderStyle) {
+      return headerComponents[HeaderStyle] || <Header1 {...headerProps} />;
+    }
+    
+    return <Header1 {...headerProps} />;
+  };
+  
+  // Determine which footer to use based on site settings or props
+  const getFooter = () => {
+    if (site?.footer_style) {
+      const styleMap: Record<string, ReactNode> = {
+        footer1: <Footer />,
+        footer2: <Footer2 />,
+        footer3: <Footer3 />,
+      };
+      return styleMap[site.footer_style] || <Footer />;
+    }
+    
+    // Fallback to prop-based selection
+    if (FooterStyle === "two") return <Footer2 />;
+    if (FooterStyle === "three") return <Footer3 />;
+    return <Footer />;
+  };
 
   return (
     <>
       <div id="top" className={`page-wrapper ${wrapperClass || ""}`}>
-        {!HeaderStyle ? (
-          <Header1 {...headerProps} />
-        ) : (
-          headerComponents[HeaderStyle] || <Header1 {...headerProps} />
-        )}
-
+        {getHeader()}
         {children}
-
-        {!FooterStyle && <Footer />}
-        {FooterStyle === "two" && <Footer2 />}
-        {FooterStyle === "three" && <Footer3 />}
+        {getFooter()}
       </div>
       <BackToTop />
     </>

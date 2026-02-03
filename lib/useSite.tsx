@@ -9,6 +9,7 @@ interface Site {
   name: string;
   description?: string;
   logo_url?: string;
+  logo_path?: string;
   primary_color: string;
   secondary_color: string;
   contact_email?: string;
@@ -18,6 +19,11 @@ interface Site {
   instagram_url?: string;
   twitter_url?: string;
   is_active: boolean;
+  header_style?: string;
+  footer_style?: string;
+  home_style?: string;
+  enable_dark_mode?: boolean;
+  custom_css?: string;
 }
 
 interface SiteContextValue {

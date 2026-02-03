@@ -1,0 +1,27 @@
+{
+  "site": {
+    "name": "Tashkent Regional Library",
+    "welcome": "Welcome to Tashkent Regional Library",
+    "description": "The largest library network in Tashkent region"
+  },
+  "banner": {
+    "title": "Tashkent Regional Library",
+    "subtitle": "Knowledge is power",
+    "description": "Welcome to the Tashkent regional library system. Over 50,000 books, digital library and professional services.",
+    "cta": "Learn more"
+  },
+  "services": {
+    "title": "Our Services",
+    "library": "Library Services",
+    "digital": "Digital Library",
+    "events": "Events and Seminars",
+    "children": "Children's Library"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "address": "Tashkent Region, Tashkent City",
+    "phone": "+998 71 123-45-67",
+    "email": "info@tashkent.kutubxona.uz",
+    "workingHours": "Monday-Saturday: 9:00 AM - 6:00 PM"
+  }
+}

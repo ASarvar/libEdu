@@ -7,9 +7,10 @@ import { query } from '@/lib/db';
 // GET - Get single site by ID
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get('session_token')?.value;
 
@@ -22,7 +23,7 @@ export async function GET(
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const site = await getSiteById(params.id);
+    const site = await getSiteById(id);
     if (!site) {
       return NextResponse.json({ error: 'Site not found' }, { status: 404 });
     }
@@ -40,9 +41,10 @@ export async function GET(
 // PATCH - Update site
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get('session_token')?.value;
 
@@ -56,7 +58,7 @@ export async function PATCH(
     }
 
     const body = await request.json();
-    const site = await updateSite(params.id, body);
+    const site = await updateSite(id, body);
 
     return NextResponse.json({ site });
   } catch (error) {
@@ -68,12 +70,13 @@ export async function PATCH(
   }
 }
 
-// DELETE - Delete site (soft delete by setting is_active = false)
+// DELETE - Delete site (hard delete)
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get('session_token')?.value;
 
@@ -86,13 +89,20 @@ export async function DELETE(
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Soft delete
-    await query(
-      'UPDATE sites SET is_active = false WHERE id = $1',
-      [params.id]
+    // Hard delete - completely remove the site
+    const result = await query(
+      'DELETE FROM sites WHERE id = $1 RETURNING *',
+      [id]
     );
 
-    return NextResponse.json({ message: 'Site deleted successfully' });
+    if (result.rowCount === 0) {
+      return NextResponse.json({ error: 'Site not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ 
+      success: true,
+      message: 'Site deleted successfully' 
+    });
   } catch (error) {
     console.error('Error deleting site:', error);
     return NextResponse.json(
