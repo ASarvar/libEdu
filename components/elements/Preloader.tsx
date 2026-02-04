@@ -23,6 +23,11 @@ export default function Preloader() {
 
     i18n.on('languageChanged', handleLanguageChange);
     
+    // Set a timeout as a fallback to ensure preloader disappears
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 3000); // Maximum 3 seconds loading time
+    
     // Wait for actual document load state
     if (document.readyState === "complete") {
       setLoading(false);
@@ -32,11 +37,19 @@ export default function Preloader() {
       };
 
       window.addEventListener("load", handleLoad);
+      
       return () => {
+        clearTimeout(timeout);
         window.removeEventListener("load", handleLoad);
         i18n.off('languageChanged', handleLanguageChange);
       };
     }
+
+    // Cleanup for the case where document is already complete
+    return () => {
+      clearTimeout(timeout);
+      i18n.off('languageChanged', handleLanguageChange);
+    };
   }, [i18n]);
 
   if (!loading) return null;
