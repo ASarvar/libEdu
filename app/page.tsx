@@ -3,15 +3,16 @@
 import dynamic from 'next/dynamic';
 import { useSite } from "@/lib/useSite";
 import Layout from "@/components/layout/Layout";
+import { useMemo } from 'react';
 
 export default function Home() {
-  const { site } = useSite();
+  const { site, loading } = useSite();
   
   // Determine which home style to use
   const homeStyle = site?.home_style || 'home1';
   
   // Dynamically import components based on home_style
-  const getHomeComponents = () => {
+  const HomeComponents = useMemo(() => {
     switch (homeStyle) {
       case 'home1':
         const Banner1 = dynamic(() => import("@/components/sections/Home1/Banner"), { ssr: true });
@@ -218,11 +219,16 @@ export default function Home() {
           </>
         );
     }
-  };
+  }, [homeStyle]);
+
+  // Show loading state while site data is being fetched
+  if (loading) {
+    return null; // Preloader will show
+  }
 
   return (
     <Layout>
-      {getHomeComponents()}
+      {HomeComponents}
     </Layout>
   );
 }
