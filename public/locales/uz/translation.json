@@ -536,6 +536,9 @@
     "messagePlaceholder": "Xabaringizni shu yerga kiriting",
     "successMessage": "Rahmat! Xabaringiz muvaffaqiyatli yuborildi.",
     "errorMessage": "Kechirasiz, xatolik yuz berdi. Iltimos, keyinroq qayta urinib ko'ring.",
-    "sending": "Yuborilmoqda..."
-  }
+    "sending": "Yuborilmoqda..."  },
+  "error": {
+    "pageNotFound": "Sahifa topilmadi!",
+    "pageNotFoundDescription": "Kechirasiz, bu sahifani topa olmadik! Siz qidirayotgan sahifa mavjud emas.",
+    "backToHome": "Bosh sahifaga qaytish"  }
 }

@@ -42,8 +42,6 @@ const SitesManagementPage = () => {
     facebook_url: '',
     instagram_url: '',
     twitter_url: '',
-    header_style: 'header1',
-    footer_style: 'footer1',
     home_style: 'home1',
   });
   const [error, setError] = useState('');
@@ -115,6 +113,28 @@ const SitesManagementPage = () => {
       // Create site with logo path
       const siteData = {
         ...formData,
+        header_style: (
+          {
+            home1: 'header1',
+            home2: 'header2',
+            home3: 'header3',
+            home4: 'header4',
+            home5: 'header5',
+            home6: 'header6',
+            home7: 'header7',
+          } as const
+        )[formData.home_style] || 'header1',
+        footer_style: (
+          {
+            home1: 'footer1',
+            home2: 'footer2',
+            home3: 'footer3',
+            home4: 'footer1',
+            home5: 'footer1',
+            home6: 'footer2',
+            home7: 'footer1',
+          } as const
+        )[formData.home_style] || 'footer1',
         logo_path,
         logo_file: undefined, // Remove file from payload
       };
@@ -144,8 +164,6 @@ const SitesManagementPage = () => {
           facebook_url: '',
           instagram_url: '',
           twitter_url: '',
-          header_style: 'header1',
-          footer_style: 'footer1',
           home_style: 'home1',
         });
       } else {
@@ -483,42 +501,6 @@ const SitesManagementPage = () => {
 
                   {/* Layout Selection */}
                   <div className="row">
-                    <div className="col-md-4">
-                      <div className="form-group-admin">
-                        <label className="form-label-admin">
-                          <i className="fa fa-th-large"></i> Header Style
-                        </label>
-                        <select
-                          className="form-control form-input-admin"
-                          value={formData.header_style}
-                          onChange={(e) => setFormData({ ...formData, header_style: e.target.value })}
-                        >
-                          <option value="header1">Header 1 - Classic</option>
-                          <option value="header2">Header 2 - Modern</option>
-                          <option value="header3">Header 3 - Minimal</option>
-                          <option value="header4">Header 4 - Bold</option>
-                          <option value="header5">Header 5 - Creative</option>
-                          <option value="header6">Header 6 - Professional</option>
-                          <option value="header7">Header 7 - Dynamic</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-md-4">
-                      <div className="form-group-admin">
-                        <label className="form-label-admin">
-                          <i className="fa fa-th-large"></i> Footer Style
-                        </label>
-                        <select
-                          className="form-control form-input-admin"
-                          value={formData.footer_style}
-                          onChange={(e) => setFormData({ ...formData, footer_style: e.target.value })}
-                        >
-                          <option value="footer1">Footer 1 - Standard</option>
-                          <option value="footer2">Footer 2 - Compact</option>
-                          <option value="footer3">Footer 3 - Extended</option>
-                        </select>
-                      </div>
-                    </div>
                     <div className="col-md-4">
                       <div className="form-group-admin">
                         <label className="form-label-admin">

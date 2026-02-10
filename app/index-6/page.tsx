@@ -20,11 +20,11 @@ export default function Home6() {
       <Banner />
       <Service />
       <ChooseUs />
-      <Case />
-      <Testimonial />
-      <Pricing />
-      <ChooseUs2 />
-      <Marquee />
+      {/* <Case /> */}
+      {/* <Testimonial /> */}
+      {/* <Pricing /> */}
+      {/* <ChooseUs2 /> */}
+      {/* <Marquee /> */}
       <Faqs />
     </Layout>
   );

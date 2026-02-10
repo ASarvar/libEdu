@@ -115,7 +115,6 @@ const Header1 = ({
                     <Image
                       src={Logo}
                       alt="Logo"
-                      style={{ width: "auto", height: "auto" }}
                     />
                   </Link>
                 </div>
@@ -133,7 +132,7 @@ const Header1 = ({
                   </div>
                 </div>
                 {user ? (
-                  <div className="user-menu-wrapper" style={{ position: 'relative' }}>
+                  <div className="user-menu-wrapper">
                     <button 
                       className="theme-btn btn-style-one wow fadeInRight" 
                       data-wow-delay="200ms"
@@ -142,38 +141,17 @@ const Header1 = ({
                         e.stopPropagation();
                         setShowDropdown(!showDropdown);
                       }}
-                      style={{ cursor: 'pointer' }}
                       type="button"
                     >
                       <i className="icon fa fa-user pr-10"> </i>
                       {user.full_name}
-                      <i className="fa fa-chevron-down pl-10" style={{ fontSize: '10px' }}></i>
+                      <i className="fa fa-chevron-down pl-10"></i>
                     </button>
                     {showDropdown && (
-                      <div 
-                        className="user-dropdown" 
-                        style={{
-                          position: 'absolute',
-                          top: '100%',
-                          right: 0,
-                          marginTop: '10px',
-                          backgroundColor: 'white',
-                          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                          borderRadius: '4px',
-                          minWidth: '200px',
-                          zIndex: 1000
-                        }}
-                      >
+                      <div className="user-dropdown">
                         <Link 
                           href={user.role === 'admin' || user.role === 'superadmin' ? '/admin/dashboard' : '/profile'} 
                           className="dropdown-item"
-                          style={{
-                            display: 'block',
-                            padding: '12px 20px',
-                            color: '#333',
-                            textDecoration: 'none',
-                            borderBottom: '1px solid #eee'
-                          }}
                           onClick={() => setShowDropdown(false)}
                         >
                           <i className="fa fa-user pr-10"></i>
@@ -185,19 +163,8 @@ const Header1 = ({
                             setShowDropdown(false);
                             handleLogout();
                           }}
-                          className="dropdown-item"
+                          className="dropdown-item logout"
                           type="button"
-                          style={{
-                            display: 'block',
-                            width: '100%',
-                            padding: '12px 20px',
-                            color: '#dc3545',
-                            textDecoration: 'none',
-                            border: 'none',
-                            background: 'none',
-                            textAlign: 'left',
-                            cursor: 'pointer'
-                          }}
                         >
                           <i className="fa fa-sign-out pr-10"></i>
                           {t('profile.logout')}
@@ -231,7 +198,6 @@ const Header1 = ({
                   <Image
                     src={MobileLogo}
                     alt="Logo"
-                    style={{ width: "auto", height: "auto" }}
                   />
                 </Link>
               </div>
@@ -245,28 +211,26 @@ const Header1 = ({
             <div className="mobile-lang-selector">
               <LanguageSelector />
             </div>
-            <div className="mobile-login-btn" style={{ padding: '20px 30px' }}>
+            <div className="mobile-login-btn">
               {user ? (
                 <>
                   <Link 
                     href={user.role === 'admin' || user.role === 'superadmin' ? '/admin/dashboard' : '/profile'}
-                    className="theme-btn btn-style-one" 
-                    style={{ width: '100%', display: 'block', textAlign: 'center', marginBottom: '10px' }}
+                    className="theme-btn btn-style-one user-profile"
                   >
                     <i className="icon fa fa-user pr-10"></i>
                     {user.full_name}
                   </Link>
                   <button 
                     onClick={handleLogout}
-                    className="theme-btn btn-style-two" 
-                    style={{ width: '100%', display: 'block', textAlign: 'center' }}
+                    className="theme-btn btn-style-two"
                   >
                     <i className="icon fa fa-sign-out-alt pr-10"></i>
                     {t('profile.logout')}
                   </button>
                 </>
               ) : (
-                <Link href="/login" className="theme-btn btn-style-one" style={{ width: '100%', display: 'block', textAlign: 'center' }}>
+                <Link href="/login" className="theme-btn btn-style-one">
                   <i className="icon fa fa-user pr-10"> </i>
                   {t("header.login")}
                 </Link>
@@ -339,7 +303,6 @@ const Header1 = ({
                   <Image
                     src={MobileLogo}
                     alt="Logo"
-                    style={{ width: "auto", height: "auto" }}
                   />
                 </Link>
               </div>
@@ -358,13 +321,11 @@ const Header1 = ({
                   <Link 
                     href={user.role === 'admin' || user.role === 'superadmin' ? '/admin/dashboard' : '/profile'}
                     className="user-link"
-                    style={{ marginLeft: '15px', color: '#fff', display: 'flex', alignItems: 'center', gap: '5px' }}
                   >
                     <i className="icon fa fa-user"></i>
-                    <span>{user.full_name}</span>
                   </Link>
                 ) : (
-                  <Link href="/login" className="icon fa fa-user" style={{ marginLeft: '15px' }}> 
+                  <Link href="/login" className="icon fa fa-user"> 
                   </Link>
                 )}
                 {/* <!--Mobile Navigation Toggler--> */}

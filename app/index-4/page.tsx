@@ -17,13 +17,13 @@ export default function Home4() {
   return (
     <Layout HeaderStyle="four">
       <Banner />
-      <Service />
+      {/* <Service /> */}
       <About />
-      <Choose />
-      <ChooseUs />
-      <Project />
-      <Team />
-      <Testimonial />
+      {/* <Choose /> */}
+      {/* <ChooseUs /> */}
+      {/* <Project /> */}
+      {/* <Team /> */}
+      {/* <Testimonial /> */}
     </Layout>
   );
 }

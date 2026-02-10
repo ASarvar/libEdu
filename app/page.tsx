@@ -53,13 +53,6 @@ export default function Home() {
           <>
             <Banner2 />
             <About2 />
-            <Service2 />
-            <Benefit2 />
-            <Project2 />
-            <ChooseUs2 />
-            <Marquee2 />
-            <Pricing2 />
-            <Testimonial2 />
             <Contact2 />
           </>
         );
@@ -83,16 +76,6 @@ export default function Home() {
           <>
             <Banner3 />
             <About3 />
-            <Feature3 />
-            <Service3 />
-            <Choose3 />
-            <Work3 />
-            <Feature23 />
-            <Growth3 />
-            <Team3 />
-            <Pricing3 />
-            <Testimonial3 />
-            <Faqs3 />
             <Contact3 />
           </>
         );
@@ -111,12 +94,6 @@ export default function Home() {
           <>
             <Banner4 />
             <About4 />
-            <Service4 />
-            <Choose4 />
-            <Project4 />
-            <ChooseUs4 />
-            <Team4 />
-            <Testimonial4 />
           </>
         );
       }
@@ -137,14 +114,6 @@ export default function Home() {
           <>
             <Banner5 />
             <About5 />
-            <Feature5 />
-            <ChooseUs5 />
-            <Counter5 />
-            <HzAccordion5 />
-            <Project5 />
-            <Team5 />
-            <PricingTwo5 />
-            <Testimonial5 />
             <Contact5 />
           </>
         );
@@ -164,12 +133,6 @@ export default function Home() {
           <>
             <Banner6 />
             <Service6 />
-            <ChooseUs6 />
-            <Case6 />
-            <ChooseUs26 />
-            <Marquee6 />
-            <Pricing6 />
-            <Testimonial6 />
             <Faqs6 />
           </>
         );
@@ -189,12 +152,6 @@ export default function Home() {
           <>
             <Banner7 />
             <About7 />
-            <Service7 />
-            <Solution7 />
-            <Case7 />
-            <Works7 />
-            <Team7 />
-            <Testimonial7 />
             <Contact7 />
           </>
         );

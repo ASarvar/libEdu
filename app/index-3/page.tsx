@@ -23,17 +23,17 @@ export default function Home3() {
     <Layout HeaderStyle="three" FooterStyle="three">
       <Banner />
       <About />
-      <Feature />
-      <Service />
-      <Growth />
-      <Work />
-      <Chosee />
-      <Pricing />
-      <Testimonial />
-      <Team />
-      <Faqs />
+      {/* <Feature /> */}
+      {/* <Service /> */}
+      {/* <Growth /> */}
+      {/* <Work /> */}
+      {/* <Chosee /> */}
+      {/* <Pricing /> */}
+      {/* <Testimonial /> */}
+      {/* <Team /> */}
+      {/* <Faqs /> */}
       <Contact />
-      <Feature2 />
+      {/* <Feature2 /> */}
     </Layout>
   );
 }

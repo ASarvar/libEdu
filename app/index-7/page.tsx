@@ -18,14 +18,14 @@ export default function Home7() {
   return (
     <Layout HeaderStyle="seven">
       <Banner />
-      <Solution />
+      {/* <Solution /> */}
       <About />
-      <Service />
-      <Case />
-      <Works />
-      <Team />
+      {/* <Service /> */}
+      {/* <Case /> */}
+      {/* <Works /> */}
+      {/* <Team /> */}
       <Contact />
-      <Testimonial />
+      {/* <Testimonial /> */}
     </Layout>
   );
 }

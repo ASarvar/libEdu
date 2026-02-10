@@ -2,8 +2,11 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import LogoMain from "../../public/images/logo.svg";
+import MobileLogo from "../../public/images/logo_short.svg";
 
 const AdminSidebar = () => {
   const { t } = useTranslation();
@@ -14,7 +17,7 @@ const AdminSidebar = () => {
   const handleLogout = async () => {
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
-      router.push('/login');
+      router.push('/');
     } catch (error) {
       console.error('Logout error:', error);
       router.push('/login');
@@ -84,10 +87,12 @@ const AdminSidebar = () => {
       {/* Sidebar */}
       <aside className={`admin-sidebar ${isCollapsed ? 'collapsed' : ''}`}>
         <div className="sidebar-header">
-          <div className="sidebar-logo">
-            <i className="fa fa-shield-alt"></i>
-            {!isCollapsed && <span className="logo-text">{t('admin.panel')}</span>}
-          </div>
+          <Link href="/" className="sidebar-logo">
+            <Image 
+              src={isCollapsed ? MobileLogo : LogoMain} 
+              alt="Kutubxona Logo"
+            />
+          </Link>
         </div>
 
         <nav className="sidebar-nav">

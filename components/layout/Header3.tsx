@@ -3,12 +3,15 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
+import { useRouter } from 'next/navigation';
 import NavLinks from './NavLinks';
 import MenuSingle from "./MenuSingle";
 import MobileMenu from './MobileMenu';
-import MobileLogo from '../../public/images/white-logo.png';
-import LogoMain from '../../public/images/black-logo.png';
-import LogoDark from '../../public/images/white-logo.png';
+import LanguageSelector from '../elements/LanguageSelector';
+import MobileLogo from '../../public/images/logo_short.svg';
+import LogoMain from '../../public/images/logo.svg';
+import LogoDark from '../../public/images/logo_white.svg';
 
 interface Header3Props {
   handleOpen: () => void;
@@ -18,9 +21,63 @@ interface Header3Props {
   handleToggle?: () => void;
 }
 
+interface User {
+  id: string;
+  full_name: string;
+  email: string;
+  role: string;
+}
+
 function Header3 ({ handleOpen, handleRemove, scroll }: Header3Props){
+    const { t } = useTranslation();
+    const router = useRouter();
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [isSingleMenu, setIsSingleMenu] = useState(false);
+    const [user, setUser] = useState<User | null>(null);
+    const [showDropdown, setShowDropdown] = useState(false);
+
+    useEffect(() => {
+        checkAuth();
+    }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as HTMLElement;
+            if (showDropdown && !target.closest('.user-dropdown')) {
+                setShowDropdown(false);
+            }
+        };
+
+        if (showDropdown) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showDropdown]);
+
+    const checkAuth = async () => {
+        try {
+            const response = await fetch('/api/auth/me');
+            if (response.ok) {
+                const data = await response.json();
+                setUser(data.user);
+            }
+        } catch (error) {
+            console.error('Auth check error:', error);
+        }
+    };
+
+    const handleLogout = async () => {
+        try {
+            await fetch('/api/auth/logout', { method: 'POST' });
+            setUser(null);
+            window.location.href = '/';
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
+    };
     useEffect(() => {
         const updateClassStates = () => {
         setIsDarkMode(document.body.classList.contains("dark-mode"));
@@ -48,8 +105,8 @@ function Header3 ({ handleOpen, handleRemove, scroll }: Header3Props){
                         <div className="nav-outer">
                             <div className="logo-box">
                                 <div className="logo">
-                                    <Link href="#">
-                                        <Image src={Logo} alt="Logo" style={{ width: 'auto', height: 'auto' }} />
+                                    <Link href="/">
+                                        <Image src={Logo} alt="Kutubxona Logo" />
                                     </Link>
                                 </div>
                             </div>
@@ -60,19 +117,56 @@ function Header3 ({ handleOpen, handleRemove, scroll }: Header3Props){
                                 {/* <!-- Main Menu End--> */}
                                 <div className="ui-btn-outer">
                                     <div className="header-contact">
-                                        <div className="social-icon">
-                                            <Link href="#"><i className="fa-brands fa-facebook-f"></i></Link>
-                                            <Link href="#"><i className="fa-brands fa-x-twitter"></i></Link>
-                                            <Link href="#"><i className="fa-brands fa-instagram"></i></Link>
-                                        </div>
-                                        <Link href="#" className="info-btn">
-                                            <i className="icon fa fa-phone"></i>
-                                            + 88 ( 9800 ) 6802
-                                        </Link>
+                                        <LanguageSelector />
                                     </div>
                                 </div>
-
-                                <Link href="/page-contact" className="theme-btn btn-style-one">Free Consultation</Link>
+                                {user ? (
+                                    <div className="user-menu-wrapper">
+                                        <button 
+                                            className="theme-btn btn-style-one wow fadeInRight" 
+                                            data-wow-delay="200ms"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                setShowDropdown(!showDropdown);
+                                            }}
+                                            type="button"
+                                        >
+                                            <i className="icon fa fa-user pr-10"> </i>
+                                            {user.full_name}
+                                            <i className="fa fa-chevron-down pl-10"></i>
+                                        </button>
+                                        {showDropdown && (
+                                            <div className="user-dropdown">
+                                                <Link 
+                                                    href={user.role === 'admin' || user.role === 'superadmin' ? '/admin/dashboard' : '/profile'} 
+                                                    className="dropdown-item"
+                                                    onClick={() => setShowDropdown(false)}
+                                                >
+                                                    <i className="fa fa-user pr-10"></i>
+                                                    {user.role === 'admin' || user.role === 'superadmin' ? t('admin.dashboard') : t('header.profile')}
+                                                </Link>
+                                                <button 
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setShowDropdown(false);
+                                                        handleLogout();
+                                                    }}
+                                                    className="dropdown-item logout"
+                                                    type="button"
+                                                >
+                                                    <i className="fa fa-sign-out pr-10"></i>
+                                                    {t('profile.logout')}
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <Link href="/login" className="theme-btn btn-style-one wow fadeInRight" data-wow-delay="200ms">
+                                        <i className="icon fa fa-user pr-10"> </i>
+                                        {t("header.login")}
+                                    </Link>
+                                )}
                                 {/* <!-- Mobile Nav toggler --> */}
                                 <div className="mobile-nav-toggler" onClick={handleOpen}><span className="icon lnr-icon-bars"></span></div>
                             </div>
@@ -94,45 +188,70 @@ function Header3 ({ handleOpen, handleRemove, scroll }: Header3Props){
                         <ul className="navigation clearfix">
                             <MobileMenu />
                         </ul>
+                        <div className="mobile-lang-selector">
+                            <LanguageSelector />
+                        </div>
+                        <div className="mobile-login-btn">
+                            {user ? (
+                                <>
+                                    <Link 
+                                        href={user.role === 'admin' || user.role === 'superadmin' ? '/admin/dashboard' : '/profile'}
+                                        className="theme-btn btn-style-one user-profile"
+                                    >
+                                        <i className="icon fa fa-user pr-10"></i>
+                                        {user.full_name}
+                                    </Link>
+                                    <button 
+                                        onClick={handleLogout}
+                                        className="theme-btn btn-style-two"
+                                    >
+                                        <i className="icon fa fa-sign-out-alt pr-10"></i>
+                                        {t('profile.logout')}
+                                    </button>
+                                </>
+                            ) : (
+                                <Link href="/login" className="theme-btn btn-style-one">
+                                    <i className="icon fa fa-user pr-10"> </i>
+                                    {t("header.login")}
+                                </Link>
+                            )}
+                        </div>
                         <ul className="contact-list-one">
                             <li>
                                 {/* <!-- Contact Info Box --> */}
                                 <div className="contact-info-box">
                                 <i className="icon lnr-icon-phone-handset"></i>
-                                <span className="title">Call Now</span>
-                                <Link href="#">+92 (8800) - 98670</Link>
+                                <span className="title">{t("header.callNow")}</span>
+                                <Link href="tel:+998712334567">+998 (71) 233-45-67</Link>
                                 </div>
                             </li>
                             <li>
                                 {/* <!-- Contact Info Box --> */}
                                 <div className="contact-info-box">
                                 <span className="icon lnr-icon-envelope1"></span>
-                                <span className="title">Send Email</span>
-                                <Link href="#">help@company.com</Link>
+                                <span className="title">{t("header.sendEmail")}</span>
+                                <Link href="mailto:info@kutubxona.uz">info@kutubxona.uz</Link>
                                 </div>
                             </li>
                             <li>
                                 {/* <!-- Contact Info Box --> */}
                                 <div className="contact-info-box">
                                 <span className="icon lnr-icon-clock"></span>
-                                <span className="title">Send Email</span>
-                                Mon - Sat 8:00 - 6:30, Sunday - CLOSED
+                                <span className="title">{t("header.workingHours")}</span>
+                                {t("header.workingHoursText")}
                                 </div>
                             </li>
                         </ul>
 
                         <ul className="social-links">
                             <li>
-                                <Link href="#"><i className="fab fa-twitter"></i></Link>
+                                <Link href="https://twitter.com" target="_blank"><i className="fab fa-twitter"></i></Link>
                             </li>
                             <li>
-                                <Link href="#"><i className="fab fa-facebook-f"></i></Link>
+                                <Link href="https://facebook.com" target="_blank"><i className="fab fa-facebook-f"></i></Link>
                             </li>
                             <li>
-                                <Link href="#"><i className="fab fa-pinterest"></i></Link>
-                            </li>
-                            <li>
-                                <Link href="#"><i className="fab fa-instagram"></i></Link>
+                                <Link href="https://instagram.com" target="_blank"><i className="fab fa-instagram"></i></Link>
                             </li>
                         </ul>
                     </nav>
@@ -146,7 +265,7 @@ function Header3 ({ handleOpen, handleRemove, scroll }: Header3Props){
                         {/* <!--Logo--> */}
                         <div className="logo">
                             <Link href="/">
-                                <Image src={Logo} alt="Logo" style={{ width: 'auto', height: 'auto' }} />
+                                <Image src={MobileLogo} alt="Kutubxona Logo" />
                             </Link>
                         </div>
                         <div className="nav-outer">
@@ -157,6 +276,20 @@ function Header3 ({ handleOpen, handleRemove, scroll }: Header3Props){
                                     </ul>
                                 </div>
                             </nav>
+                            <div className="header-contact">
+                                <LanguageSelector />
+                            </div>
+                            {user ? (
+                                <Link 
+                                    href={user.role === 'admin' || user.role === 'superadmin' ? '/admin/dashboard' : '/profile'}
+                                    className="user-link"
+                                >
+                                    <i className="icon fa fa-user"></i>
+                                </Link>
+                            ) : (
+                                <Link href="/login" className="icon fa fa-user"> 
+                                </Link>
+                            )}
                             {/* <!--Mobile Navigation Toggler--> */}
                             <div className="mobile-nav-toggler" onClick={handleOpen}><span className="icon lnr-icon-bars"></span></div>
                         </div>

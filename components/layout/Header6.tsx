@@ -3,13 +3,16 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
+import { useRouter } from 'next/navigation';
 import NavLinks from './NavLinks';
 import MenuSingle from "./MenuSingle";
 import MobileMenu from './MobileMenu';
-import MobileLogo from '../../public/images/white-logo.png';
-import LogoMain from '../../public/images/white-logo.png';
-import LogoDark from '../../public/images/white-logo.png';
-import StikyLogo from '../../public/images/black-logo.png';
+import LanguageSelector from '../elements/LanguageSelector';
+import MobileLogo from '../../public/images/logo_short.svg';
+import LogoMain from '../../public/images/logo.svg';
+import LogoDark from '../../public/images/logo_white.svg';
+import StikyLogo from '../../public/images/logo.svg';
 
 interface Header6Props {
   scroll: boolean;
@@ -19,13 +22,63 @@ interface Header6Props {
   handleToggle?: () => void;
 }
 
+interface User {
+  id: string;
+  full_name: string;
+  email: string;
+  role: string;
+}
+
 function Header6 ({ scroll }: Header6Props){
+    const { t } = useTranslation();
+    const router = useRouter();
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [isSingleMenu, setIsSingleMenu] = useState(false);
+    const [user, setUser] = useState<User | null>(null);
+    const [showDropdown, setShowDropdown] = useState(false);
 
     // local states for toggles
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    const checkAuth = async () => {
+        try {
+            const response = await fetch('/api/auth/me');
+            if (response.ok) {
+                const userData = await response.json();
+                setUser(userData);
+            }
+        } catch (error) {
+            console.log('Not authenticated');
+        }
+    };
+
+    const handleLogout = async () => {
+        try {
+            await fetch('/api/auth/logout', { method: 'POST' });
+            setUser(null);
+            setShowDropdown(false);
+            router.push('/');
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
+    };
+
+    useEffect(() => {
+        checkAuth();
+    }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as HTMLElement;
+            if (!target.closest('.user-menu-wrapper')) {
+                setShowDropdown(false);
+            }
+        };
+
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, []);
 
     useEffect(() => {
         const updateClassStates = () => {
@@ -67,13 +120,47 @@ function Header6 ({ scroll }: Header6Props){
                             <div className="outer-box">
                                 <Link href="/" className="contact-info">
                                     <i className="lnr-icon-phone-handset"></i>
-                                    +00 222 111 0002
+                                    +998 (71) 233-45-67
                                 </Link>
                                 <button className="ui-btn search-btn" onClick={() => setIsSearchOpen(!isSearchOpen)}>
                                     <i className="icon fal fa-search"></i>
                                 </button>
-                                <div className="user-btn">
-                                <i className="lnr-icon-user"></i>
+                                <div className="ui-btn-outer">
+                                    <LanguageSelector />
+                                    <div className="user-menu-wrapper">
+                                        <button 
+                                            className="user-menu-btn"
+                                            onClick={() => setShowDropdown(!showDropdown)}
+                                        >
+                                            <i className="lnr-icon-user"></i>
+                                        </button>
+                                        {showDropdown && (
+                                            <div className="user-dropdown">
+                                                {user ? (
+                                                    <>
+                                                        <Link 
+                                                            href={user.role === 'admin' || user.role === 'superadmin' ? '/admin/dashboard' : '/profile'}
+                                                            className="dropdown-item"
+                                                        >
+                                                            {user.role === 'admin' || user.role === 'superadmin' 
+                                                                ? t('admin.dashboard') 
+                                                                : t('profile.myProfile')}
+                                                        </Link>
+                                                        <button 
+                                                            onClick={handleLogout}
+                                                            className="dropdown-item logout-btn"
+                                                        >
+                                                            {t('profile.logout')}
+                                                        </button>
+                                                    </>
+                                                ) : (
+                                                    <Link href="/login" className="dropdown-item">
+                                                        {t('header.login')}
+                                                    </Link>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                                 {/* <!-- Mobile Nav toggler --> */}
                                 <div className="mobile-nav-toggler" onClick={() => setIsMobileMenuOpen(true)}><span className="icon lnr-icon-bars"></span></div>
@@ -99,6 +186,34 @@ function Header6 ({ scroll }: Header6Props){
                     <ul className="navigation clearfix">
                         <MobileMenu />
                     </ul>
+                    <div className="mobile-lang-selector">
+                        <LanguageSelector />
+                    </div>
+                    <div className="mobile-login-btn">
+                        {user ? (
+                            <>
+                                <Link 
+                                    href={user.role === 'admin' || user.role === 'superadmin' ? '/admin/dashboard' : '/profile'}
+                                    className="theme-btn btn-style-one user-profile"
+                                >
+                                    <i className="icon fa fa-user pr-10"></i>
+                                    {user.full_name}
+                                </Link>
+                                <button 
+                                    onClick={handleLogout}
+                                    className="theme-btn btn-style-two"
+                                >
+                                    <i className="icon fa fa-sign-out-alt pr-10"></i>
+                                    {t('profile.logout')}
+                                </button>
+                            </>
+                        ) : (
+                            <Link href="/login" className="theme-btn btn-style-one">
+                                <i className="icon fa fa-user pr-10"> </i>
+                                {t('header.login')}
+                            </Link>
+                        )}
+                    </div>
                     </nav>
                 </div>
                 )}
@@ -113,7 +228,7 @@ function Header6 ({ scroll }: Header6Props){
                     <div className="search-inner">
                     <form method="post" action="#">
                         <div className="form-group">
-                        <input type="search" name="search-field" placeholder="Search..." required />
+                        <input type="search" name="search-field" placeholder={t('common.search')} required />
                         <button type="submit"><i className="fa fa-search"></i></button>
                         </div>
                     </form>
@@ -139,8 +254,45 @@ function Header6 ({ scroll }: Header6Props){
                                 </ul>
                             </div>
                             </nav>
+                            <div className="header-contact">
+                                <LanguageSelector />
+                            </div>
+                            <div className="user-menu-wrapper">
+                                <button 
+                                    className="user-menu-btn"
+                                    onClick={() => setShowDropdown(!showDropdown)}
+                                >
+                                    <i className="icon fa fa-user"></i>
+                                </button>
+                                {showDropdown && (
+                                    <div className="user-dropdown">
+                                        {user ? (
+                                            <>
+                                                <Link 
+                                                    href={user.role === 'admin' || user.role === 'superadmin' ? '/admin/dashboard' : '/profile'}
+                                                    className="dropdown-item"
+                                                >
+                                                    {user.role === 'admin' || user.role === 'superadmin' 
+                                                        ? t('admin.dashboard') 
+                                                        : t('profile.myProfile')}
+                                                </Link>
+                                                <button 
+                                                    onClick={handleLogout}
+                                                    className="dropdown-item logout-btn"
+                                                >
+                                                    {t('profile.logout')}
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <Link href="/login" className="dropdown-item">
+                                                {t('header.login')}
+                                            </Link>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
                             {/* <!--Mobile Navigation Toggler--> */}
-                            <div className="mobile-nav-toggler" onClick={() => setIsMobileMenuOpen(false)}><span className="icon lnr-icon-bars"></span></div>
+                            <div className="mobile-nav-toggler" onClick={() => setIsMobileMenuOpen(true)}><span className="icon lnr-icon-bars"></span></div>
                         </div>
                         </div>
                     </div>

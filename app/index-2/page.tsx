@@ -20,13 +20,13 @@ export default function Home2() {
     <Layout HeaderStyle="two" FooterStyle="two">
       <Banner />
       <About />
-      <Service />
-      <Benefit />
-      <ChooseUs />
-      <Project />
-      <Testimonial />
-      <Pricing />
-      <Marquee />
+      {/* <Service /> */}
+      {/* <Benefit /> */}
+      {/* <ChooseUs /> */}
+      {/* <Project /> */}
+      {/* <Testimonial /> */}
+      {/* <Pricing /> */}
+      {/* <Marquee /> */}
       <Contact />
     </Layout>
   );

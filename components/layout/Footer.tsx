@@ -85,7 +85,7 @@ function Footer(){
             </div>
             <div className="footer-bottom">
                 <div className="auto-container">
-                    <p className="wow fadeInUp" data-wow-delay=".3s">{t('footer.copyright')} © 2025 Kutubxona. {t('footerSection.copyright')}</p>
+                    <p className="wow fadeInUp" data-wow-delay=".3s">{t('footer.copyright')} © 2026 Kutubxona. {t('footerSection.copyright')}</p>
                 </div>
             </div>
         </footer>

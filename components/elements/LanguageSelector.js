@@ -57,7 +57,7 @@ const LanguageSelector = () => {
           height={22}
           className="flag-icon"
         />{" "}
-        {/* {languages.find((lang) => lang.code === selectedLanguage)?.shortname} */}
+        {/* {languages.find((lang) => lang.code === selectedLanguage)?.name} */}
       </div>
 
       <ul className="lang-dropdown">

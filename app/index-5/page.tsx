@@ -21,14 +21,14 @@ export default function Home5() {
     <Layout HeaderStyle="five">
       <Banner />
       <About />
-      <Feature />
-      <ChooseUs />
-      <Counter />
-      <HzAccordion />
-      <Project />
-      <Team />
-      <PricingTwo />
-      <Testimonial />
+      {/* <Feature /> */}
+      {/* <ChooseUs /> */}
+      {/* <Counter /> */}
+      {/* <HzAccordion /> */}
+      {/* <Project /> */}
+      {/* <Team /> */}
+      {/* <PricingTwo /> */}
+      {/* <Testimonial /> */}
       <Contact />
     </Layout>
   );
