@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
+import { useSite } from "../../lib/useSite";
 import NavLinks from "./NavLinks";
 import MobileMenu from "../layout/MobileMenu";
 import MobileLogo from "../../public/images/logo_short.svg";
@@ -34,6 +35,7 @@ const Header1 = ({
 }: Header1Props) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const site = useSite();
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -93,8 +95,12 @@ const Header1 = ({
     });
     return () => observer.disconnect();
   }, []);
-
-  const Logo = isDarkMode ? LogoDark : LogoMain;
+// Use custom site logo if available, otherwise fall back to default
+  const Logo = site.site?.logo_path 
+    ? site.site.logo_path 
+    : (isDarkMode ? LogoDark : LogoMain);
+  
+  const MobileLogoSrc = site.site?.logo_path || MobileLogo;
 
   return (
     <>
@@ -115,6 +121,9 @@ const Header1 = ({
                     <Image
                       src={Logo}
                       alt="Logo"
+                      width={200}
+                      height={50}
+                      className="header-logo-img"
                     />
                   </Link>
                 </div>
@@ -196,8 +205,11 @@ const Header1 = ({
               <div className="nav-logo">
                 <Link href="/">
                   <Image
-                    src={MobileLogo}
+                    src={MobileLogoSrc}
                     alt="Logo"
+                    width={150}
+                    height={50}
+                    className="mobile-logo-img"
                   />
                 </Link>
               </div>
@@ -301,8 +313,11 @@ const Header1 = ({
               <div className="logo">
                 <Link href="/">
                   <Image
-                    src={MobileLogo}
+                    src={MobileLogoSrc}
                     alt="Logo"
+                    width={150}
+                    height={40}
+                    className="sticky-logo-img"
                   />
                 </Link>
               </div>

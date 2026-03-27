@@ -8,6 +8,7 @@ export interface User {
   email: string;
   phone?: string;
   role: 'superadmin' | 'admin' | 'user';
+  site_id?: string;
   is_active: boolean;
   email_verified: boolean;
   created_at: Date;
@@ -64,7 +65,7 @@ export async function createUser(
 // Get user by email
 export async function getUserByEmail(email: string): Promise<User | null> {
   const result = await query(
-    `SELECT id, full_name, email, phone, password_hash, role, is_active, email_verified, created_at, updated_at, last_login
+    `SELECT id, full_name, email, phone, password_hash, role, site_id, is_active, email_verified, created_at, updated_at, last_login
      FROM users WHERE email = $1`,
     [email]
   );
@@ -75,7 +76,7 @@ export async function getUserByEmail(email: string): Promise<User | null> {
 // Get user by id
 export async function getUserById(id: string): Promise<User | null> {
   const result = await query(
-    `SELECT id, full_name, email, phone, role, is_active, email_verified, created_at, updated_at, last_login
+    `SELECT id, full_name, email, phone, role, site_id, is_active, email_verified, created_at, updated_at, last_login
      FROM users WHERE id = $1`,
     [id]
   );
@@ -89,7 +90,7 @@ export async function authenticateUser(
   password: string
 ): Promise<{ user: User; sessionToken: string } | null> {
   const result = await query(
-    `SELECT id, full_name, email, phone, password_hash, role, is_active, email_verified, created_at, updated_at, last_login
+    `SELECT id, full_name, email, phone, password_hash, role, site_id, is_active, email_verified, created_at, updated_at, last_login
      FROM users WHERE email = $1 AND is_active = true`,
     [email]
   );

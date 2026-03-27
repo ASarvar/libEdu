@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
+import { useSite } from '../../lib/useSite';
 import NavLinks from './NavLinks';
 import MenuSingle from "./MenuSingle";
 import MobileMenu from './MobileMenu';
@@ -32,6 +33,7 @@ interface User {
 function Header7 ({ scroll }: Header7Props){
     const { t } = useTranslation();
     const router = useRouter();
+    const site = useSite();
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [isSingleMenu, setIsSingleMenu] = useState(false);
     const [user, setUser] = useState<User | null>(null);
@@ -93,7 +95,15 @@ function Header7 ({ scroll }: Header7Props){
         });
         return () => observer.disconnect();
     }, []);
-    const Logo = isDarkMode ? LogoDark : LogoMain;
+    
+    // Use custom site logo if available, otherwise fall back to default
+    const Logo = site.site?.logo_path 
+        ? site.site.logo_path 
+        : (isDarkMode ? LogoDark : LogoMain);
+    
+    const MobileLogoSrc = site.site?.logo_path || MobileLogo;
+    const StickyLogoSrc = site.site?.logo_path || StikyLogo;
+    
     const MenuComponent = isSingleMenu ? MenuSingle : NavLinks;
 
     return (
@@ -105,7 +115,7 @@ function Header7 ({ scroll }: Header7Props){
                             <div className="logo-box">
                                 <div className="logo">
                                     <Link href="/">
-                                       <Image src={Logo} alt="Logo" style={{ width: 'auto', height: 'auto' }} />
+                                       <Image src={Logo} alt="Logo" width={200} height={50} className="header-logo-img" />
                                     </Link>
                                 </div>
                             </div>
@@ -166,7 +176,7 @@ function Header7 ({ scroll }: Header7Props){
                     <nav className="menu-box">
                     <div className="upper-box">
                         <div className="nav-logo">
-                        <Link href="/"><Image src={MobileLogo} alt="Image" /></Link>
+                        <Link href="/"><Image src={MobileLogoSrc} alt="Image" width={150} height={50} className="mobile-logo-img" /></Link>
                         </div>
                         <div className="close-btn" onClick={() => setIsMobileMenuOpen(false)}>
                         <i className="icon fa fa-times"></i>
@@ -232,7 +242,7 @@ function Header7 ({ scroll }: Header7Props){
                     {/* <!--Logo--> */}
                     <div className="logo">
                         <Link href="/">
-                            <Image src={StikyLogo} alt="Kutubxona Logo" />
+                            <Image src={StickyLogoSrc} alt="Kutubxona Logo" width={150} height={40} className="sticky-logo-img" />
                         </Link>
                     </div>
                     <div className="nav-outer">

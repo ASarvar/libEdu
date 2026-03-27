@@ -1,16 +1,16 @@
+"use client";
+
 import Layout from "@/components/layout/Layout";
 import PageTitle from "@/components/sections/PageTitle";
 import NewsGrid from "@/components/sections/NewsGrid";
-
-export const metadata = {
-  title: "News & Blog - Finclix",
-  description: "Stay updated with our latest news and insights",
-};
+import { useTranslation } from "react-i18next";
 
 export default function NewsGridPage() {
+  const { t } = useTranslation();
+  
   return (
     <Layout>
-      <PageTitle title="News & Blog" />
+      <PageTitle title={t('news.title')} />
       <NewsGrid />
     </Layout>
   );

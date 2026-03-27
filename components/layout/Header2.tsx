@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
+import { useSite } from '../../lib/useSite';
 import NavLinks from './NavLinks';
 import MenuSingle from "./MenuSingle";
 import MobileMenu from './MobileMenu';
@@ -32,6 +33,7 @@ interface User {
 function Header2 ({ handleOpen, handleRemove, scroll }: Header2Props){
     const { t } = useTranslation();
     const router = useRouter();
+    const site = useSite();
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [isSingleMenu, setIsSingleMenu] = useState(false);
     const [user, setUser] = useState<User | null>(null);
@@ -93,8 +95,16 @@ function Header2 ({ handleOpen, handleRemove, scroll }: Header2Props){
         });
         return () => observer.disconnect();
     }, []);
-    const Logo = isDarkMode ? LogoDark : LogoMain;
-    const Logo2 = isDarkMode ? LogoDark : StikyLogo;
+    
+    // Use custom site logo if available, otherwise fall back to default
+    const Logo = site.site?.logo_path 
+        ? site.site.logo_path 
+        : (isDarkMode ? LogoDark : LogoMain);
+    const Logo2 = site.site?.logo_path 
+        ? site.site.logo_path 
+        : (isDarkMode ? LogoDark : StikyLogo);
+    const MobileLogoSrc = site.site?.logo_path || MobileLogo;
+    
     const MenuComponent = isSingleMenu ? MenuSingle : NavLinks;
 
     return (
@@ -106,7 +116,7 @@ function Header2 ({ handleOpen, handleRemove, scroll }: Header2Props){
                         <div className="logo-box">
                             <div className="logo">
                                 <Link href="/">
-                                    <Image src={Logo} alt="Kutubxona Logo" />
+                                    <Image src={Logo} alt="Kutubxona Logo" width={200} height={50} className="header-logo-img" />
                                 </Link>
                             </div>
                         </div>
@@ -176,7 +186,7 @@ function Header2 ({ handleOpen, handleRemove, scroll }: Header2Props){
             <nav className="menu-box">
                 <div className="upper-box">
                 <div className="nav-logo">
-                    <Link href="/"><Image src={MobileLogo} alt="Kutubxona Logo" /></Link>
+                    <Link href="/"><Image src={MobileLogoSrc} alt="Kutubxona Logo" width={150} height={50} className="mobile-logo-img" /></Link>
                 </div>
                 <div className="close-btn" onClick={handleRemove}><i className="icon fa fa-times"></i></div>
                 </div>
@@ -259,7 +269,7 @@ function Header2 ({ handleOpen, handleRemove, scroll }: Header2Props){
                 <div className="inner-container">
                 {/* <!--Logo--> */}
                 <div className="logo">
-                    <Link href="/"><Image src={Logo2} alt="Kutubxona Logo" /></Link>
+                    <Link href="/"><Image src={Logo2} alt="Kutubxona Logo" width={150} height={40} className="sticky-logo-img" /></Link>
                 </div>
                 <div className="nav-outer">
                     <nav className="main-menu">

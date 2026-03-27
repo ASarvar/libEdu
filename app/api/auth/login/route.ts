@@ -1,10 +1,32 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { authenticateUser } from '@/lib/auth';
 import { cookies } from 'next/headers';
+import { rateLimiter, getClientIP, RATE_LIMITS } from '@/lib/rate-limit';
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    console.log('Login API called');
+    // Apply rate limiting (5 attempts per 15 minutes per IP)
+    const ip = getClientIP(request.headers);
+    const rateLimitKey = `login:${ip}`;
+    
+    if (rateLimiter.check(rateLimitKey, RATE_LIMITS.LOGIN.maxRequests, RATE_LIMITS.LOGIN.windowMs)) {
+      const resetTime = rateLimiter.getResetTime(rateLimitKey);
+      return NextResponse.json(
+        { 
+          error: 'Too many login attempts',
+          message: 'Please try again later',
+          retryAfter: Math.ceil(resetTime / 1000)
+        },
+        { 
+          status: 429,
+          headers: {
+            'Retry-After': Math.ceil(resetTime / 1000).toString()
+          }
+        }
+      );
+    }
+
+    console.log('Login API called from IP:', ip);
     const body = await request.json();
     console.log('Request body:', { email: body.email });
     const { email, password } = body;

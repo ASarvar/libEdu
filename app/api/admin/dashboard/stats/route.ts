@@ -96,6 +96,47 @@ export async function GET(request: NextRequest) {
       console.log('Books table does not exist for monthly count, setting to 0');
     }
 
+    // Get total news count
+    let totalNews = 0;
+    try {
+      if (currentUser.role === 'superadmin') {
+        const totalNewsResult = await pool.query(
+          'SELECT COUNT(*) as count FROM news'
+        );
+        totalNews = parseInt(totalNewsResult.rows[0].count);
+      } else if (currentUser.site_id) {
+        const totalNewsResult = await pool.query(
+          'SELECT COUNT(*) as count FROM news WHERE site_id = $1',
+          [currentUser.site_id]
+        );
+        totalNews = parseInt(totalNewsResult.rows[0].count);
+      }
+      console.log('Total news:', totalNews);
+    } catch (error) {
+      console.log('News table does not exist, setting to 0');
+    }
+
+    // Get new news this month
+    let newNewsThisMonth = 0;
+    try {
+      if (currentUser.role === 'superadmin') {
+        const newNewsThisMonthResult = await pool.query(
+          `SELECT COUNT(*) as count FROM news 
+           WHERE DATE_TRUNC('month', created_at) = DATE_TRUNC('month', CURRENT_DATE)`
+        );
+        newNewsThisMonth = parseInt(newNewsThisMonthResult.rows[0].count);
+      } else if (currentUser.site_id) {
+        const newNewsThisMonthResult = await pool.query(
+          `SELECT COUNT(*) as count FROM news 
+           WHERE site_id = $1 AND DATE_TRUNC('month', created_at) = DATE_TRUNC('month', CURRENT_DATE)`,
+          [currentUser.site_id]
+        );
+        newNewsThisMonth = parseInt(newNewsThisMonthResult.rows[0].count);
+      }
+    } catch (error) {
+      console.log('News table does not exist for monthly count, setting to 0');
+    }
+
     // Get recent activity (last 10 activities)
     const recentActivityResult = await pool.query(
       `SELECT 
@@ -116,8 +157,10 @@ export async function GET(request: NextRequest) {
       totalSites,
       totalBooks,
       totalCategories,
+      totalNews,
       newUsersThisMonth,
       newBooksThisMonth,
+      newNewsThisMonth,
     };
 
     console.log('Final stats object:', stats);

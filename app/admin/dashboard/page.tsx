@@ -20,8 +20,10 @@ interface DashboardStats {
   totalSites: number;
   totalBooks: number;
   totalCategories: number;
+  totalNews: number;
   newUsersThisMonth: number;
   newBooksThisMonth: number;
+  newNewsThisMonth: number;
 }
 
 interface RecentActivity {
@@ -42,8 +44,10 @@ const AdminDashboard = () => {
     totalSites: 0,
     totalBooks: 0,
     totalCategories: 0,
+    totalNews: 0,
     newUsersThisMonth: 0,
     newBooksThisMonth: 0,
+    newNewsThisMonth: 0,
   });
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
   const [loading, setLoading] = useState(true);
@@ -186,6 +190,21 @@ const AdminDashboard = () => {
                 </div>
               </div>
             </div>
+
+            <div className="col-lg-3 col-md-6 mb-30">
+              <div className="stat-card">
+                <div className="stat-icon">
+                  <i className="fa fa-newspaper"></i>
+                </div>
+                <h3>{stats.totalNews}</h3>
+                <p>News Articles</p>
+                <div className="stat-footer">
+                  <span className="text-info">
+                    <i className="fa fa-plus"></i> {stats.newNewsThisMonth} This Month
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Secondary Statistics */}
@@ -252,6 +271,12 @@ const AdminDashboard = () => {
                       <Link href="/admin/categories" className="quick-action-btn">
                         <i className="fa fa-tags"></i>
                         <span>{t('admin.manageCategories')}</span>
+                      </Link>
+                    </div>
+                    <div className="col-lg-3 col-md-6 mb-20">
+                      <Link href="/admin/news" className="quick-action-btn">
+                        <i className="fa fa-newspaper"></i>
+                        <span>Manage News</span>
                       </Link>
                     </div>
                     {currentUser?.role === 'superadmin' && (

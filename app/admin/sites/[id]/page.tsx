@@ -32,8 +32,6 @@ const EditSitePage = () => {
   const router = useRouter();
   const params = useParams();
   const siteId = params?.id as string;
-  
-  console.log('Edit page - Site ID:', siteId);
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -84,13 +82,10 @@ const EditSitePage = () => {
 
   const fetchSite = async () => {
     try {
-      console.log('Fetching site with ID:', siteId);
       const response = await fetch(`/api/admin/sites/${siteId}`);
-      console.log('Fetch response status:', response.status);
       
       if (response.ok) {
         const data = await response.json();
-        console.log('Site data:', data);
         setSite(data.site);
         setFormData({
           name: data.site.name || '',
@@ -109,9 +104,7 @@ const EditSitePage = () => {
           is_active: data.site.is_active !== false,
         });
       } else {
-        const errorData = await response.json().catch(() => ({}));
-        console.error('Fetch error:', response.status, errorData);
-        setError(`Sayt topilmadi (${response.status})`);
+        setError('Sayt topilmadi');
       }
     } catch (error) {
       console.error('Error fetching site:', error);
@@ -232,106 +225,115 @@ const EditSitePage = () => {
   return (
     <AdminLayout>
       <section className="admin-dashboard">
-        <div className="auto-container">
-          <div className="sec-title">
-            <h2>Saytni tahrirlash: {site.subdomain}.kutubxona.uz</h2>
-            <div className="text">
+        <div className="auto-container" style={{ maxWidth: '900px' }}>
+          <div className="admin-form-box">
+            <div className="form-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div>
+                <h2>Saytni tahrirlash</h2>
+                <p>{site.subdomain}.kutubxona.uz</p>
+              </div>
               <button
+                type="button"
                 onClick={() => router.push('/admin/sites')}
                 className="theme-btn btn-style-two"
               >
                 <i className="fa fa-arrow-left btn-mr-8"></i>
-                <span className="btn-title">Orqaga</span>
+                Orqaga
               </button>
             </div>
-          </div>
 
-          <div className="admin-card">
+            {error && (
+              <div className="alert-error-admin">
+                <i className="fa fa-exclamation-triangle"></i>
+                {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="alert-success-admin">
+                <i className="fa fa-check-circle"></i>
+                {success}
+              </div>
+            )}
+
+            {/* Form */}
             <form onSubmit={handleSubmit}>
-              {error && (
-                <div className="alert-error-admin">
-                  <i className="fa fa-exclamation-triangle"></i>
-                  {error}
-                </div>
-              )}
-
-              {success && (
-                <div className="alert-success-admin">
-                  <i className="fa fa-check-circle"></i>
-                  {success}
-                </div>
-              )}
-
               {/* Basic Information */}
-              <h5 className="form-section-heading">Asosiy ma'lumotlar</h5>
-
+              <h3 className="form-section-heading">Asosiy ma'lumotlar</h3>
+              
               <div className="form-group-admin">
                 <label className="form-label-admin">
-                  Subdomen
+                  Subdomen * <span className="form-label-required">(o'zgarmaydi)</span>
                 </label>
-                <input
-                  type="text"
-                  className="form-control form-input-admin"
-                  value={site.subdomain}
-                  disabled
-                  style={{ backgroundColor: '#f5f5f5', cursor: 'not-allowed' }}
-                />
+                <div className="input-group-admin">
+                  <input
+                    type="text"
+                    className="form-input-admin"
+                    value={site.subdomain}
+                    disabled
+                  />
+                  <span className="input-group-addon">.kutubxona.uz</span>
+                </div>
                 <small className="form-help-text">
-                  Subdomen o'zgartirib bo'lmaydi
+                  Subdomen yaratilgandan keyin o'zgartirib bo'lmaydi
                 </small>
               </div>
 
               <div className="form-group-admin">
-                <label className="form-label-admin">
-                  Sayt nomi *
-                </label>
+                <label className="form-label-admin">Sayt nomi *</label>
                 <input
                   type="text"
-                  className="form-control form-input-admin"
+                  className="form-input-admin"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
+                  placeholder="Toshkent viloyat kutubxonasi"
                   maxLength={255}
                 />
               </div>
 
               <div className="form-group-admin">
-                <label className="form-label-admin">
-                  Tavsif
-                </label>
+                <label className="form-label-admin">Tavsif</label>
                 <textarea
-                  className="form-control form-textarea-admin"
+                  className="form-textarea-admin"
                   rows={3}
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  placeholder="Sayt haqida qisqacha tavsif"
                   maxLength={1000}
                 />
+                <small className="form-help-text">
+                  {formData.description.length}/1000 belgi
+                </small>
               </div>
 
-              <hr className="form-divider" />
+              <div className="form-divider"></div>
 
-              {/* Logo & Theme */}
-              <h5 className="form-section-heading">Logo va Tema</h5>
+              {/* Design */}
+              <h3 className="form-section-heading">Dizayn</h3>
 
               {site.logo_path && (
-                <div style={{ marginBottom: '15px' }}>
+                <div className="form-group-admin">
                   <label className="form-label-admin">Hozirgi logo:</label>
-                  <br />
-                  <img 
-                    src={site.logo_path} 
-                    alt="Logo" 
-                    style={{ maxWidth: '200px', maxHeight: '100px', border: '1px solid #ddd', padding: '10px' }}
-                  />
+                  <div>
+                    <img 
+                      src={site.logo_path} 
+                      alt="Logo" 
+                      className="img-thumbnail"
+                      style={{ maxWidth: '200px', maxHeight: '100px' }}
+                    />
+                  </div>
                 </div>
               )}
 
               <div className="form-group-admin">
                 <label className="form-label-admin">
+                  <i className="fa fa-image btn-mr-8"></i>
                   Yangi logo yuklash
                 </label>
                 <input
                   type="file"
-                  className="form-control form-input-admin"
+                  className="form-input-admin"
                   accept=".png,.svg,image/png,image/svg+xml"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
@@ -354,31 +356,33 @@ const EditSitePage = () => {
                 <small className="form-help-text">
                   PNG yoki SVG format, maksimal 1MB
                 </small>
-              </div>
-
-              {/* Layout Styles */}
-              <div className="row">
-                <div className="col-md-4">
-                  <div className="form-group-admin">
-                    <label className="form-label-admin">Home Style</label>
-                    <select
-                      className="form-control form-input-admin"
-                      value={formData.home_style}
-                      onChange={(e) => setFormData({ ...formData, home_style: e.target.value })}
-                    >
-                      <option value="home1">Home 1 - Corporate</option>
-                      <option value="home2">Home 2 - Educational</option>
-                      <option value="home3">Home 3 - Modern</option>
-                      <option value="home4">Home 4 - Creative</option>
-                      <option value="home5">Home 5 - Elegant</option>
-                      <option value="home6">Home 6 - Professional</option>
-                      <option value="home7">Home 7 - Dynamic</option>
-                    </select>
+                {formData.logo_file && (
+                  <div style={{ marginTop: '10px', color: 'var(--theme-color2)', fontSize: '14px' }}>
+                    <i className="fa fa-check-circle"></i> {formData.logo_file.name}
                   </div>
-                </div>
+                )}
               </div>
 
-              {/* Colors */}
+              <div className="form-group-admin">
+                <label className="form-label-admin">
+                  <i className="fa fa-home btn-mr-8"></i>
+                  Bosh sahifa stili
+                </label>
+                <select
+                  className="form-input-admin"
+                  value={formData.home_style}
+                  onChange={(e) => setFormData({ ...formData, home_style: e.target.value })}
+                >
+                  <option value="home1">1-stil - Korporativ</option>
+                  <option value="home2">2-stil - Ta'lim</option>
+                  <option value="home3">3-stil - Zamonaviy</option>
+                  <option value="home4">4-stil - Ijodiy</option>
+                  <option value="home5">5-stil - Nafis</option>
+                  <option value="home6">6-stil - Professional</option>
+                  <option value="home7">7-stil - Dinamik</option>
+                </select>
+              </div>
+
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group-admin">
@@ -386,56 +390,55 @@ const EditSitePage = () => {
                     <div className="color-input-group">
                       <input
                         type="color"
-                        className="form-control"
                         value={formData.primary_color}
                         onChange={(e) => setFormData({ ...formData, primary_color: e.target.value })}
                       />
                       <input
                         type="text"
-                        className="form-control form-input-admin"
                         value={formData.primary_color}
                         onChange={(e) => setFormData({ ...formData, primary_color: e.target.value })}
                         pattern="^#[0-9A-Fa-f]{6}$"
+                        placeholder="#3498db"
                       />
                     </div>
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group-admin">
-                    <label className="form-label-admin">Ikkilamchi rang</label>
+                    <label className="form-label-admin">Ikkinchi darajali rang</label>
                     <div className="color-input-group">
                       <input
                         type="color"
-                        className="form-control"
                         value={formData.secondary_color}
                         onChange={(e) => setFormData({ ...formData, secondary_color: e.target.value })}
                       />
                       <input
                         type="text"
-                        className="form-control form-input-admin"
                         value={formData.secondary_color}
                         onChange={(e) => setFormData({ ...formData, secondary_color: e.target.value })}
                         pattern="^#[0-9A-Fa-f]{6}$"
+                        placeholder="#2ecc71"
                       />
                     </div>
                   </div>
                 </div>
               </div>
 
-              <hr className="form-divider" />
+              <div className="form-divider"></div>
 
               {/* Contact Information */}
-              <h5 className="form-section-heading">Aloqa ma'lumotlari</h5>
+              <h3 className="form-section-heading">Aloqa ma'lumotlari</h3>
 
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group-admin">
-                    <label className="form-label-admin">Email</label>
+                    <label className="form-label-admin">Elektron pochta</label>
                     <input
                       type="email"
-                      className="form-control form-input-admin"
+                      className="form-input-admin"
                       value={formData.contact_email}
                       onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
+                      placeholder="kutubxona@example.uz"
                     />
                   </div>
                 </div>
@@ -444,9 +447,10 @@ const EditSitePage = () => {
                     <label className="form-label-admin">Telefon</label>
                     <input
                       type="text"
-                      className="form-control form-input-admin"
+                      className="form-input-admin"
                       value={formData.contact_phone}
                       onChange={(e) => setFormData({ ...formData, contact_phone: e.target.value })}
+                      placeholder="+998 71 123-45-67"
                     />
                   </div>
                 </div>
@@ -455,65 +459,84 @@ const EditSitePage = () => {
               <div className="form-group-admin">
                 <label className="form-label-admin">Manzil</label>
                 <textarea
-                  className="form-control form-textarea-admin"
+                  className="form-textarea-admin"
                   rows={2}
                   value={formData.contact_address}
                   onChange={(e) => setFormData({ ...formData, contact_address: e.target.value })}
+                  placeholder="Ko'cha, shahar, viloyat"
+                  maxLength={500}
                 />
               </div>
 
-              <hr className="form-divider" />
+              <div className="form-divider"></div>
 
               {/* Social Media */}
-              <h5 className="form-section-heading">Ijtimoiy tarmoqlar</h5>
+              <h3 className="form-section-heading">Ijtimoiy tarmoqlar</h3>
 
               <div className="form-group-admin">
-                <label className="form-label-admin">Facebook</label>
+                <label className="form-label-admin">
+                  <i className="fab fa-facebook social-icon-label facebook"></i>
+                  Facebook
+                </label>
                 <input
                   type="url"
-                  className="form-control form-input-admin"
+                  className="form-input-admin"
                   value={formData.facebook_url}
                   onChange={(e) => setFormData({ ...formData, facebook_url: e.target.value })}
+                  placeholder="https://facebook.com/kutubxonangiz"
                 />
               </div>
 
               <div className="form-group-admin">
-                <label className="form-label-admin">Instagram</label>
+                <label className="form-label-admin">
+                  <i className="fab fa-instagram social-icon-label instagram"></i>
+                  Instagram
+                </label>
                 <input
                   type="url"
-                  className="form-control form-input-admin"
+                  className="form-input-admin"
                   value={formData.instagram_url}
                   onChange={(e) => setFormData({ ...formData, instagram_url: e.target.value })}
+                  placeholder="https://instagram.com/kutubxonangiz"
                 />
               </div>
 
               <div className="form-group-admin">
-                <label className="form-label-admin">Twitter</label>
+                <label className="form-label-admin">
+                  <i className="fab fa-twitter social-icon-label twitter"></i>
+                  Twitter
+                </label>
                 <input
                   type="url"
-                  className="form-control form-input-admin"
+                  className="form-input-admin"
                   value={formData.twitter_url}
                   onChange={(e) => setFormData({ ...formData, twitter_url: e.target.value })}
+                  placeholder="https://twitter.com/kutubxonangiz"
                 />
               </div>
 
-              <hr className="form-divider" />
+              <div className="form-divider"></div>
 
               {/* Status */}
+              <h3 className="form-section-heading">Holat</h3>
+
               <div className="form-group-admin">
                 <label className="form-label-admin">
                   <input
                     type="checkbox"
                     checked={formData.is_active}
                     onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                    style={{ marginRight: '10px' }}
+                    className="btn-mr-8"
                   />
                   Sayt faol
                 </label>
+                <small className="form-help-text">
+                  Faol bo'lmagan saytlar foydalanuvchilar uchun ko'rinmaydi
+                </small>
               </div>
 
               {/* Actions */}
-              <div style={{ display: 'flex', gap: '10px', marginTop: '30px' }}>
+              <div className="modal-footer-admin">
                 <button
                   type="button"
                   className="theme-btn btn-style-two"
@@ -521,7 +544,7 @@ const EditSitePage = () => {
                   disabled={saving}
                 >
                   <i className="fa fa-times btn-mr-8"></i>
-                  <span className="btn-title">Bekor qilish</span>
+                  Bekor qilish
                 </button>
                 <button 
                   type="submit" 
@@ -529,7 +552,7 @@ const EditSitePage = () => {
                   disabled={saving}
                 >
                   <i className={`fa fa-${saving ? 'spinner fa-spin' : 'save'} btn-mr-8`}></i>
-                  <span className="btn-title">{saving ? 'Saqlanmoqda...' : 'Saqlash'}</span>
+                  {saving ? 'Saqlanmoqda...' : 'O\'zgarishlarni saqlash'}
                 </button>
               </div>
             </form>

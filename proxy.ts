@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { verifySessionMiddleware, getSessionToken, hasRole } from './lib/middleware-auth';
 
 // Main domain from environment variable
 const MAIN_DOMAIN = process.env.MAIN_DOMAIN || 'kutubxona.uz';
@@ -28,17 +29,36 @@ export async function proxy(request: NextRequest) {
     response.headers.set('x-site-context', 'true');
   }
 
-  // Protected admin routes
+  // Protected admin routes - verify role at middleware level
   if (pathname.startsWith('/admin')) {
-    const sessionToken = request.cookies.get('session_token')?.value;
+    const sessionToken = getSessionToken(request);
 
     if (!sessionToken) {
-      return NextResponse.redirect(new URL('/login', request.url));
+      const loginUrl = new URL('/login', request.url);
+      loginUrl.searchParams.set('redirect', pathname);
+      return NextResponse.redirect(loginUrl);
     }
 
-    // Superadmin can access from any domain
-    // Site admins must access from their site's subdomain
-    // This will be enforced at the API level
+    // Verify session and check role
+    const user = await verifySessionMiddleware(sessionToken);
+    
+    if (!user) {
+      // Invalid or expired session
+      const loginUrl = new URL('/login', request.url);
+      loginUrl.searchParams.set('redirect', pathname);
+      loginUrl.searchParams.set('error', 'session_expired');
+      return NextResponse.redirect(loginUrl);
+    }
+
+    // Check if user has admin privileges
+    if (!hasRole(user, ['superadmin', 'admin', 'moderator'])) {
+      // User doesn't have required role
+      return NextResponse.redirect(new URL('/403', request.url));
+    }
+
+    // Attach user role to headers for use in pages
+    response.headers.set('x-user-role', user.role);
+    response.headers.set('x-user-id', user.id);
   }
 
   // Protected profile routes

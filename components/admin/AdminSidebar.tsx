@@ -50,6 +50,12 @@ const AdminSidebar = () => {
       badge: null,
     },
     {
+      title: t('admin.news'),
+      icon: 'fa-newspaper',
+      path: '/admin/news',
+      badge: null,
+    },
+    {
       title: t('admin.categories'),
       icon: 'fa-tags',
       path: '/admin/categories',
