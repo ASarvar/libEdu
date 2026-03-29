@@ -1,47 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
-import { verifySession } from '@/lib/auth';
+import { withAuthAndRateLimit } from '@/lib/api-auth';
 import pool from '@/lib/db';
 
-export async function GET(request: NextRequest) {
+export const GET = withAuthAndRateLimit(async (request: NextRequest, currentUser) => {
   try {
-    console.log('Dashboard stats API called');
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get('session_token')?.value;
-
-    if (!sessionToken) {
-      console.log('No session token found');
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const currentUser = await verifySession(sessionToken);
-    console.log('Current user:', currentUser);
-
-    if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'superadmin')) {
-      console.log('User not authorized:', currentUser?.role);
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
+    void request;
 
     // Get total users count
     const totalUsersResult = await pool.query(
       'SELECT COUNT(*) as count FROM users'
     );
     const totalUsers = parseInt(totalUsersResult.rows[0].count);
-    console.log('Total users:', totalUsers);
 
     // Get active users count
     const activeUsersResult = await pool.query(
       'SELECT COUNT(*) as count FROM users WHERE is_active = true'
     );
     const activeUsers = parseInt(activeUsersResult.rows[0].count);
-    console.log('Active users:', activeUsers);
 
     // Get total admins count
     const totalAdminsResult = await pool.query(
       "SELECT COUNT(*) as count FROM users WHERE role IN ('admin', 'superadmin')"
     );
     const totalAdmins = parseInt(totalAdminsResult.rows[0].count);
-    console.log('Total admins:', totalAdmins);
 
     // Get total sites count (only for superadmin)
     let totalSites = 0;
@@ -50,7 +31,6 @@ export async function GET(request: NextRequest) {
         'SELECT COUNT(*) as count FROM sites'
       );
       totalSites = parseInt(totalSitesResult.rows[0].count);
-      console.log('Total sites:', totalSites);
     }
 
     // Get total books count
@@ -60,9 +40,8 @@ export async function GET(request: NextRequest) {
         'SELECT COUNT(*) as count FROM books'
       );
       totalBooks = parseInt(totalBooksResult.rows[0].count);
-      console.log('Total books:', totalBooks);
-    } catch (error) {
-      console.log('Books table does not exist, setting to 0');
+    } catch {
+      // Optional table in some deployments.
     }
 
     // Get total categories count
@@ -72,9 +51,8 @@ export async function GET(request: NextRequest) {
         'SELECT COUNT(*) as count FROM categories'
       );
       totalCategories = parseInt(totalCategoriesResult.rows[0].count);
-      console.log('Total categories:', totalCategories);
-    } catch (error) {
-      console.log('Categories table does not exist, setting to 0');
+    } catch {
+      // Optional table in some deployments.
     }
 
     // Get new users this month
@@ -111,9 +89,8 @@ export async function GET(request: NextRequest) {
         );
         totalNews = parseInt(totalNewsResult.rows[0].count);
       }
-      console.log('Total news:', totalNews);
-    } catch (error) {
-      console.log('News table does not exist, setting to 0');
+    } catch {
+      // Optional table in some deployments.
     }
 
     // Get new news this month
@@ -133,8 +110,8 @@ export async function GET(request: NextRequest) {
         );
         newNewsThisMonth = parseInt(newNewsThisMonthResult.rows[0].count);
       }
-    } catch (error) {
-      console.log('News table does not exist for monthly count, setting to 0');
+    } catch {
+      // Optional table in some deployments.
     }
 
     // Get recent activity (last 10 activities)
@@ -163,9 +140,6 @@ export async function GET(request: NextRequest) {
       newNewsThisMonth,
     };
 
-    console.log('Final stats object:', stats);
-    console.log('Recent activity count:', recentActivity.length);
-
     return NextResponse.json({ 
       stats,
       recentActivity 
@@ -178,4 +152,6 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
-}
+}, {
+  allowedRoles: ['admin', 'superadmin'],
+});

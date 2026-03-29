@@ -1,10 +1,40 @@
-import { NextResponse } from 'next/server';
-import { createUser } from '@/lib/auth';
+import { NextRequest, NextResponse } from 'next/server';
+import { createEmailVerificationToken, createUser } from '@/lib/auth';
+import { RATE_LIMITS, getClientIP, rateLimiter } from '@/lib/rate-limit';
 
-export async function POST(request: Request) {
+const STRONG_PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+export async function POST(request: NextRequest) {
   try {
+    const ip = getClientIP(request.headers);
+    const isRateLimited = await rateLimiter.check(
+      ip,
+      RATE_LIMITS.REGISTER.maxRequests,
+      RATE_LIMITS.REGISTER.windowMs
+    );
+
+    if (isRateLimited) {
+      const retryAfterSeconds = Math.ceil((await rateLimiter.getResetTime(ip)) / 1000);
+      return NextResponse.json(
+        {
+          error: 'Too many signup attempts. Please try again later.',
+          retryAfter: retryAfterSeconds,
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': retryAfterSeconds.toString(),
+          },
+        }
+      );
+    }
+
     const body = await request.json();
     const { fullName, email, phone, password, confirmPassword } = body;
+    const proto = request.headers.get('x-forwarded-proto') || 'http';
+    const host = request.headers.get('host') || 'localhost:3000';
+    const appOrigin = process.env.NEXT_PUBLIC_APP_URL || `${proto}://${host}`;
 
     // Validate input
     if (!fullName || !email || !password || !confirmPassword) {
@@ -21,16 +51,15 @@ export async function POST(request: Request) {
       );
     }
 
-    if (password.length < 8) {
+    if (!STRONG_PASSWORD_REGEX.test(password)) {
       return NextResponse.json(
-        { error: 'Password must be at least 8 characters' },
+        { error: 'Password must be at least 8 characters and include uppercase, lowercase, number, and special character' },
         { status: 400 }
       );
     }
 
     // Email validation
-    const emailRegex = /\S+@\S+\.\S+/;
-    if (!emailRegex.test(email)) {
+    if (!EMAIL_REGEX.test(email)) {
       return NextResponse.json(
         { error: 'Invalid email address' },
         { status: 400 }
@@ -47,9 +76,17 @@ export async function POST(request: Request) {
         role: 'user',
       });
 
+      const verificationToken = await createEmailVerificationToken(user.id);
+      const verificationUrl = `${appOrigin}/api/auth/verify-email?token=${verificationToken}`;
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Email verification URL:', verificationUrl);
+      }
+
       return NextResponse.json({
         success: true,
         message: 'Registration successful! Please verify your email.',
+        verification_url: process.env.NODE_ENV === 'development' ? verificationUrl : undefined,
         user: {
           id: user.id,
           full_name: user.full_name,

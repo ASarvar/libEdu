@@ -1,25 +1,15 @@
-import { NextResponse } from 'next/server';
-import { verifySession, getUserById, updateUser, deleteUser, logAuditAction } from '@/lib/auth';
-import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
+import { getUserById, updateUser, deleteUser, logAuditAction } from '@/lib/auth';
+import { withAuthAndRateLimitWithContext } from '@/lib/api-auth';
 
 // GET single user
-export async function GET(
-  request: Request,
+export const GET = withAuthAndRateLimitWithContext(async (
+  request: NextRequest,
+  currentUser,
   { params }: { params: Promise<{ id: string }> }
-) {
+) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get('session_token')?.value;
-
-    if (!sessionToken) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const currentUser = await verifySession(sessionToken);
-
-    if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'superadmin')) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
+    void request;
 
     const { id } = await params;
     const user = await getUserById(id);
@@ -33,27 +23,17 @@ export async function GET(
     console.error('Get user error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-}
+}, {
+  allowedRoles: ['admin', 'superadmin'],
+});
 
 // PATCH update user
-export async function PATCH(
-  request: Request,
+export const PATCH = withAuthAndRateLimitWithContext(async (
+  request: NextRequest,
+  currentUser,
   { params }: { params: Promise<{ id: string }> }
-) {
+) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get('session_token')?.value;
-
-    if (!sessionToken) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const currentUser = await verifySession(sessionToken);
-
-    if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'superadmin')) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
-
     const { id } = await params;
     const body = await request.json();
     const { fullName, email, phone, role, isActive } = body;
@@ -104,26 +84,18 @@ export async function PATCH(
     console.error('Update user error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-}
+}, {
+  allowedRoles: ['admin', 'superadmin'],
+});
 
 // DELETE user
-export async function DELETE(
-  request: Request,
+export const DELETE = withAuthAndRateLimitWithContext(async (
+  request: NextRequest,
+  currentUser,
   { params }: { params: Promise<{ id: string }> }
-) {
+) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get('session_token')?.value;
-
-    if (!sessionToken) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const currentUser = await verifySession(sessionToken);
-
-    if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'superadmin')) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
+    void request;
 
     const { id } = await params;
 
@@ -167,4 +139,6 @@ export async function DELETE(
     console.error('Delete user error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-}
+}, {
+  allowedRoles: ['admin', 'superadmin'],
+});

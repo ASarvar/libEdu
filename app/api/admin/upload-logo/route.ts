@@ -4,17 +4,15 @@ import { writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import { withAuth } from '@/lib/api-auth';
 
 const MAX_FILE_SIZE = 1024 * 1024; // 1MB
 const ALLOWED_TYPES = ['image/png', 'image/svg+xml'];
 const ALLOWED_EXTENSIONS = ['.png', '.svg'];
 const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads', 'logos');
 
-export async function POST(request: NextRequest) {
+export const POST = withAuth(async (request: NextRequest) => {
   try {
-    // Check authentication and role
-    // TODO: Add proper auth check for superadmin/admin
-
     const formData = await request.formData();
     const file = formData.get('logo') as File;
 
@@ -79,10 +77,10 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}
+}, { allowedRoles: ['superadmin', 'admin'] });
 
 // Delete logo
-export async function DELETE(request: NextRequest) {
+export const DELETE = withAuth(async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const logoPath = searchParams.get('path');
@@ -120,4 +118,4 @@ export async function DELETE(request: NextRequest) {
       { status: 500 }
     );
   }
-}
+}, { allowedRoles: ['superadmin', 'admin'] });

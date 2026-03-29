@@ -1,24 +1,11 @@
 import { NextResponse } from 'next/server';
-import { verifySession } from '@/lib/auth';
-import { cookies } from 'next/headers';
+import { withAuth } from '@/lib/api-auth';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 import crypto from 'crypto';
 
-export async function POST(request: Request) {
+export const POST = withAuth(async (request) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get('session_token')?.value;
-
-    if (!sessionToken) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const user = await verifySession(sessionToken);
-    if (!user || !['admin', 'superadmin'].includes(user.role)) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
-
     const formData = await request.formData();
     const file = formData.get('image') as File;
 
@@ -76,4 +63,4 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
-}
+}, { allowedRoles: ['superadmin', 'admin'] });

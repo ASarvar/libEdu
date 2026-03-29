@@ -1,9 +1,10 @@
 import { NextRequest } from 'next/server';
 import { query } from './db';
+import { hasAnyRole, UserRole } from './roles';
 
 export interface MiddlewareUser {
   id: string;
-  role: 'superadmin' | 'admin' | 'user' | 'moderator';
+  role: UserRole;
   is_active: boolean;
 }
 
@@ -35,9 +36,9 @@ export async function verifySessionMiddleware(
  */
 export function hasRole(
   user: MiddlewareUser,
-  allowedRoles: string[]
+  allowedRoles: UserRole[]
 ): boolean {
-  return allowedRoles.includes(user.role);
+  return hasAnyRole(user.role, allowedRoles);
 }
 
 /**

@@ -1,22 +1,11 @@
-import { NextResponse } from 'next/server';
-import { verifySession } from '@/lib/auth';
+import { NextRequest, NextResponse } from 'next/server';
 import { getNewsBySite, getAllNews, createNews, generateSlug } from '@/lib/news';
-import { cookies } from 'next/headers';
+import { withAuthAndRateLimit } from '@/lib/api-auth';
 
 // GET - List all news (admin: their site, superadmin: all sites)
-export async function GET() {
+export const GET = withAuthAndRateLimit(async (request: NextRequest, user) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get('session_token')?.value;
-
-    if (!sessionToken) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const user = await verifySession(sessionToken);
-    if (!user || !['admin', 'superadmin'].includes(user.role)) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
+    void request;
 
     let news;
     if (user.role === 'superadmin') {
@@ -40,23 +29,11 @@ export async function GET() {
       { status: 500 }
     );
   }
-}
+}, { allowedRoles: ['admin', 'superadmin'] });
 
 // POST - Create new news
-export async function POST(request: Request) {
+export const POST = withAuthAndRateLimit(async (request: NextRequest, user) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get('session_token')?.value;
-
-    if (!sessionToken) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const user = await verifySession(sessionToken);
-    if (!user || !['admin', 'superadmin'].includes(user.role)) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
-
     const body = await request.json();
     const { 
       site_id,
@@ -125,4 +102,4 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
-}
+}, { allowedRoles: ['admin', 'superadmin'] });

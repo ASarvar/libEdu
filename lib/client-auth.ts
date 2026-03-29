@@ -3,17 +3,18 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { ADMIN_PANEL_ROLES, hasAnyRole, UserRole } from './roles';
 
 export interface User {
   id: string;
   full_name: string;
   email: string;
-  role: 'superadmin' | 'admin' | 'user' | 'moderator';
+  role: UserRole;
   is_active: boolean;
 }
 
 interface WithAdminAuthOptions {
-  allowedRoles?: string[];
+  allowedRoles?: UserRole[];
   redirectTo?: string;
 }
 
@@ -25,7 +26,7 @@ export function withAdminAuth<P extends object>(
   Component: React.ComponentType<P & { user: User }>,
   options: WithAdminAuthOptions = {}
 ) {
-  const { allowedRoles = ['superadmin', 'admin', 'moderator'], redirectTo = '/login' } = options;
+  const { allowedRoles = ADMIN_PANEL_ROLES, redirectTo = '/login' } = options;
 
   return function ProtectedComponent(props: P) {
     const [user, setUser] = useState<User | null>(null);
@@ -50,7 +51,7 @@ export function withAdminAuth<P extends object>(
           }
 
           // Check if user has required role
-          if (!allowedRoles.includes(data.user.role)) {
+          if (!hasAnyRole(data.user.role, allowedRoles)) {
             router.push('/403');
             return;
           }
@@ -93,7 +94,7 @@ export function withAdminAuth<P extends object>(
 /**
  * Hook to use current authenticated user
  */
-export function useAdminAuth(allowedRoles: string[] = ['superadmin', 'admin', 'moderator']) {
+export function useAdminAuth(allowedRoles: UserRole[] = ADMIN_PANEL_ROLES) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -114,7 +115,7 @@ export function useAdminAuth(allowedRoles: string[] = ['superadmin', 'admin', 'm
           throw new Error('User not found');
         }
 
-        if (!allowedRoles.includes(data.user.role)) {
+        if (!hasAnyRole(data.user.role, allowedRoles)) {
           setError('Insufficient permissions');
           router.push('/403');
           return;

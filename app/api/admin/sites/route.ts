@@ -1,23 +1,10 @@
-import { NextResponse } from 'next/server';
-import { verifySession } from '@/lib/auth';
+import { NextRequest, NextResponse } from 'next/server';
 import { getAllSites, createSite } from '@/lib/site';
-import { cookies } from 'next/headers';
+import { withAuthAndRateLimit } from '@/lib/api-auth';
 
 // GET - List all sites (superadmin only)
-export async function GET() {
+export const GET = withAuthAndRateLimit(async () => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get('session_token')?.value;
-
-    if (!sessionToken) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const user = await verifySession(sessionToken);
-    if (!user || user.role !== 'superadmin') {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
-
     const sites = await getAllSites();
     return NextResponse.json({ sites });
   } catch (error) {
@@ -27,23 +14,11 @@ export async function GET() {
       { status: 500 }
     );
   }
-}
+}, { allowedRoles: ['superadmin'] });
 
 // POST - Create new site (superadmin only)
-export async function POST(request: Request) {
+export const POST = withAuthAndRateLimit(async (request: NextRequest, user) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get('session_token')?.value;
-
-    if (!sessionToken) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const user = await verifySession(sessionToken);
-    if (!user || user.role !== 'superadmin') {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
-
     const body = await request.json();
     const { 
       subdomain, 
@@ -136,4 +111,4 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
-}
+}, { allowedRoles: ['superadmin'] });

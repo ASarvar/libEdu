@@ -1,13 +1,18 @@
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
+import crypto from 'crypto';
 import { query } from './db';
+import { UserRole } from './roles';
+
+const LOGIN_LOCKOUT_MAX_ATTEMPTS = 5;
+const LOGIN_LOCKOUT_MINUTES = 15;
 
 export interface User {
   id: string;
   full_name: string;
   email: string;
   phone?: string;
-  role: 'superadmin' | 'admin' | 'user';
+  role: UserRole;
   site_id?: string;
   is_active: boolean;
   email_verified: boolean;
@@ -22,6 +27,19 @@ export interface Session {
   session_token: string;
   expires_at: Date;
   created_at: Date;
+}
+
+export interface EmailVerificationResult {
+  success: boolean;
+  userId?: string;
+  email?: string;
+  reason?: 'invalid' | 'expired' | 'already-used';
+}
+
+export interface PasswordResetResult {
+  success: boolean;
+  userId?: string;
+  reason?: 'invalid' | 'expired' | 'already-used';
 }
 
 // Hash password
@@ -45,7 +63,7 @@ export async function createUser(
     email: string;
     phone?: string;
     password: string;
-    role?: 'admin' | 'user';
+    role?: 'admin' | 'moderator' | 'user';
     created_by?: string;
   }
 ): Promise<User> {
@@ -60,6 +78,137 @@ export async function createUser(
   );
 
   return result.rows[0];
+}
+
+// Create email verification token for a user
+export async function createEmailVerificationToken(userId: string): Promise<string> {
+  const token = crypto.randomBytes(32).toString('hex');
+  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
+  // Keep only one active token per user
+  await query(
+    `DELETE FROM email_verification_tokens WHERE user_id = $1 AND used = false`,
+    [userId]
+  );
+
+  await query(
+    `INSERT INTO email_verification_tokens (user_id, token, expires_at)
+     VALUES ($1, $2, $3)`,
+    [userId, token, expiresAt]
+  );
+
+  return token;
+}
+
+// Verify email using token
+export async function verifyEmailByToken(token: string): Promise<EmailVerificationResult> {
+  const tokenResult = await query(
+    `SELECT evt.user_id, evt.expires_at, evt.used, u.email
+     FROM email_verification_tokens evt
+     INNER JOIN users u ON u.id = evt.user_id
+     WHERE evt.token = $1
+     LIMIT 1`,
+    [token]
+  );
+
+  const row = tokenResult.rows[0];
+  if (!row) {
+    return { success: false, reason: 'invalid' };
+  }
+
+  if (row.used) {
+    return { success: false, reason: 'already-used' };
+  }
+
+  if (new Date(row.expires_at).getTime() < Date.now()) {
+    return { success: false, reason: 'expired' };
+  }
+
+  await query(
+    `UPDATE users SET email_verified = true, updated_at = CURRENT_TIMESTAMP WHERE id = $1`,
+    [row.user_id]
+  );
+
+  await query(
+    `UPDATE email_verification_tokens SET used = true WHERE token = $1`,
+    [token]
+  );
+
+  return {
+    success: true,
+    userId: row.user_id,
+    email: row.email,
+  };
+}
+
+// Create password reset token for a user
+export async function createPasswordResetToken(userId: string): Promise<string> {
+  const token = crypto.randomBytes(32).toString('hex');
+  const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
+  await query(
+    `DELETE FROM password_reset_tokens WHERE user_id = $1 AND used = false`,
+    [userId]
+  );
+
+  await query(
+    `INSERT INTO password_reset_tokens (user_id, token, expires_at)
+     VALUES ($1, $2, $3)`,
+    [userId, token, expiresAt]
+  );
+
+  return token;
+}
+
+// Reset password using token
+export async function resetPasswordByToken(token: string, newPassword: string): Promise<PasswordResetResult> {
+  const tokenResult = await query(
+    `SELECT user_id, expires_at, used
+     FROM password_reset_tokens
+     WHERE token = $1
+     LIMIT 1`,
+    [token]
+  );
+
+  const row = tokenResult.rows[0];
+  if (!row) {
+    return { success: false, reason: 'invalid' };
+  }
+
+  if (row.used) {
+    return { success: false, reason: 'already-used' };
+  }
+
+  if (new Date(row.expires_at).getTime() < Date.now()) {
+    return { success: false, reason: 'expired' };
+  }
+
+  const passwordHash = await hashPassword(newPassword);
+
+  await query(
+    `UPDATE users
+     SET password_hash = $1, updated_at = CURRENT_TIMESTAMP
+     WHERE id = $2`,
+    [passwordHash, row.user_id]
+  );
+
+  await query(
+    `UPDATE password_reset_tokens
+     SET used = true
+     WHERE token = $1`,
+    [token]
+  );
+
+  // Revoke all active sessions after password reset.
+  await query(
+    `DELETE FROM sessions WHERE user_id = $1`,
+    [row.user_id]
+  );
+
+  return {
+    success: true,
+    userId: row.user_id,
+  };
 }
 
 // Get user by email
@@ -90,7 +239,7 @@ export async function authenticateUser(
   password: string
 ): Promise<{ user: User; sessionToken: string } | null> {
   const result = await query(
-    `SELECT id, full_name, email, phone, password_hash, role, site_id, is_active, email_verified, created_at, updated_at, last_login
+    `SELECT id, full_name, email, phone, password_hash, role, site_id, is_active, email_verified, created_at, updated_at, last_login, failed_login_attempts, locked_until
      FROM users WHERE email = $1 AND is_active = true`,
     [email]
   );
@@ -98,12 +247,46 @@ export async function authenticateUser(
   const user = result.rows[0];
   if (!user) return null;
 
+  if (user.locked_until && new Date(user.locked_until).getTime() > Date.now()) {
+    return null;
+  }
+
   const isValid = await verifyPassword(password, user.password_hash);
-  if (!isValid) return null;
+
+  if (!isValid) {
+    const nextFailedAttempts = (user.failed_login_attempts || 0) + 1;
+
+    if (nextFailedAttempts >= LOGIN_LOCKOUT_MAX_ATTEMPTS) {
+      const lockedUntil = new Date(Date.now() + LOGIN_LOCKOUT_MINUTES * 60 * 1000);
+      await query(
+        `UPDATE users
+         SET failed_login_attempts = 0,
+             locked_until = $2,
+             updated_at = CURRENT_TIMESTAMP
+         WHERE id = $1`,
+        [user.id, lockedUntil]
+      );
+    } else {
+      await query(
+        `UPDATE users
+         SET failed_login_attempts = $2,
+             updated_at = CURRENT_TIMESTAMP
+         WHERE id = $1`,
+        [user.id, nextFailedAttempts]
+      );
+    }
+
+    return null;
+  }
 
   // Update last login
   await query(
-    `UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = $1`,
+    `UPDATE users
+     SET last_login = CURRENT_TIMESTAMP,
+         failed_login_attempts = 0,
+         locked_until = NULL,
+         updated_at = CURRENT_TIMESTAMP
+     WHERE id = $1`,
     [user.id]
   );
 
@@ -126,7 +309,7 @@ export async function verifySession(
   sessionToken: string
 ): Promise<User | null> {
   const result = await query(
-    `SELECT u.id, u.full_name, u.email, u.phone, u.role, u.is_active, u.email_verified, u.created_at, u.updated_at, u.last_login
+    `SELECT u.id, u.full_name, u.email, u.phone, u.role, u.site_id, u.is_active, u.email_verified, u.created_at, u.updated_at, u.last_login
      FROM users u
      INNER JOIN sessions s ON u.id = s.user_id
      WHERE s.session_token = $1 AND s.expires_at > CURRENT_TIMESTAMP AND u.is_active = true`,
@@ -188,7 +371,7 @@ export async function updateUser(
     full_name?: string;
     email?: string;
     phone?: string;
-    role?: 'admin' | 'user';
+    role?: 'admin' | 'moderator' | 'user';
     is_active?: boolean;
   }
 ): Promise<User> {

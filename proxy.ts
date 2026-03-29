@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { verifySessionMiddleware, getSessionToken, hasRole } from './lib/middleware-auth';
+import { ADMIN_PANEL_ROLES } from './lib/roles';
 
 // Main domain from environment variable
 const MAIN_DOMAIN = process.env.MAIN_DOMAIN || 'kutubxona.uz';
@@ -51,7 +52,7 @@ export async function proxy(request: NextRequest) {
     }
 
     // Check if user has admin privileges
-    if (!hasRole(user, ['superadmin', 'admin', 'moderator'])) {
+    if (!hasRole(user, ADMIN_PANEL_ROLES)) {
       // User doesn't have required role
       return NextResponse.redirect(new URL('/403', request.url));
     }

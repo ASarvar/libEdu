@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authenticateUser } from '@/lib/auth';
+import { authenticateUser, deleteSession } from '@/lib/auth';
 import { cookies } from 'next/headers';
 import { rateLimiter, getClientIP, RATE_LIMITS } from '@/lib/rate-limit';
 
@@ -9,8 +9,8 @@ export async function POST(request: NextRequest) {
     const ip = getClientIP(request.headers);
     const rateLimitKey = `login:${ip}`;
     
-    if (rateLimiter.check(rateLimitKey, RATE_LIMITS.LOGIN.maxRequests, RATE_LIMITS.LOGIN.windowMs)) {
-      const resetTime = rateLimiter.getResetTime(rateLimitKey);
+    if (await rateLimiter.check(rateLimitKey, RATE_LIMITS.LOGIN.maxRequests, RATE_LIMITS.LOGIN.windowMs)) {
+      const resetTime = await rateLimiter.getResetTime(rateLimitKey);
       return NextResponse.json(
         { 
           error: 'Too many login attempts',
@@ -26,24 +26,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('Login API called from IP:', ip);
     const body = await request.json();
-    console.log('Request body:', { email: body.email });
     const { email, password } = body;
 
     // Validate input
     if (!email || !password) {
-      console.log('Validation failed: missing email or password');
       return NextResponse.json(
         { error: 'Email and password are required' },
         { status: 400 }
       );
     }
 
-    console.log('Attempting to authenticate user:', email);
     // Authenticate user
     const result = await authenticateUser(email, password);
-    console.log('Authentication result:', result ? 'success' : 'failed');
 
     if (!result) {
       return NextResponse.json(
@@ -53,6 +48,17 @@ export async function POST(request: NextRequest) {
     }
 
     const { user, sessionToken } = result;
+
+    if (!user.email_verified) {
+      await deleteSession(sessionToken);
+      return NextResponse.json(
+        {
+          error: 'Email not verified',
+          message: 'Please verify your email before logging in. You can request a new verification email from the signup page.',
+        },
+        { status: 403 }
+      );
+    }
 
     // Set session cookie
     const cookieStore = await cookies();
@@ -64,7 +70,6 @@ export async function POST(request: NextRequest) {
       path: '/',
     });
 
-    console.log('Login successful for user:', user.email);
     return NextResponse.json({
       success: true,
       user: {
@@ -75,11 +80,14 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error: any) {
-    console.error('Login error details:', {
-      message: error?.message,
-      stack: error?.stack,
-      error: error
-    });
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Login error details:', {
+        message: error?.message,
+        stack: error?.stack,
+      });
+    } else {
+      console.error('Login error:', error?.message || 'unknown error');
+    }
     return NextResponse.json(
       { 
         error: 'Internal server error',

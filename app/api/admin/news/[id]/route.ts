@@ -1,25 +1,16 @@
-import { NextResponse } from 'next/server';
-import { verifySession } from '@/lib/auth';
+import { NextRequest, NextResponse } from 'next/server';
 import { getNewsById, updateNews, deleteNews } from '@/lib/news';
-import { cookies } from 'next/headers';
+import { withAuthAndRateLimitWithContext } from '@/lib/api-auth';
+import { deleteManagedUploadFile } from '@/lib/upload-cleanup';
 
 // GET - Get single news by ID
-export async function GET(
-  request: Request,
+export const GET = withAuthAndRateLimitWithContext(async (
+  request: NextRequest,
+  user,
   context: { params: Promise<{ id: string }> }
-) {
+) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get('session_token')?.value;
-
-    if (!sessionToken) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const user = await verifySession(sessionToken);
-    if (!user || !['admin', 'superadmin'].includes(user.role)) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
+    void request;
 
     const { id } = await context.params;
     const news = await getNewsById(id);
@@ -41,26 +32,15 @@ export async function GET(
       { status: 500 }
     );
   }
-}
+}, { allowedRoles: ['admin', 'superadmin'] });
 
 // PATCH - Update news
-export async function PATCH(
-  request: Request,
+export const PATCH = withAuthAndRateLimitWithContext(async (
+  request: NextRequest,
+  user,
   context: { params: Promise<{ id: string }> }
-) {
+) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get('session_token')?.value;
-
-    if (!sessionToken) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const user = await verifySession(sessionToken);
-    if (!user || !['admin', 'superadmin'].includes(user.role)) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
-
     const { id } = await context.params;
     const news = await getNewsById(id);
 
@@ -75,6 +55,14 @@ export async function PATCH(
 
     const body = await request.json();
     const updatedNews = await updateNews(id, body);
+
+    if (
+      news.cover_image &&
+      body.cover_image !== undefined &&
+      body.cover_image !== news.cover_image
+    ) {
+      await deleteManagedUploadFile(news.cover_image);
+    }
 
     return NextResponse.json({ news: updatedNews });
   } catch (error: any) {
@@ -93,25 +81,16 @@ export async function PATCH(
       { status: 500 }
     );
   }
-}
+}, { allowedRoles: ['admin', 'superadmin'] });
 
 // DELETE - Delete news
-export async function DELETE(
-  request: Request,
+export const DELETE = withAuthAndRateLimitWithContext(async (
+  request: NextRequest,
+  user,
   context: { params: Promise<{ id: string }> }
-) {
+) => {
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get('session_token')?.value;
-
-    if (!sessionToken) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const user = await verifySession(sessionToken);
-    if (!user || !['admin', 'superadmin'].includes(user.role)) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
+    void request;
 
     const { id } = await context.params;
     const news = await getNewsById(id);
@@ -126,6 +105,7 @@ export async function DELETE(
     }
 
     await deleteNews(id);
+    await deleteManagedUploadFile(news.cover_image);
 
     return NextResponse.json({ message: 'News deleted successfully' });
   } catch (error) {
@@ -135,4 +115,4 @@ export async function DELETE(
       { status: 500 }
     );
   }
-}
+}, { allowedRoles: ['admin', 'superadmin'] });
