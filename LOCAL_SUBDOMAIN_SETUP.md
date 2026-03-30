@@ -82,4 +82,4 @@ npm run dev
 - Subdomen logic [`proxy.ts`](proxy.ts) faylida
 - Layout selection [`components/layout/Layout.tsx`](components/layout/Layout.tsx) da
 - Site API [`app/api/admin/sites/route.ts`](app/api/admin/sites/route.ts) da
-- Database schema [`database/migrations/002_add_layout_theme_support.sql`](database/migrations/002_add_layout_theme_support.sql) da
+- Database schema [`prisma/schema.prisma`](prisma/schema.prisma) da

@@ -9,5 +9,5 @@ bcrypt.hash(password, 10, (err, hash) => {
   }
   console.log('Bcrypt hash for password "' + password + '":');
   console.log(hash);
-  console.log('\nCopy this hash and update database/schema.sql');
+  console.log('\nCopy this hash and update the superadmin row using DATABASE_SETUP.md instructions.');
 });

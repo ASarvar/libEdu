@@ -12,12 +12,6 @@ psql -U postgres
 
 # Create database
 CREATE DATABASE kutubxona_db;
-
-# Connect to database
-\c kutubxona_db
-
-# Run the schema
-\i database/schema.sql
 ```
 
 ### 3. Generate Superadmin Password Hash
@@ -29,10 +23,8 @@ npm install -g bcryptjs
 node -e "const bcrypt = require('bcryptjs'); bcrypt.hash('YourPassword123!', 10, (err, hash) => console.log(hash));"
 ```
 
-### 4. Update Schema with Real Password Hash
-Edit `database/schema.sql` and replace `$2b$10$YourBcryptHashHere` with the hash generated above.
-
-Then re-run the INSERT statement:
+### 4. Insert/Update Superadmin Password Hash
+Run this SQL in PostgreSQL:
 ```sql
 INSERT INTO users (full_name, email, phone, password_hash, role, email_verified, is_active)
 VALUES (
@@ -43,7 +35,10 @@ VALUES (
     'superadmin',
     true,
     true
-);
+)
+ON CONFLICT (email) DO UPDATE
+SET password_hash = EXCLUDED.password_hash,
+    updated_at = CURRENT_TIMESTAMP;
 ```
 
 ## Environment Configuration
@@ -60,6 +55,7 @@ DB_HOST=localhost
 DB_NAME=kutubxona_db
 DB_PASSWORD=your_postgres_password
 DB_PORT=5432
+DATABASE_URL=postgresql://postgres:your_postgres_password@localhost:5432/kutubxona_db?schema=public
 
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 SESSION_SECRET=your-super-secret-key-change-this
@@ -69,6 +65,28 @@ SESSION_SECRET=your-super-secret-key-change-this
 
 ```bash
 npm install
+```
+
+## Prisma Automation (versioned migrations)
+
+Use versioned Prisma migrations as the single source of truth:
+
+```bash
+# Generate Prisma client
+npm run prisma:generate
+
+# For new schema changes in development
+npm run prisma:migrate -- --name your_change_name
+
+# Apply committed migrations in production
+npm run migrate
+```
+
+### Existing database baseline (one-time)
+If database already exists, mark baseline as applied once:
+
+```bash
+npx prisma migrate resolve --applied 0001_baseline
 ```
 
 This will install:

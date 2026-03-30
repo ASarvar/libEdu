@@ -1,0 +1,432 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                                          String                   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  fullName                                    String                   @map("full_name") @db.VarChar(255)
+  email                                       String                   @unique @db.VarChar(255)
+  phone                                       String?                  @db.VarChar(20)
+  passwordHash                                String                   @map("password_hash") @db.VarChar(255)
+  role                                        UserRole?                @default(user)
+  isActive                                    Boolean?                 @default(true) @map("is_active")
+  emailVerified                               Boolean?                 @default(false) @map("email_verified")
+  createdAt                                   DateTime?                @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt                                   DateTime?                @default(now()) @map("updated_at") @db.Timestamp(6)
+  createdBy                                   String?                  @map("created_by") @db.Uuid
+  lastLogin                                   DateTime?                @map("last_login") @db.Timestamp(6)
+  siteId                                      String?                  @map("site_id") @db.Uuid
+  failedLoginAttempts                         Int?                     @default(0) @map("failed_login_attempts")
+  lockedUntil                                 DateTime?                @map("locked_until") @db.Timestamp(6)
+  auditLogs                                   AuditLog[]
+  custom_blocks                               custom_blocks[]
+  emailVerificationTokens                     EmailVerificationToken[]
+  eventsCreated                               Event[]                  @relation("EventCreatedBy")
+  media_library                               media_library[]
+  newsAuthored                                News[]                   @relation("NewsAuthor")
+  page_layouts_page_layouts_created_byTousers page_layouts[]           @relation("page_layouts_created_byTousers")
+  page_layouts_page_layouts_updated_byTousers page_layouts[]           @relation("page_layouts_updated_byTousers")
+  page_revisions                              page_revisions[]
+  pagesCreated                                Page[]                   @relation("PageCreatedBy")
+  pagesUpdated                                Page[]                   @relation("PageUpdatedBy")
+  passwordResetTokens                         PasswordResetToken[]
+  sessions                                    Session[]
+  assignedSiteUsers                           SiteUser[]               @relation("SiteUserAssignedBy")
+  siteUsers                                   SiteUser[]               @relation("SiteUserUser")
+  createdSites                                Site[]                   @relation("SiteCreatedBy")
+  creator                                     User?                    @relation("UserCreatedBy", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdUsers                                User[]                   @relation("UserCreatedBy")
+  site                                        Site?                    @relation(fields: [siteId], references: [id], onUpdate: NoAction)
+
+  @@index([role], map: "idx_users_role")
+  @@index([siteId], map: "idx_users_site_id")
+  @@index([lockedUntil], map: "idx_users_locked_until")
+  @@index([email], map: "idx_users_email")
+  @@map("users")
+}
+
+model Site {
+  id                 String              @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  subdomain          String              @unique @db.VarChar(100)
+  name               String              @db.VarChar(255)
+  description        String?
+  logoUrl            String?             @map("logo_url") @db.VarChar(500)
+  primaryColor       String?             @default("#3498db") @map("primary_color") @db.VarChar(7)
+  secondaryColor     String?             @default("#2ecc71") @map("secondary_color") @db.VarChar(7)
+  contactEmail       String?             @map("contact_email") @db.VarChar(255)
+  contactPhone       String?             @map("contact_phone") @db.VarChar(20)
+  contact_address    String?
+  facebookUrl        String?             @map("facebook_url") @db.VarChar(500)
+  instagramUrl       String?             @map("instagram_url") @db.VarChar(500)
+  twitterUrl         String?             @map("twitter_url") @db.VarChar(500)
+  isActive           Boolean?            @default(true) @map("is_active")
+  createdAt          DateTime?           @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt          DateTime?           @default(now()) @map("updated_at") @db.Timestamp(6)
+  createdBy          String?             @map("created_by") @db.Uuid
+  headerStyle        String?             @default("header1") @map("header_style") @db.VarChar(20)
+  footerStyle        String?             @default("footer1") @map("footer_style") @db.VarChar(20)
+  homeStyle          String?             @default("home1") @map("home_style") @db.VarChar(20)
+  logoPath           String?             @map("logo_path") @db.VarChar(500)
+  enableDarkMode     Boolean?            @default(false) @map("enable_dark_mode")
+  customCss          String?             @map("custom_css")
+  contactSubmissions ContactSubmission[]
+  custom_blocks      custom_blocks[]
+  events             Event[]
+  media_library      media_library[]
+  news               News[]
+  page_layouts       page_layouts[]
+  pages              Page[]
+  siteUsers          SiteUser[]
+  creator            User?               @relation("SiteCreatedBy", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users              User[]
+
+  @@index([isActive], map: "idx_sites_is_active")
+  @@index([subdomain], map: "idx_sites_subdomain")
+  @@map("sites")
+}
+
+model News {
+  id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  siteId      String    @map("site_id") @db.Uuid
+  title       String    @db.VarChar(500)
+  slug        String    @db.VarChar(500)
+  excerpt     String?
+  content     String
+  coverImage  String?   @map("cover_image") @db.VarChar(500)
+  authorId    String    @map("author_id") @db.Uuid
+  isPublished Boolean?  @default(false) @map("is_published")
+  publishedAt DateTime? @map("published_at") @db.Timestamp(6)
+  viewsCount  Int?      @default(0) @map("views_count")
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt   DateTime? @default(now()) @map("updated_at") @db.Timestamp(6)
+  titleUz     String?   @map("title_uz") @db.VarChar(500)
+  titleRu     String?   @map("title_ru") @db.VarChar(500)
+  titleEn     String?   @map("title_en") @db.VarChar(500)
+  excerptUz   String?   @map("excerpt_uz")
+  excerptRu   String?   @map("excerpt_ru")
+  excerptEn   String?   @map("excerpt_en")
+  contentUz   String?   @map("content_uz")
+  contentRu   String?   @map("content_ru")
+  contentEn   String?   @map("content_en")
+  author      User      @relation("NewsAuthor", fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  site        Site      @relation(fields: [siteId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([siteId, slug])
+  @@index([siteId], map: "idx_news_site_id")
+  @@index([siteId, isPublished], map: "idx_news_published")
+  @@map("news")
+}
+
+model Event {
+  id            String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  siteId        String    @map("site_id") @db.Uuid
+  title         String    @db.VarChar(500)
+  slug          String    @db.VarChar(500)
+  description   String
+  coverImage    String?   @map("cover_image") @db.VarChar(500)
+  location      String?   @db.VarChar(255)
+  eventDate     DateTime  @map("event_date") @db.Timestamp(6)
+  endDate       DateTime? @map("end_date") @db.Timestamp(6)
+  isPublished   Boolean?  @default(false) @map("is_published")
+  createdBy     String    @map("created_by") @db.Uuid
+  createdAt     DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt     DateTime? @default(now()) @map("updated_at") @db.Timestamp(6)
+  titleUz       String?   @map("title_uz") @db.VarChar(500)
+  titleRu       String?   @map("title_ru") @db.VarChar(500)
+  titleEn       String?   @map("title_en") @db.VarChar(500)
+  descriptionUz String?   @map("description_uz")
+  descriptionRu String?   @map("description_ru")
+  descriptionEn String?   @map("description_en")
+  creator       User      @relation("EventCreatedBy", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  site          Site      @relation(fields: [siteId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([siteId, slug])
+  @@index([siteId], map: "idx_events_site_id")
+  @@index([siteId, eventDate], map: "idx_events_date")
+  @@map("events")
+}
+
+model SiteUser {
+  id         String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  siteId     String    @map("site_id") @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  role       UserRole  @default(moderator)
+  assignedAt DateTime? @default(now()) @map("assigned_at") @db.Timestamp(6)
+  assignedBy String?   @map("assigned_by") @db.Uuid
+  assigned   User?     @relation("SiteUserAssignedBy", fields: [assignedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  site       Site      @relation(fields: [siteId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user       User      @relation("SiteUserUser", fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([siteId, userId])
+  @@index([siteId], map: "idx_site_users_site_id")
+  @@index([userId], map: "idx_site_users_user_id")
+  @@map("site_users")
+}
+
+model ContactSubmission {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  siteId    String?   @map("site_id") @db.Uuid
+  name      String    @db.VarChar(255)
+  email     String    @db.VarChar(255)
+  message   String?
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  read      Boolean?  @default(false)
+  replied   Boolean?  @default(false)
+  site      Site?     @relation(fields: [siteId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([siteId], map: "idx_contact_submissions_site_id")
+  @@index([createdAt(sort: Desc)], map: "idx_contact_submissions_created_at")
+  @@map("contact_submissions")
+}
+
+model Session {
+  id           String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId       String    @map("user_id") @db.Uuid
+  sessionToken String    @unique @map("session_token") @db.VarChar(500)
+  expiresAt    DateTime  @map("expires_at") @db.Timestamp(6)
+  createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  ipAddress    String?   @map("ip_address") @db.VarChar(45)
+  userAgent    String?   @map("user_agent")
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([userId], map: "idx_sessions_user_id")
+  @@index([expiresAt], map: "idx_sessions_expires")
+  @@index([sessionToken], map: "idx_sessions_token")
+  @@map("sessions")
+}
+
+model AuditLog {
+  id         String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId     String?   @map("user_id") @db.Uuid
+  action     String    @db.VarChar(100)
+  entityType String?   @map("entity_type") @db.VarChar(50)
+  entityId   String?   @map("entity_id") @db.Uuid
+  details    Json?
+  ipAddress  String?   @map("ip_address") @db.VarChar(45)
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  user       User?     @relation(fields: [userId], references: [id], onUpdate: NoAction)
+
+  @@index([userId], map: "idx_audit_logs_user_id")
+  @@index([createdAt], map: "idx_audit_logs_created_at")
+  @@map("audit_logs")
+}
+
+model PasswordResetToken {
+  id        String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  token     String    @unique @db.VarChar(500)
+  expiresAt DateTime  @map("expires_at") @db.Timestamp(6)
+  used      Boolean?  @default(false)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([token], map: "idx_password_reset_tokens_token")
+  @@map("password_reset_tokens")
+}
+
+model EmailVerificationToken {
+  id        String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  token     String    @unique @db.VarChar(500)
+  expiresAt DateTime  @map("expires_at") @db.Timestamp(6)
+  used      Boolean?  @default(false)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([token], map: "idx_email_verification_tokens_token")
+  @@index([userId], map: "idx_email_verification_tokens_user_id")
+  @@index([expiresAt], map: "idx_email_verification_tokens_expires_at")
+  @@map("email_verification_tokens")
+}
+
+model Page {
+  id                String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  siteId            String    @map("site_id") @db.Uuid
+  pageType          String    @map("page_type") @db.VarChar(50)
+  titleUz           String?   @map("title_uz") @db.VarChar(500)
+  titleRu           String?   @map("title_ru") @db.VarChar(500)
+  titleEn           String?   @map("title_en") @db.VarChar(500)
+  contentUz         String?   @map("content_uz")
+  contentRu         String?   @map("content_ru")
+  contentEn         String?   @map("content_en")
+  metaDescriptionUz String?   @map("meta_description_uz")
+  metaDescriptionRu String?   @map("meta_description_ru")
+  metaDescriptionEn String?   @map("meta_description_en")
+  isPublished       Boolean?  @default(true) @map("is_published")
+  createdBy         String    @map("created_by") @db.Uuid
+  updatedBy         String?   @map("updated_by") @db.Uuid
+  createdAt         DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt         DateTime? @default(now()) @map("updated_at") @db.Timestamp(6)
+  creator           User      @relation("PageCreatedBy", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  site              Site      @relation(fields: [siteId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  updater           User?     @relation("PageUpdatedBy", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([siteId, pageType])
+  @@index([siteId], map: "idx_pages_site_id")
+  @@index([pageType], map: "idx_pages_page_type")
+  @@index([siteId, isPublished], map: "idx_pages_published")
+  @@map("pages")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model custom_blocks {
+  id            String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  site_id       String    @db.Uuid
+  block_name    String    @db.VarChar(255)
+  html_content  String?
+  css_content   String?
+  js_content    String?
+  thumbnail_url String?   @db.VarChar(500)
+  is_global     Boolean?  @default(false)
+  created_by    String?   @db.Uuid
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+  updated_at    DateTime? @default(now()) @db.Timestamp(6)
+  users         User?     @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sites         Site      @relation(fields: [site_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([site_id, block_name])
+  @@index([is_global], map: "idx_custom_blocks_is_global")
+  @@index([site_id], map: "idx_custom_blocks_site_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model media_library {
+  id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  site_id     String    @db.Uuid
+  file_name   String    @db.VarChar(255)
+  file_path   String    @db.VarChar(500)
+  file_url    String    @db.VarChar(500)
+  file_size   Int?
+  mime_type   String?   @db.VarChar(100)
+  width       Int?
+  height      Int?
+  alt_text    String?   @db.VarChar(255)
+  uploaded_by String?   @db.Uuid
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
+  sites       Site      @relation(fields: [site_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users       User?     @relation(fields: [uploaded_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([mime_type], map: "idx_media_library_mime_type")
+  @@index([site_id], map: "idx_media_library_site_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model page_layouts {
+  id                                   String              @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  site_id                              String              @db.Uuid
+  page_type                            String              @db.VarChar(50)
+  page_slug                            String?             @db.VarChar(255)
+  name                                 String              @db.VarChar(255)
+  is_active                            Boolean?            @default(true)
+  is_published                         Boolean?            @default(false)
+  version                              Int?                @default(1)
+  created_at                           DateTime?           @default(now()) @db.Timestamp(6)
+  updated_at                           DateTime?           @default(now()) @db.Timestamp(6)
+  created_by                           String?             @db.Uuid
+  updated_by                           String?             @db.Uuid
+  users_page_layouts_created_byTousers User?               @relation("page_layouts_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sites                                Site                @relation(fields: [site_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users_page_layouts_updated_byTousers User?               @relation("page_layouts_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  page_revisions                       page_revisions[]
+  section_instances                    section_instances[]
+
+  @@unique([site_id, page_type, page_slug])
+  @@index([is_active], map: "idx_page_layouts_is_active")
+  @@index([is_published], map: "idx_page_layouts_is_published")
+  @@index([page_type], map: "idx_page_layouts_page_type")
+  @@index([site_id], map: "idx_page_layouts_site_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model page_revisions {
+  id                 String       @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  page_layout_id     String       @db.Uuid
+  version_number     Int
+  snapshot           Json
+  change_description String?
+  created_by         String?      @db.Uuid
+  created_at         DateTime?    @default(now()) @db.Timestamp(6)
+  users              User?        @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  page_layouts       page_layouts @relation(fields: [page_layout_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([page_layout_id], map: "idx_page_revisions_page_layout_id")
+  @@index([page_layout_id, version_number], map: "idx_page_revisions_version")
+}
+
+model schema_migrations {
+  id             Int       @id @default(autoincrement())
+  migration_name String    @unique @db.VarChar(255)
+  applied_at     DateTime? @default(now()) @db.Timestamp(6)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model section_configs {
+  id                  String            @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  section_instance_id String            @db.Uuid
+  config_key          String            @db.VarChar(100)
+  config_value        String?
+  config_type         String            @db.VarChar(50)
+  language_code       String?           @default("en") @db.VarChar(10)
+  created_at          DateTime?         @default(now()) @db.Timestamp(6)
+  updated_at          DateTime?         @default(now()) @db.Timestamp(6)
+  section_instances   section_instances @relation(fields: [section_instance_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([section_instance_id, config_key, language_code])
+  @@index([language_code], map: "idx_section_configs_language")
+  @@index([section_instance_id], map: "idx_section_configs_section_instance_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model section_instances {
+  id                String            @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  page_layout_id    String            @db.Uuid
+  section_type      String            @db.VarChar(100)
+  section_component String            @db.VarChar(150)
+  display_order     Int
+  is_visible        Boolean?          @default(true)
+  css_classes       String?           @db.VarChar(500)
+  inline_styles     String?
+  animation_type    String?           @db.VarChar(50)
+  created_at        DateTime?         @default(now()) @db.Timestamp(6)
+  updated_at        DateTime?         @default(now()) @db.Timestamp(6)
+  section_configs   section_configs[]
+  page_layouts      page_layouts      @relation(fields: [page_layout_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([page_layout_id, display_order], map: "idx_section_instances_display_order")
+  @@index([page_layout_id], map: "idx_section_instances_page_layout_id")
+  @@index([section_type], map: "idx_section_instances_section_type")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model section_templates {
+  id                String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  section_type      String    @unique @db.VarChar(100)
+  section_component String    @db.VarChar(150)
+  display_name      String    @db.VarChar(255)
+  description       String?
+  category          String?   @db.VarChar(50)
+  thumbnail_url     String?   @db.VarChar(500)
+  default_config    Json?
+  schema            Json?
+  is_active         Boolean?  @default(true)
+  created_at        DateTime? @default(now()) @db.Timestamp(6)
+  updated_at        DateTime? @default(now()) @db.Timestamp(6)
+
+  @@index([is_active], map: "idx_section_templates_active")
+  @@index([category], map: "idx_section_templates_category")
+  @@index([section_component], map: "idx_section_templates_component")
+  @@index([is_active], map: "idx_section_templates_is_active")
+}
+
+enum UserRole {
+  superadmin
+  admin
+  user
+  moderator
+
+  @@map("user_role")
+}

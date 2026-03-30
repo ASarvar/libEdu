@@ -9,10 +9,14 @@
     "start": "next start",
     "lint": "next lint",
     "sass": "sass --watch public/scss/style.scss:public/css/style.css",
-    "migrate": "node scripts/migrate.js",
+    "migrate": "prisma migrate deploy && prisma generate",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
     "cleanup-sites": "node scripts/cleanup-sample-sites.js"
   },
   "dependencies": {
+    "@prisma/client": "^7.6.0",
     "animate.css": "^4.1.1",
     "bcryptjs": "^2.4.3",
     "dotenv": "^17.2.3",
@@ -51,6 +55,7 @@
     "eslint": "^9.18.0",
     "eslint-config-next": "^15.5.4",
     "postcss": "^8.5.6",
+    "prisma": "^7.6.0",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3"
   },
