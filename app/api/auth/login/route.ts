@@ -49,7 +49,8 @@ export async function POST(request: NextRequest) {
 
     const { user, sessionToken } = result;
 
-    if (!user.email_verified) {
+    const enforceEmailVerification = process.env.ENFORCE_EMAIL_VERIFICATION === 'true';
+    if (enforceEmailVerification && !user.email_verified) {
       await deleteSession(sessionToken);
       return NextResponse.json(
         {

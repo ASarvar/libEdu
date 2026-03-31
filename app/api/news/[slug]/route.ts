@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
 import { getNewsBySlug } from '@/lib/news';
 import { getSiteBySubdomain } from '@/lib/site';
 import { headers } from 'next/headers';
+import { apiError, apiOk } from '@/lib/api-response';
 
 // GET - Get single published news by slug (public)
 export async function GET(
@@ -17,27 +17,25 @@ export async function GET(
     const site = await getSiteBySubdomain(subdomain);
     
     if (!site) {
-      return NextResponse.json({ error: 'Site not found' }, { status: 404 });
+      return apiError(404, { code: 'SITE_NOT_FOUND', message: 'Site not found' });
     }
 
     const { slug } = await context.params;
-    const news = await getNewsBySlug(site.id, slug);
+    const news = await getNewsBySlug(site.id, slug, {
+      publishedOnly: true,
+      incrementViews: true,
+    });
 
     if (!news) {
-      return NextResponse.json({ error: 'News not found' }, { status: 404 });
+      return apiError(404, { code: 'NEWS_NOT_FOUND', message: 'News not found' });
     }
 
-    // Only return if published
-    if (!news.is_published) {
-      return NextResponse.json({ error: 'News not found' }, { status: 404 });
-    }
-
-    return NextResponse.json({ news });
+    return apiOk({ news });
   } catch (error) {
     console.error('Error fetching news:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return apiError(500, {
+      code: 'INTERNAL_SERVER_ERROR',
+      message: 'Internal server error',
+    });
   }
 }

@@ -1,10 +1,11 @@
 // API endpoint for logo upload
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { withAuth } from '@/lib/api-auth';
+import { apiOk, apiError } from '@/lib/api-response';
 
 const MAX_FILE_SIZE = 1024 * 1024; // 1MB
 const ALLOWED_TYPES = ['image/png', 'image/svg+xml'];
@@ -17,35 +18,35 @@ export const POST = withAuth(async (request: NextRequest) => {
     const file = formData.get('logo') as File;
 
     if (!file) {
-      return NextResponse.json(
-        { error: 'Logo fayli topilmadi' },
-        { status: 400 }
-      );
+      return apiError(400, {
+        code: 'MISSING_FILE',
+        message: 'Logo file is required',
+      });
     }
 
     // Validate file type
     if (!ALLOWED_TYPES.includes(file.type)) {
-      return NextResponse.json(
-        { error: 'Faqat PNG va SVG formatlar qo\'llab-quvvatlanadi' },
-        { status: 400 }
-      );
+      return apiError(400, {
+        code: 'INVALID_FILE_TYPE',
+        message: 'Only PNG and SVG formats are supported',
+      });
     }
 
     // Validate file size
     if (file.size > MAX_FILE_SIZE) {
-      return NextResponse.json(
-        { error: 'Fayl hajmi 1MB dan oshmasligi kerak' },
-        { status: 400 }
-      );
+      return apiError(400, {
+        code: 'FILE_TOO_LARGE',
+        message: 'File size must not exceed 1MB',
+      });
     }
 
     // Validate file extension
     const fileExt = path.extname(file.name).toLowerCase();
     if (!ALLOWED_EXTENSIONS.includes(fileExt)) {
-      return NextResponse.json(
-        { error: 'Noto\'g\'ri fayl kengaytmasi' },
-        { status: 400 }
-      );
+      return apiError(400, {
+        code: 'INVALID_EXTENSION',
+        message: 'Invalid file extension',
+      });
     }
 
     // Create upload directory if it doesn't exist
@@ -65,17 +66,13 @@ export const POST = withAuth(async (request: NextRequest) => {
     // Return relative path for database storage
     const relativePath = `/uploads/logos/${uniqueFilename}`;
 
-    return NextResponse.json({
-      success: true,
-      path: relativePath,
-      message: 'Logo muvaffaqiyatli yuklandi'
-    });
+    return apiOk({ path: relativePath }, { status: 201 });
   } catch (error) {
     console.error('Logo upload error:', error);
-    return NextResponse.json(
-      { error: 'Logo yuklashda xatolik yuz berdi' },
-      { status: 500 }
-    );
+    return apiError(500, {
+      code: 'UPLOAD_FAILED',
+      message: 'Failed to upload logo',
+    });
   }
 }, { allowedRoles: ['superadmin', 'admin'] });
 
@@ -86,19 +83,19 @@ export const DELETE = withAuth(async (request: NextRequest) => {
     const logoPath = searchParams.get('path');
 
     if (!logoPath) {
-      return NextResponse.json(
-        { error: 'Logo yo\'li ko\'rsatilmagan' },
-        { status: 400 }
-      );
+      return apiError(400, {
+        code: 'MISSING_PATH',
+        message: 'Logo path is required',
+      });
     }
 
     // Security check - ensure path is within uploads directory
     const fullPath = path.join(process.cwd(), 'public', logoPath);
     if (!fullPath.includes(UPLOAD_DIR)) {
-      return NextResponse.json(
-        { error: 'Noto\'g\'ri fayl yo\'li' },
-        { status: 400 }
-      );
+      return apiError(400, {
+        code: 'INVALID_PATH',
+        message: 'Invalid file path',
+      });
     }
 
     // Delete file if exists
@@ -107,15 +104,12 @@ export const DELETE = withAuth(async (request: NextRequest) => {
       await unlink(fullPath);
     }
 
-    return NextResponse.json({
-      success: true,
-      message: 'Logo o\'chirildi'
-    });
+    return apiOk({ message: 'Logo deleted successfully' });
   } catch (error) {
     console.error('Logo delete error:', error);
-    return NextResponse.json(
-      { error: 'Logo o\'chirishda xatolik yuz berdi' },
-      { status: 500 }
-    );
+    return apiError(500, {
+      code: 'DELETE_FAILED',
+      message: 'Failed to delete logo',
+    });
   }
 }, { allowedRoles: ['superadmin', 'admin'] });

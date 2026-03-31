@@ -1,6 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { getUserById, updateUser, deleteUser, logAuditAction } from '@/lib/auth';
 import { withAuthAndRateLimitWithContext } from '@/lib/api-auth';
+import { apiError, apiOk } from '@/lib/api-response';
+import { parseUpdateUserInput, UserInputError } from '@/lib/user-validation';
 
 // GET single user
 export const GET = withAuthAndRateLimitWithContext(async (
@@ -10,18 +12,22 @@ export const GET = withAuthAndRateLimitWithContext(async (
 ) => {
   try {
     void request;
+    void currentUser;
 
     const { id } = await params;
     const user = await getUserById(id);
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return apiError(404, { code: 'USER_NOT_FOUND', message: 'User not found' });
     }
 
-    return NextResponse.json({ user });
+    return apiOk({ user });
   } catch (error) {
     console.error('Get user error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return apiError(500, {
+      code: 'INTERNAL_SERVER_ERROR',
+      message: 'Internal server error',
+    });
   }
 }, {
   allowedRoles: ['admin', 'superadmin'],
@@ -35,54 +41,61 @@ export const PATCH = withAuthAndRateLimitWithContext(async (
 ) => {
   try {
     const { id } = await params;
-    const body = await request.json();
-    const { fullName, email, phone, role, isActive } = body;
 
-    // Get target user
     const targetUser = await getUserById(id);
 
     if (!targetUser) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return apiError(404, { code: 'USER_NOT_FOUND', message: 'User not found' });
     }
 
-    // Cannot modify superadmin
     if (targetUser.role === 'superadmin') {
-      return NextResponse.json({ error: 'Cannot modify superadmin user' }, { status: 403 });
+      return apiError(403, {
+        code: 'SUPERADMIN_IMMUTABLE',
+        message: 'Cannot modify superadmin user',
+      });
     }
 
-    // Only superadmin can change role to admin
-    if (role === 'admin' && currentUser.role !== 'superadmin') {
-      return NextResponse.json({ error: 'Only superadmin can assign admin role' }, { status: 403 });
+    const body = await request.json();
+    const updates = parseUpdateUserInput(body);
+
+    if (updates.role === 'admin' && currentUser.role !== 'superadmin') {
+      return apiError(403, {
+        code: 'ADMIN_ROLE_RESTRICTED',
+        message: 'Only superadmin can assign admin role',
+      });
     }
 
-    // Cannot change to superadmin
-    if (role === 'superadmin') {
-      return NextResponse.json({ error: 'Cannot assign superadmin role' }, { status: 403 });
-    }
-
-    const updatedUser = await updateUser(id, {
-      full_name: fullName,
-      email,
-      phone,
-      role,
-      is_active: isActive,
-    });
+    const updatedUser = await updateUser(id, updates);
 
     await logAuditAction(
       currentUser.id,
       'UPDATE_USER',
       'user',
       id,
-      { changes: body }
+      { changes: updates }
     );
 
-    return NextResponse.json({
-      success: true,
-      user: updatedUser,
-    });
-  } catch (error) {
+    return apiOk({ user: updatedUser });
+  } catch (error: any) {
+    if (error instanceof UserInputError) {
+      return apiError(error.status, {
+        code: error.code,
+        message: error.message,
+      });
+    }
+
+    if (error.code === '23505') {
+      return apiError(409, {
+        code: 'EMAIL_ALREADY_EXISTS',
+        message: 'Email already exists',
+      });
+    }
+
     console.error('Update user error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return apiError(500, {
+      code: 'INTERNAL_SERVER_ERROR',
+      message: 'Internal server error',
+    });
   }
 }, {
   allowedRoles: ['admin', 'superadmin'],
@@ -99,26 +112,31 @@ export const DELETE = withAuthAndRateLimitWithContext(async (
 
     const { id } = await params;
 
-    // Get target user
     const targetUser = await getUserById(id);
 
     if (!targetUser) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return apiError(404, { code: 'USER_NOT_FOUND', message: 'User not found' });
     }
 
-    // Cannot delete superadmin
     if (targetUser.role === 'superadmin') {
-      return NextResponse.json({ error: 'Cannot delete superadmin user' }, { status: 403 });
+      return apiError(403, {
+        code: 'SUPERADMIN_IMMUTABLE',
+        message: 'Cannot delete superadmin user',
+      });
     }
 
-    // Only superadmin can delete admin users
     if (targetUser.role === 'admin' && currentUser.role !== 'superadmin') {
-      return NextResponse.json({ error: 'Only superadmin can delete admin users' }, { status: 403 });
+      return apiError(403, {
+        code: 'ADMIN_DELETE_RESTRICTED',
+        message: 'Only superadmin can delete admin users',
+      });
     }
 
-    // Cannot delete yourself
     if (id === currentUser.id) {
-      return NextResponse.json({ error: 'Cannot delete your own account' }, { status: 403 });
+      return apiError(403, {
+        code: 'SELF_DELETE_FORBIDDEN',
+        message: 'Cannot delete your own account',
+      });
     }
 
     await deleteUser(id);
@@ -131,13 +149,13 @@ export const DELETE = withAuthAndRateLimitWithContext(async (
       { deleted_role: targetUser.role }
     );
 
-    return NextResponse.json({
-      success: true,
-      message: 'User deleted successfully',
-    });
+    return apiOk({ message: 'User deleted successfully' });
   } catch (error) {
     console.error('Delete user error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return apiError(500, {
+      code: 'INTERNAL_SERVER_ERROR',
+      message: 'Internal server error',
+    });
   }
 }, {
   allowedRoles: ['admin', 'superadmin'],

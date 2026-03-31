@@ -36,11 +36,16 @@ export interface CreateNewsData {
 export interface UpdateNewsData {
   title?: string;
   slug?: string;
-  excerpt?: string;
+  excerpt?: string | null;
   content?: string;
-  cover_image?: string;
+  cover_image?: string | null;
   is_published?: boolean;
   published_at?: Date;
+}
+
+export interface GetNewsBySlugOptions {
+  publishedOnly?: boolean;
+  incrementViews?: boolean;
 }
 
 // Generate slug from title
@@ -111,9 +116,35 @@ export async function getNewsById(id: string): Promise<News | null> {
 // Get news by slug
 export async function getNewsBySlug(
   siteId: string,
-  slug: string
+  slug: string,
+  options: GetNewsBySlugOptions = {}
 ): Promise<News | null> {
   try {
+    const { publishedOnly = false, incrementViews = true } = options;
+    const publishedClause = publishedOnly ? ' AND n.is_published = true' : '';
+
+    if (incrementViews) {
+      const result = await query(
+        `
+        WITH updated_news AS (
+          UPDATE news n
+          SET views_count = views_count + 1
+          WHERE n.site_id = $1 AND n.slug = $2${publishedClause}
+          RETURNING n.*
+        )
+        SELECT 
+          u_n.*,
+          u.full_name as author_name,
+          u.email as author_email
+        FROM updated_news u_n
+        LEFT JOIN users u ON u_n.author_id = u.id
+        `,
+        [siteId, slug]
+      );
+
+      return result.rows[0] || null;
+    }
+
     const result = await query(
       `
       SELECT 
@@ -122,18 +153,10 @@ export async function getNewsBySlug(
         u.email as author_email
       FROM news n
       LEFT JOIN users u ON n.author_id = u.id
-      WHERE n.site_id = $1 AND n.slug = $2
+      WHERE n.site_id = $1 AND n.slug = $2${publishedClause}
       `,
       [siteId, slug]
     );
-
-    // Increment view count
-    if (result.rows[0]) {
-      await query(
-        `UPDATE news SET views_count = views_count + 1 WHERE id = $1`,
-        [result.rows[0].id]
-      );
-    }
 
     return result.rows[0] || null;
   } catch (error) {

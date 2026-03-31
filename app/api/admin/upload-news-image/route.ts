@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
 import { withAuth } from '@/lib/api-auth';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 import crypto from 'crypto';
+import { apiOk, apiError } from '@/lib/api-response';
 
 export const POST = withAuth(async (request) => {
   try {
@@ -10,28 +10,28 @@ export const POST = withAuth(async (request) => {
     const file = formData.get('image') as File;
 
     if (!file) {
-      return NextResponse.json(
-        { error: 'No image file provided' },
-        { status: 400 }
-      );
+      return apiError(400, {
+        code: 'MISSING_FILE',
+        message: 'Image file is required',
+      });
     }
 
     // Validate file type
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
     if (!allowedTypes.includes(file.type)) {
-      return NextResponse.json(
-        { error: 'Invalid file type. Allowed types: JPEG, PNG, WebP, GIF' },
-        { status: 400 }
-      );
+      return apiError(400, {
+        code: 'INVALID_FILE_TYPE',
+        message: 'Only JPEG, PNG, WebP, and GIF formats are supported',
+      });
     }
 
     // Validate file size (max 5MB)
     const maxSize = 5 * 1024 * 1024; // 5MB
     if (file.size > maxSize) {
-      return NextResponse.json(
-        { error: 'File size too large. Maximum size is 5MB' },
-        { status: 400 }
-      );
+      return apiError(400, {
+        code: 'FILE_TOO_LARGE',
+        message: 'File size must not exceed 5MB',
+      });
     }
 
     // Generate unique filename
@@ -52,15 +52,12 @@ export const POST = withAuth(async (request) => {
     // Return the path relative to public directory
     const imagePath = `/uploads/news/${fileName}`;
 
-    return NextResponse.json({
-      message: 'Image uploaded successfully',
-      path: imagePath,
-    });
+    return apiOk({ path: imagePath }, { status: 201 });
   } catch (error) {
     console.error('Error uploading image:', error);
-    return NextResponse.json(
-      { error: 'Failed to upload image' },
-      { status: 500 }
-    );
+    return apiError(500, {
+      code: 'UPLOAD_FAILED',
+      message: 'Failed to upload image',
+    });
   }
 }, { allowedRoles: ['superadmin', 'admin'] });

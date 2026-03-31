@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
 import { getNewsBySite } from '@/lib/news';
 import { getSiteBySubdomain } from '@/lib/site';
 import { headers } from 'next/headers';
+import { apiError, apiOk } from '@/lib/api-response';
 
 // GET - Get published news for current site (public)
 export async function GET() {
@@ -14,18 +14,18 @@ export async function GET() {
     const site = await getSiteBySubdomain(subdomain);
     
     if (!site) {
-      return NextResponse.json({ error: 'Site not found' }, { status: 404 });
+      return apiError(404, { code: 'SITE_NOT_FOUND', message: 'Site not found' });
     }
 
     // Get only published news
     const news = await getNewsBySite(site.id, false);
 
-    return NextResponse.json({ news });
+    return apiOk({ news });
   } catch (error) {
     console.error('Error fetching news:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return apiError(500, {
+      code: 'INTERNAL_SERVER_ERROR',
+      message: 'Internal server error',
+    });
   }
 }

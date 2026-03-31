@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createEmailVerificationToken, createUser } from '@/lib/auth';
+import { createUser } from '@/lib/auth';
 import { RATE_LIMITS, getClientIP, rateLimiter } from '@/lib/rate-limit';
 
 const STRONG_PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
@@ -32,9 +32,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     const { fullName, email, phone, password, confirmPassword } = body;
-    const proto = request.headers.get('x-forwarded-proto') || 'http';
-    const host = request.headers.get('host') || 'localhost:3000';
-    const appOrigin = process.env.NEXT_PUBLIC_APP_URL || `${proto}://${host}`;
+    void request;
 
     // Validate input
     if (!fullName || !email || !password || !confirmPassword) {
@@ -74,19 +72,12 @@ export async function POST(request: NextRequest) {
         phone,
         password,
         role: 'user',
+        email_verified: true,
       });
-
-      const verificationToken = await createEmailVerificationToken(user.id);
-      const verificationUrl = `${appOrigin}/api/auth/verify-email?token=${verificationToken}`;
-
-      if (process.env.NODE_ENV === 'development') {
-        console.log('Email verification URL:', verificationUrl);
-      }
 
       return NextResponse.json({
         success: true,
-        message: 'Registration successful! Please verify your email.',
-        verification_url: process.env.NODE_ENV === 'development' ? verificationUrl : undefined,
+        message: 'Registration successful! You can now log in.',
         user: {
           id: user.id,
           full_name: user.full_name,

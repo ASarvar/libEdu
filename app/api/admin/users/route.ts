@@ -1,22 +1,31 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { getAllUsers, createUser, logAuditAction } from '@/lib/auth';
 import { withAuthAndRateLimit } from '@/lib/api-auth';
+import { apiError, apiOk } from '@/lib/api-response';
+import { parseCreateUserInput, parseUserFilters, UserInputError } from '@/lib/user-validation';
 
 // GET all users (admin/superadmin only)
 export const GET = withAuthAndRateLimit(
-  async (request: NextRequest, user) => {
+  async (request: NextRequest) => {
     try {
       const { searchParams } = new URL(request.url);
-      const role = searchParams.get('role') || undefined;
-      const is_active = searchParams.get('is_active') === 'true' ? true : searchParams.get('is_active') === 'false' ? false : undefined;
-      const search = searchParams.get('search') || undefined;
+      const filters = parseUserFilters(searchParams);
+      const users = await getAllUsers(filters);
 
-      const users = await getAllUsers({ role, is_active, search });
-
-      return NextResponse.json({ users });
+      return apiOk({ users });
     } catch (error) {
+      if (error instanceof UserInputError) {
+        return apiError(error.status, {
+          code: error.code,
+          message: error.message,
+        });
+      }
+
       console.error('Get users error:', error);
-      return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+      return apiError(500, {
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Internal server error',
+      });
     }
   },
   {
@@ -29,54 +38,54 @@ export const POST = withAuthAndRateLimit(
   async (request: NextRequest, user) => {
     try {
       const body = await request.json();
-      const { fullName, email, phone, password, role } = body;
+      const input = parseCreateUserInput(body);
 
-      // Validate input
-      if (!fullName || !email || !password) {
-        return NextResponse.json({ error: 'Full name, email, and password are required' }, { status: 400 });
-      }
-
-      // Only superadmin can create admin users
-      if (role === 'admin' && user.role !== 'superadmin') {
-        return NextResponse.json({ error: 'Only superadmin can create admin users' }, { status: 403 });
-      }
-
-      // No one can create superadmin
-      if (role === 'superadmin') {
-        return NextResponse.json({ error: 'Cannot create superadmin users' }, { status: 403 });
-      }
-
-      try {
-        const newUser = await createUser({
-          full_name: fullName,
-          email,
-          phone,
-          password,
-          role: role || 'user',
-          created_by: user.id,
+      if (input.role === 'admin' && user.role !== 'superadmin') {
+        return apiError(403, {
+          code: 'ADMIN_ROLE_RESTRICTED',
+          message: 'Only superadmin can create admin users',
         });
-
-        await logAuditAction(
-          user.id,
-          'CREATE_USER',
-          'user',
-          newUser.id,
-          { created_role: newUser.role }
-        );
-
-        return NextResponse.json({
-          success: true,
-          user: newUser,
-        });
-      } catch (error: any) {
-        if (error.code === '23505') {
-          return NextResponse.json({ error: 'Email already exists' }, { status: 409 });
-        }
-        throw error;
       }
-    } catch (error) {
+
+      const newUser = await createUser({
+        full_name: input.full_name,
+        email: input.email,
+        phone: input.phone,
+        password: input.password,
+        role: input.role,
+        created_by: user.id,
+        email_verified: true,
+      });
+
+      await logAuditAction(
+        user.id,
+        'CREATE_USER',
+        'user',
+        newUser.id,
+        { created_role: newUser.role }
+      );
+
+      return apiOk({ user: newUser });
+    } catch (error: any) {
+      if (error instanceof UserInputError) {
+        return apiError(error.status, {
+          code: error.code,
+          message: error.message,
+        });
+      }
+
+      if (error.code === '23505') {
+        return apiError(409, {
+          code: 'EMAIL_ALREADY_EXISTS',
+          message: 'Email already exists',
+        });
+      }
+
       console.error('Create user error:', error);
-      return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+      return apiError(500, {
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Internal server error',
+      });
     }
   },
   {

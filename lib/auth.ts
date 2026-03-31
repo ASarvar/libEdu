@@ -63,18 +63,20 @@ export async function createUser(
     email: string;
     phone?: string;
     password: string;
-    role?: 'admin' | 'moderator' | 'user';
+    role?: UserRole;
     created_by?: string;
+    email_verified?: boolean;
   }
 ): Promise<User> {
   const passwordHash = await hashPassword(data.password);
   const role = data.role || 'user';
+  const emailVerified = data.email_verified ?? false;
 
   const result = await query(
-    `INSERT INTO users (full_name, email, phone, password_hash, role, created_by)
-     VALUES ($1, $2, $3, $4, $5, $6)
+    `INSERT INTO users (full_name, email, phone, password_hash, role, created_by, email_verified)
+     VALUES ($1, $2, $3, $4, $5, $6, $7)
      RETURNING id, full_name, email, phone, role, is_active, email_verified, created_at, updated_at`,
-    [data.full_name, data.email, data.phone, passwordHash, role, data.created_by]
+    [data.full_name, data.email, data.phone, passwordHash, role, data.created_by, emailVerified]
   );
 
   return result.rows[0];
