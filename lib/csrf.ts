@@ -4,6 +4,23 @@ import crypto from 'crypto';
 export const CSRF_COOKIE_NAME = 'csrf_token';
 export const CSRF_HEADER_NAME = 'x-csrf-token';
 
+function isSecureRequest(request: NextRequest): boolean {
+  const forwardedProto = request.headers.get('x-forwarded-proto');
+  if (forwardedProto) {
+    return forwardedProto.split(',')[0].trim().toLowerCase() === 'https';
+  }
+
+  return request.nextUrl.protocol === 'https:';
+}
+
+function getRequestOrigin(request: NextRequest): string {
+  const forwardedProto = request.headers.get('x-forwarded-proto')?.split(',')[0]?.trim();
+  const forwardedHost = request.headers.get('x-forwarded-host')?.split(',')[0]?.trim();
+  const host = forwardedHost || request.headers.get('host') || request.nextUrl.host;
+  const protocol = forwardedProto || request.nextUrl.protocol.replace(':', '');
+  return `${protocol}://${host}`;
+}
+
 function parseOrigin(value: string | null): string | null {
   if (!value) {
     return null;
@@ -21,7 +38,7 @@ export function isStateChangingMethod(method: string): boolean {
 }
 
 function isSameOriginRequest(request: NextRequest): boolean {
-  const requestOrigin = request.nextUrl.origin;
+  const requestOrigin = getRequestOrigin(request);
   const originHeader = parseOrigin(request.headers.get('origin'));
   const refererHeader = parseOrigin(request.headers.get('referer'));
 
@@ -65,10 +82,10 @@ export function generateCsrfToken(): string {
   return crypto.randomBytes(32).toString('hex');
 }
 
-export function withCsrfCookie(response: NextResponse, token: string): NextResponse {
+export function withCsrfCookie(response: NextResponse, token: string, request: NextRequest): NextResponse {
   response.cookies.set(CSRF_COOKIE_NAME, token, {
     httpOnly: false,
-    secure: process.env.NODE_ENV === 'production',
+    secure: isSecureRequest(request),
     sameSite: 'strict',
     path: '/',
     maxAge: 24 * 60 * 60,

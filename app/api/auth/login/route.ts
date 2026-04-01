@@ -61,11 +61,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const forwardedProto = request.headers.get('x-forwarded-proto');
+    const isSecure = forwardedProto
+      ? forwardedProto.split(',')[0].trim().toLowerCase() === 'https'
+      : request.nextUrl.protocol === 'https:';
+
     // Set session cookie
     const cookieStore = await cookies();
     cookieStore.set('session_token', sessionToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: isSecure,
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60, // 7 days
       path: '/',
