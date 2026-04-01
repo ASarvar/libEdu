@@ -10,6 +10,7 @@ const MAIN_DOMAIN = process.env.MAIN_DOMAIN || 'kutubxona.uz';
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const hostname = request.headers.get('host') || '';
+  const sessionToken = getSessionToken(request);
 
   // Extract subdomain
   const subdomain = extractSubdomain(hostname, MAIN_DOMAIN);
@@ -32,8 +33,6 @@ export async function proxy(request: NextRequest) {
 
   // Protected admin routes - verify role at middleware level
   if (pathname.startsWith('/admin')) {
-    const sessionToken = getSessionToken(request);
-
     if (!sessionToken) {
       const loginUrl = new URL('/login', request.url);
       loginUrl.searchParams.set('redirect', pathname);
@@ -62,10 +61,13 @@ export async function proxy(request: NextRequest) {
     response.headers.set('x-user-id', user.id);
   }
 
+  // Redirect already-logged-in users away from auth pages
+  if ((pathname === '/login' || pathname === '/signup') && sessionToken) {
+    return NextResponse.redirect(new URL('/admin/dashboard', request.url));
+  }
+
   // Protected profile routes
   if (pathname.startsWith('/profile')) {
-    const sessionToken = request.cookies.get('session_token')?.value;
-
     if (!sessionToken) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
