@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { resetPasswordByToken } from '@/lib/auth';
+import { rateLimiter, getClientIP, RATE_LIMITS } from '@/lib/rate-limit';
 
 function isStrongEnough(password: string): boolean {
   return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/.test(password);
@@ -7,6 +8,21 @@ function isStrongEnough(password: string): boolean {
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit by IP to prevent token brute-forcing
+    const ip = getClientIP(request.headers);
+    const isRateLimited = await rateLimiter.check(
+      `reset-password:${ip}`,
+      RATE_LIMITS.PASSWORD_RESET.maxRequests,
+      RATE_LIMITS.PASSWORD_RESET.windowMs
+    );
+
+    if (isRateLimited) {
+      return NextResponse.json(
+        { error: 'Too many attempts. Please try again later.' },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const token = typeof body?.token === 'string' ? body.token.trim() : '';
     const password = typeof body?.password === 'string' ? body.password : '';

@@ -262,6 +262,11 @@ export const RATE_LIMITS = {
     maxRequests: 100,
     windowMs: 60 * 1000,
   },
+  // Contact form: 5 submissions per hour per IP
+  CONTACT: {
+    maxRequests: 5,
+    windowMs: 60 * 60 * 1000,
+  },
 };
 
 /**

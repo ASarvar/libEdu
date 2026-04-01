@@ -65,6 +65,10 @@ export async function POST(request: NextRequest) {
     }
 
     try {
+      // If ENFORCE_EMAIL_VERIFICATION=true, new users must verify their email before logging in
+      // emailVerified=false means they must complete verification before they can log in
+      const emailVerified = process.env.ENFORCE_EMAIL_VERIFICATION !== 'true';
+
       // Create user (default role: user)
       const user = await createUser({
         full_name: fullName,
@@ -72,7 +76,7 @@ export async function POST(request: NextRequest) {
         phone,
         password,
         role: 'user',
-        email_verified: true,
+        email_verified: emailVerified,
       });
 
       return NextResponse.json({

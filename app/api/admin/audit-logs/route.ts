@@ -24,7 +24,11 @@ export const GET = withAuthAndRateLimit(
       const userId = url.searchParams.get("userId");
       const action = url.searchParams.get("action");
       const entityType = url.searchParams.get("entityType");
-      const sortBy = url.searchParams.get("sortBy") || "created_at";
+      const ALLOWED_SORT_COLUMNS = ['created_at', 'action', 'entity_type', 'user_id'] as const;
+      const sortByParam = url.searchParams.get("sortBy") || "created_at";
+      const sortBy = (ALLOWED_SORT_COLUMNS as readonly string[]).includes(sortByParam)
+        ? sortByParam
+        : "created_at";
       const sortOrder = url.searchParams.get("sortOrder") || "DESC";
 
       // Validate pagination
