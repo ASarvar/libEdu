@@ -13,7 +13,6 @@ import LanguageSelector from "../elements/LanguageSelector";
 import MobileLogo from "../../public/images/logo_short.svg";
 import LogoMain from "../../public/images/logo.svg";
 import LogoDark from "../../public/images/logo_white.svg";
-import StikyLogo from "../../public/images/logo.svg";
 
 interface Header5Props {
   scroll: boolean;
@@ -107,7 +106,7 @@ function Header5({ scroll, handleOpen, handleRemove }: Header5Props) {
       ? LogoDark
       : LogoMain;
   const MobileLogoSrc = site.site?.logo_path || MobileLogo;
-  const StickyLogoSrc = site.site?.logo_path || StikyLogo;
+  const StickyLogoSrc = site.site?.logo_path || MobileLogo;
 
   const MenuComponent = isSingleMenu ? MenuSingle : NavLinks;
 
@@ -320,7 +319,7 @@ function Header5({ scroll, handleOpen, handleRemove }: Header5Props) {
               <div className="logo">
                 <Link href="/">
                   <Image
-                    src={StickyLogoSrc}
+                    src={MobileLogo}
                     alt="Kutubxona Logo"
                     width={150}
                     height={40}

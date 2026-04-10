@@ -1,6 +1,6 @@
 import Layout from "@/components/layout/Layout";
 import Banner from "@/components/sections/Home5/Banner";
-import About from "@/components/sections/Home5/About";
+import  News from "@/components/sections/Home5/News";
 import Feature from "@/components/sections/Home5/Feature";
 import ChooseUs from "@/components/sections/Home5/ChooseUs";
 import Counter from "@/components/sections/Home5/Counter";
@@ -9,7 +9,7 @@ import Project from "@/components/sections/Home5/Project";
 import Team from "@/components/sections/Home5/Team";
 import PricingTwo from "@/components/sections/Home5/PricingTwo";
 import Testimonial from "@/components/sections/Home5/Testimonial";
-import Contact from "@/components/sections/Home5/Contact";
+import Events from "@/components/sections/Home5/Events";
 
 export const metadata = {
   title: "Home 5 - Finclix",
@@ -20,7 +20,7 @@ export default function Home5() {
   return (
     <Layout HeaderStyle="five">
       <Banner />
-      <About />
+      <News />
       {/* <Feature /> */}
       {/* <ChooseUs /> */}
       {/* <Counter /> */}
@@ -29,7 +29,7 @@ export default function Home5() {
       {/* <Team /> */}
       {/* <PricingTwo /> */}
       {/* <Testimonial /> */}
-      <Contact />
+      <Events />
     </Layout>
   );
 }

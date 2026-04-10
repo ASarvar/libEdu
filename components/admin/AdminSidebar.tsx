@@ -56,6 +56,12 @@ const AdminSidebar = () => {
       badge: null,
     },
     {
+      title: t('admin.events'),
+      icon: 'fa-calendar-alt',
+      path: '/admin/events',
+      badge: null,
+    },
+    {
       title: t('admin.categories'),
       icon: 'fa-tags',
       path: '/admin/categories',

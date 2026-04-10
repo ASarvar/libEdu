@@ -2,17 +2,24 @@
 import React from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import { usePathname } from "next/navigation";
 
 function NavLinks() {
   const { t } = useTranslation();
+  const pathname = usePathname();
+
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  };
 
   return (
     <>
       <ul className="navigation">
-        <li className="current">
+        <li className={isActive("/") ? "current" : ""}>
           <Link href="/">{t("header.home")}</Link>
         </li>
-        <li className="dropdown">
+        <li className={`dropdown${isActive("/digital-library") ? " current" : ""}`}>
           <Link href="/digital-library">{t("header.digitalLibrary")}</Link>
           <ul>
             <li>
@@ -35,21 +42,15 @@ function NavLinks() {
             </li>
           </ul>
         </li>
-        <li className="dropdown">
+        <li className={`dropdown${isActive("/events") ? " current" : ""}`}>
           <Link href="/events">{t("header.events")}</Link>
           <ul>
             <li>
-              <Link href="/events">{t("events.upcomingEvents")}</Link>
-            </li>
-            <li>
-              <Link href="/events/past">{t("events.pastEvents")}</Link>
-            </li>
-            <li>
-              <Link href="/events/register">{t("events.register")}</Link>
+              <Link href="/events">{t("events.title")}</Link>
             </li>
           </ul>
         </li>
-        <li className="dropdown">
+        <li className={`dropdown${isActive("/news") ? " current" : ""}`}>
           <Link href="/news">{t("header.news")}</Link>
           <ul>
             <li>
@@ -60,21 +61,10 @@ function NavLinks() {
             </li>
           </ul>
         </li>
-        <li className="dropdown">
+        <li className={`dropdown${isActive("/about") ? " current" : ""}`}>
           <Link href="/about">{t("header.about")}</Link>
-          <ul>
-            <li>
-              <Link href="/about">{t("about.aboutUs")}</Link>
-            </li>
-            <li>
-              <Link href="/about/team">{t("about.team")}</Link>
-            </li>
-            <li>
-              <Link href="/about/branches">{t("about.branches")}</Link>
-            </li>
-          </ul>
         </li>
-        <li>
+        <li className={isActive("/contact") ? "current" : ""}>
           <Link href="/contact">{t("header.contact")}</Link>
         </li>
       </ul>
@@ -83,3 +73,4 @@ function NavLinks() {
 }
 
 export default NavLinks;
+

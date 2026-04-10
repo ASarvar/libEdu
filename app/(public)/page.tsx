@@ -110,11 +110,13 @@ export default function Home() {
         const PricingTwo5 = dynamic(() => import("@/components/sections/Home5/PricingTwo"), { ssr: false });
         const Testimonial5 = dynamic(() => import("@/components/sections/Home5/Testimonial"), { ssr: false });
         const Contact5 = dynamic(() => import("@/components/sections/Home5/Contact"), { ssr: false });
+        const News = dynamic(() => import("@/components/sections/Home5/News"), { ssr: false });
+        const Events = dynamic(() => import("@/components/sections/Home5/Events"), { ssr: false });
         return (
           <>
             <Banner5 />
-            <About5 />
-            <Contact5 />
+            <News />
+            <Events />
           </>
         );
       }
