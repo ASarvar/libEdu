@@ -94,8 +94,29 @@ const SitesManagementPage: React.FC<SitesManagementPageProps> = ({ user }) => {
     }
   };
 
+  const getSubdomainUrl = (subdomain: string) => {
+    if (typeof window === 'undefined') return '';
+
+    const { protocol, hostname, port } = window.location;
+
+    // Local development: keep subdomain.localhost behavior
+    if (
+      hostname === 'localhost' ||
+      hostname === '127.0.0.1' ||
+      hostname.endsWith('.localhost')
+    ) {
+      const localPort = port ? `:${port}` : ':3000';
+      return `http://${subdomain}.localhost${localPort}`;
+    }
+
+    // Production/staging: derive root domain from current host or env override
+    const envRootDomain = process.env.NEXT_PUBLIC_MAIN_DOMAIN || process.env.NEXT_PUBLIC_ROOT_DOMAIN;
+    const rootDomain = envRootDomain || hostname.split('.').slice(-2).join('.');
+    return `${protocol}//${subdomain}.${rootDomain}`;
+  };
+
   const handleViewSite = (subdomain: string) => {
-    const url = `http://${subdomain}.localhost:3000`;
+    const url = getSubdomainUrl(subdomain);
     window.open(url, '_blank');
   };
 
