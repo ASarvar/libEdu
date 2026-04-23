@@ -101,6 +101,8 @@ const Header1 = ({
     : (isDarkMode ? LogoDark : LogoMain);
   
   const MobileLogoSrc = site.site?.logo_path || MobileLogo;
+  const contactPhone = site.site?.contact_phone || "+998 (71) 233-45-67";
+  const contactEmail = site.site?.contact_email || "info@kutubxona.uz";
 
   return (
     <>
@@ -254,7 +256,9 @@ const Header1 = ({
                 <div className="contact-info-box">
                   <i className="icon lnr-icon-phone-handset"></i>
                   <span className="title">{t("header.callNow")}</span>
-                  <Link href="#">+998 (71) 233-45-67</Link>
+                  <Link href={`tel:${contactPhone.replace(/\s+/g, "")}`}>
+                    {contactPhone}
+                  </Link>
                 </div>
               </li>
               <li>
@@ -262,7 +266,7 @@ const Header1 = ({
                 <div className="contact-info-box">
                   <span className="icon lnr-icon-envelope1"></span>
                   <span className="title">{t("header.sendEmail")}</span>
-                  <Link href="mailto:info@kutubxona.uz">info@kutubxona.uz</Link>
+                  <Link href={`mailto:${contactEmail}`}>{contactEmail}</Link>
                 </div>
               </li>
               <li>

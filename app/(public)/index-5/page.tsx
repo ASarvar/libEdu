@@ -1,6 +1,6 @@
 import Layout from "@/components/layout/Layout";
 import Banner from "@/components/sections/Home5/Banner";
-import  News from "@/components/sections/Home5/News";
+import News from "@/components/sections/Home5/News";
 import Feature from "@/components/sections/Home5/Feature";
 import ChooseUs from "@/components/sections/Home5/ChooseUs";
 import Counter from "@/components/sections/Home5/Counter";
@@ -12,8 +12,8 @@ import Testimonial from "@/components/sections/Home5/Testimonial";
 import Events from "@/components/sections/Home5/Events";
 
 export const metadata = {
-  title: "Home 5 - Finclix",
-  description: "Business & Finance Consulting",
+  title: "Raqamli Kutubxona - O'zbekiston Milliy Kutubxonasi",
+  description: "O'zbekiston viloyat va tuman kutubxonalari uchun yagona raqamli platforma. Elektron katalog, kitob bronlash, raqamli kutubxona va tadbirlar.",
 };
 
 export default function Home5() {

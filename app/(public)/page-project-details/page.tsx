@@ -3,8 +3,8 @@ import PageTitle from "@/components/sections/PageTitle";
 import ProjectDetails from "@/components/sections/ProjectDetails";
 
 export const metadata = {
-  title: "Project Details - Finclix",
-  description: "Detailed information about our project",
+  title: "Tadbir Batafsili - Raqamli Kutubxona",
+  description: "Kutubxona tadbirining batafsil ma'lumoti.",
 };
 
 export default function ProjectDetailsPage() {

@@ -10,8 +10,8 @@ import Contact from "@/components/sections/Home7/Contact";
 import Testimonial from "@/components/sections/Home7/Testimonial";
 
 export const metadata = {
-  title: "Home 7 - Finclix",
-  description: "Business & Finance Consulting",
+  title: "Raqamli Kutubxona - O'zbekiston Milliy Kutubxonasi",
+  description: "O'zbekiston viloyat va tuman kutubxonalari uchun yagona raqamli platforma. Elektron katalog, kitob bronlash, raqamli kutubxona va tadbirlar.",
 };
 
 export default function Home7() {

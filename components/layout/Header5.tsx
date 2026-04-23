@@ -40,7 +40,6 @@ function Header5({ scroll, handleOpen, handleRemove }: Header5Props) {
 
   // local states for toggles
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -107,6 +106,8 @@ function Header5({ scroll, handleOpen, handleRemove }: Header5Props) {
       : LogoMain;
   const MobileLogoSrc = site.site?.logo_path || MobileLogo;
   const StickyLogoSrc = site.site?.logo_path || MobileLogo;
+  const contactPhone = site.site?.contact_phone || "+998 (71) 233-45-67";
+  const contactEmail = site.site?.contact_email || "info@kutubxona.uz";
 
   const MenuComponent = isSingleMenu ? MenuSingle : NavLinks;
 
@@ -203,7 +204,7 @@ function Header5({ scroll, handleOpen, handleRemove }: Header5Props) {
                 {/* mobile menu toggle */}
                 <div
                   className="mobile-nav-toggler"
-                  onClick={() => setIsMobileMenuOpen(true)}
+                  onClick={handleOpen}
                 >
                   <span className="icon lnr-icon-bars"></span>
                 </div>
@@ -213,70 +214,110 @@ function Header5({ scroll, handleOpen, handleRemove }: Header5Props) {
         </div>
 
         {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="mobile-menu">
-            <div
-              className="menu-backdrop"
-              onClick={() => setIsMobileMenuOpen(false)}
-            />
-            <nav className="menu-box">
-              <div className="upper-box">
-                <div className="nav-logo">
-                  <Link href="/">
-                    <Image
-                      src={MobileLogoSrc}
-                      alt="Kutubxona Logo"
-                      width={150}
-                      height={50}
-                      className="mobile-logo-img"
-                    />
+        <div className="mobile-menu">
+          <div className="menu-backdrop" onClick={handleRemove} />
+          <nav className="menu-box">
+            <div className="upper-box">
+              <div className="nav-logo">
+                <Link href="/">
+                  <Image
+                    src={MobileLogoSrc}
+                    alt="Kutubxona Logo"
+                    width={150}
+                    height={50}
+                    className="mobile-logo-img"
+                  />
+                </Link>
+              </div>
+              <div className="close-btn" onClick={handleRemove}>
+                <i className="icon fa fa-times"></i>
+              </div>
+            </div>
+            <ul className="navigation clearfix">
+              <MobileMenu />
+            </ul>
+            <div className="mobile-lang-selector">
+              <LanguageSelector />
+            </div>
+            <div className="mobile-login-btn">
+              {user ? (
+                <>
+                  <Link
+                    href={
+                      user.role === "admin" || user.role === "superadmin"
+                        ? "/admin/dashboard"
+                        : "/profile"
+                    }
+                    className="theme-btn btn-style-one user-profile"
+                  >
+                    <i className="icon fa fa-user pr-10"></i>
+                    {user.full_name}
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="theme-btn btn-style-two"
+                  >
+                    <i className="icon fa fa-sign-out-alt pr-10"></i>
+                    {t("profile.logout")}
+                  </button>
+                </>
+              ) : (
+                <Link href="/login" className="theme-btn btn-style-one">
+                  <i className="icon fa fa-user pr-10"> </i>
+                  {t("header.login")}
+                </Link>
+              )}
+            </div>
+            <ul className="contact-list-one">
+              <li>
+                <div className="contact-info-box">
+                  <i className="icon lnr-icon-phone-handset"></i>
+                  <span className="title">{t("header.callNow")}</span>
+                  <Link href={`tel:${contactPhone.replace(/\s+/g, "")}`}>
+                    {contactPhone}
                   </Link>
                 </div>
-                <div
-                  className="close-btn"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <i className="icon fa fa-times"></i>
+              </li>
+              <li>
+                <div className="contact-info-box">
+                  <span className="icon lnr-icon-envelope1"></span>
+                  <span className="title">{t("header.sendEmail")}</span>
+                  <Link href={`mailto:${contactEmail}`}>{contactEmail}</Link>
                 </div>
-              </div>
-              <ul className="navigation clearfix">
-                <MobileMenu />
-              </ul>
-              <div className="mobile-lang-selector">
-                <LanguageSelector />
-              </div>
-              <div className="mobile-login-btn">
-                {user ? (
-                  <>
-                    <Link
-                      href={
-                        user.role === "admin" || user.role === "superadmin"
-                          ? "/admin/dashboard"
-                          : "/profile"
-                      }
-                      className="theme-btn btn-style-one user-profile"
-                    >
-                      <i className="icon fa fa-user pr-10"></i>
-                      {user.full_name}
-                    </Link>
-                    <button
-                      onClick={handleLogout}
-                      className="theme-btn btn-style-two"
-                    >
-                      <i className="icon fa fa-sign-out-alt pr-10"></i>
-                      {t("profile.logout")}
-                    </button>
-                  </>
-                ) : (
-                  <Link href="/login" className="theme-btn btn-style-one">
-                    <i className="icon fa fa-user pr-10"> </i>
-                    {t("header.login")}
-                  </Link>
-                )}
-              </div>
-            </nav>
-          </div>
-        )}
+              </li>
+              <li>
+                <div className="contact-info-box">
+                  <span className="icon lnr-icon-clock"></span>
+                  <span className="title">{t("header.workingHours")}</span>
+                  {t("header.workingHoursText")}
+                </div>
+              </li>
+            </ul>
+
+            <ul className="social-links">
+              <li>
+                <Link href="#">
+                  <i className="fab fa-twitter"></i>
+                </Link>
+              </li>
+              <li>
+                <Link href="#">
+                  <i className="fab fa-facebook-f"></i>
+                </Link>
+              </li>
+              <li>
+                <Link href="#">
+                  <i className="fab fa-pinterest"></i>
+                </Link>
+              </li>
+              <li>
+                <Link href="#">
+                  <i className="fab fa-instagram"></i>
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
 
         {/* Search Popup */}
         {isSearchOpen && (
@@ -380,7 +421,7 @@ function Header5({ scroll, handleOpen, handleRemove }: Header5Props) {
                 {/* <!--Mobile Navigation Toggler--> */}
                 <div
                   className="mobile-nav-toggler"
-                  onClick={() => setIsMobileMenuOpen(true)}
+                  onClick={handleOpen}
                 >
                   <span className="icon lnr-icon-bars"></span>
                 </div>

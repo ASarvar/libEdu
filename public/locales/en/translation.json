@@ -590,5 +590,55 @@
     "pageNotFound": "Page not found!",
     "pageNotFoundDescription": "Sorry, we can't find that page! The page you are looking for does not exist.",
     "backToHome": "Back to Home"
+  },
+  "metadata": {
+    "home": {
+      "title": "Digital Library - National Library of Uzbekistan",
+      "description": "Unified digital platform for regional and district libraries of Uzbekistan. Electronic catalog, book reservation, digital library and events."
+    },
+    "events": {
+      "title": "Events - Digital Library",
+      "description": "Information about events, seminars and educational programs held at libraries."
+    },
+    "news": {
+      "title": "News - Digital Library",
+      "description": "Latest news about the digital library and library services."
+    },
+    "contact": {
+      "title": "Contact - Digital Library",
+      "description": "Get in touch with us. Send us your questions and feedback."
+    },
+    "about": {
+      "title": "About Us - Digital Library",
+      "description": "Learn about the National Library of Uzbekistan and its digital services."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions - Digital Library",
+      "description": "Answers to questions about digital library services, booking and more."
+    },
+    "pricing": {
+      "title": "Pricing Plans - Digital Library",
+      "description": "View the available pricing plans for library services."
+    },
+    "services": {
+      "title": "Services - Digital Library",
+      "description": "Learn about the services provided through the digital library."
+    },
+    "shop": {
+      "title": "Shop - Digital Library",
+      "description": "Purchase library products and electronic resources."
+    },
+    "catalog": {
+      "title": "Electronic Catalog - Digital Library",
+      "description": "Search and access books, journals and other resources in the library's electronic catalog."
+    },
+    "digitalLibrary": {
+      "title": "Digital Library - Online Books and Resources",
+      "description": "24/7 access to e-books, audiobooks and video lectures."
+    },
+    "notFound": {
+      "title": "Page Not Found - 404",
+      "description": "The page you are looking for could not be found. Go back to home."
+    }
   }
 }

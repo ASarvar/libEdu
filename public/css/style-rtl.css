@@ -2200,7 +2200,10 @@ Scroll To Top style
   border-bottom: 1px solid rgba(var(--theme-color-white-rgb), 0.1);
 }
 .header-style-one.header-5 .mobile-nav-toggler {
-  color: var(--theme-color-white);
+  color: var(--headings-color);
+}
+[data-tm-layout=dark] .header-style-one.header-5 .mobile-nav-toggler {
+  color: var(--link-color);
 }
 .header-style-one.header-5 .main-box {
   padding: 10px 110px;
@@ -2861,7 +2864,7 @@ Scroll To Top style
   height: 100%;
   opacity: 0;
   visibility: hidden;
-  z-index: 999999;
+  z-index: 100100;
 }
 .mobile-menu .menu-backdrop {
   position: fixed;
@@ -2869,7 +2872,7 @@ Scroll To Top style
   top: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 100100;
   background: rgba(0, 0, 0, 0.7);
   opacity: 0;
   visibility: hidden;
@@ -2900,6 +2903,9 @@ Scroll To Top style
   transition: all 0.5s ease;
   -webkit-transform: translateY(-50px);
           transform: translateY(-50px);
+}
+.mobile-menu .close-btn i {
+  color: #ffffff;
 }
 .mobile-menu .close-btn:hover {
   opacity: 0.5;
@@ -2932,7 +2938,7 @@ Scroll To Top style
   overflow-y: auto;
   background: var(--headings-color);
   padding: 0px 0px;
-  z-index: 5;
+  z-index: 100101;
   opacity: 0;
   visibility: hidden;
   border-radius: 0px;

@@ -3,8 +3,8 @@ import PageTitle from "@/components/sections/PageTitle";
 import ShopDetails from "@/components/sections/ShopDetails";
 
 export const metadata = {
-  title: "Product Details - Finclix",
-  description: "View product details",
+  title: "Mahsulot Batafsili - Raqamli Kutubxona",
+  description: "Mahsulot haqida batafsil ma'lumot.",
 };
 
 export default function ShopProductDetailsPage() {

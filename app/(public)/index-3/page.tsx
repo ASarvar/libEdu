@@ -14,8 +14,8 @@ import Contact from "@/components/sections/Home3/Contact";
 import Feature2 from "@/components/sections/Home3/Feature2";
 
 export const metadata = {
-  title: "Home 3 - Finclix",
-  description: "Business & Finance Consulting",
+  title: "Raqamli Kutubxona - O'zbekiston Milliy Kutubxonasi",
+  description: "O'zbekiston viloyat va tuman kutubxonalari uchun yagona raqamli platforma. Elektron katalog, kitob bronlash, raqamli kutubxona va tadbirlar.",
 };
 
 export default function Home3() {

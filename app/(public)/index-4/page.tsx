@@ -9,8 +9,8 @@ import Team from "@/components/sections/Home4/Team";
 import Testimonial from "@/components/sections/Home4/Testimonial";
 
 export const metadata = {
-  title: "Home 4 - Finclix",
-  description: "Business & Finance Consulting",
+  title: "Raqamli Kutubxona - O'zbekiston Milliy Kutubxonasi",
+  description: "O'zbekiston viloyat va tuman kutubxonalari uchun yagona raqamli platforma. Elektron katalog, kitob bronlash, raqamli kutubxona va tadbirlar.",
 };
 
 export default function Home4() {

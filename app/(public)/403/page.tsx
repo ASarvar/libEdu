@@ -6,7 +6,9 @@ import { useEffect } from 'react';
 
 export default function ForbiddenPage() {
   useEffect(() => {
-    document.title = '403 - Access Forbidden';
+    document.title = 'Kirish Ruxsati Rad Etildi - 403';
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', 'Bu sahifaga kirish ruxsati yo\'q.');
   }, []);
 
   return (

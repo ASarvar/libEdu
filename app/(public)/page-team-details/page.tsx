@@ -3,8 +3,8 @@ import PageTitle from "@/components/sections/PageTitle";
 import TeamDetails from "@/components/sections/TeamDetails";
 
 export const metadata = {
-  title: "Team Details - Finclix",
-  description: "Learn more about our team member",
+  title: "Jamoa A'zosi - Raqamli Kutubxona",
+  description: "Kutubxona jamoa a'zosi haqida.",
 };
 
 export default function TeamDetailsPage() {

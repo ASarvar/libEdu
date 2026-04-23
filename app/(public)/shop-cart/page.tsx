@@ -3,8 +3,8 @@ import PageTitle from "@/components/sections/PageTitle";
 import ShopCart from "@/components/sections/ShopCart";
 
 export const metadata = {
-  title: "Shopping Cart - Finclix",
-  description: "View your shopping cart",
+  title: "Savat - Raqamli Kutubxona",
+  description: "Savatingizning ma'lumotlarini ko'ring va boshqaring.",
 };
 
 export default function ShopCartPage() {

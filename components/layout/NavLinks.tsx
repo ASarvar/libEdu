@@ -42,26 +42,13 @@ function NavLinks() {
             </li>
           </ul>
         </li>
-        <li className={`dropdown${isActive("/events") ? " current" : ""}`}>
+        <li className={isActive("/events") ? " current" : ""}>
           <Link href="/events">{t("header.events")}</Link>
-          <ul>
-            <li>
-              <Link href="/events">{t("events.title")}</Link>
-            </li>
-          </ul>
         </li>
-        <li className={`dropdown${isActive("/news") ? " current" : ""}`}>
+        <li className={isActive("/news") ? " current" : ""}>
           <Link href="/news">{t("header.news")}</Link>
-          <ul>
-            <li>
-              <Link href="/news">{t("news.latestNews")}</Link>
-            </li>
-            <li>
-              <Link href="/news/category">{t("news.category")}</Link>
-            </li>
-          </ul>
         </li>
-        <li className={`dropdown${isActive("/about") ? " current" : ""}`}>
+        <li className={isActive("/about") ? " current" : ""}>
           <Link href="/about">{t("header.about")}</Link>
         </li>
         <li className={isActive("/contact") ? "current" : ""}>

@@ -3,8 +3,8 @@ import PageTitle from "@/components/sections/PageTitle";
 import TeamGrid from "@/components/sections/TeamGrid";
 
 export const metadata = {
-  title: "Our Team - Finclix",
-  description: "Meet our expert team members",
+  title: "Bizning Jamoa - Raqamli Kutubxona",
+  description: "Kutubxona mutaxassislari va xizmat ko'rsatuvchi jamoa haqida.",
 };
 
 export default function TeamPage() {

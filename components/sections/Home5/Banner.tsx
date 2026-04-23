@@ -27,7 +27,7 @@ function Banner() {
             <span className="star-title">O`zbekiston kutubxonalari uchun yagona platforma</span>
           </div>
           <h1 className="banner-title wow fadeInUp" data-wow-delay=".2s">
-            Raqamli Kutubxona Ekotizimi <br/> Bilimga Kirishni Osonlashtiring <br/> va O`quvchilarni Bog`lang
+            Raqamli Kutubxona Ekotizimi Bilimga Kirishni Osonlashtiring va O`quvchilarni Bog`lang
           </h1>
           <div className="hero-button wow fadeInLeft" data-wow-delay="700ms" data-wow-duration="1500ms">
             <button

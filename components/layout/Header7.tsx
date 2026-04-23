@@ -30,7 +30,7 @@ interface User {
   role: string;
 }
 
-function Header7 ({ scroll }: Header7Props){
+function Header7 ({ scroll, handleOpen, handleRemove }: Header7Props){
     const { t } = useTranslation();
     const router = useRouter();
     const site = useSite();
@@ -41,7 +41,6 @@ function Header7 ({ scroll }: Header7Props){
 
     // local states for toggles
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const checkAuth = async () => {
         try {
@@ -103,6 +102,8 @@ function Header7 ({ scroll }: Header7Props){
     
     const MobileLogoSrc = site.site?.logo_path || MobileLogo;
     const StickyLogoSrc = site.site?.logo_path || StikyLogo;
+    const contactPhone = site.site?.contact_phone || "+998 (71) 233-45-67";
+    const contactEmail = site.site?.contact_email || "info@kutubxona.uz";
     
     const MenuComponent = isSingleMenu ? MenuSingle : NavLinks;
 
@@ -163,22 +164,21 @@ function Header7 ({ scroll }: Header7Props){
                                         )}
                                     </div>
                                 </div>
-                                <div className="mobile-nav-toggler" onClick={() => setIsMobileMenuOpen(true)}><span className="icon lnr-icon-bars"></span></div>
+                                <div className="mobile-nav-toggler" onClick={handleOpen}><span className="icon lnr-icon-bars"></span></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Mobile Menu */}
-                {isMobileMenuOpen && (
                 <div className="mobile-menu">
-                    <div className="menu-backdrop" onClick={() => setIsMobileMenuOpen(false)} />
+                    <div className="menu-backdrop" onClick={handleRemove} />
                     <nav className="menu-box">
                     <div className="upper-box">
                         <div className="nav-logo">
                         <Link href="/"><Image src={MobileLogoSrc} alt="Image" width={150} height={50} className="mobile-logo-img" /></Link>
                         </div>
-                        <div className="close-btn" onClick={() => setIsMobileMenuOpen(false)}>
+                        <div className="close-btn" onClick={handleRemove}>
                         <i className="icon fa fa-times"></i>
                         </div>
                     </div>
@@ -213,9 +213,56 @@ function Header7 ({ scroll }: Header7Props){
                             </Link>
                         )}
                     </div>
+                    <ul className="contact-list-one">
+                        <li>
+                            <div className="contact-info-box">
+                                <i className="icon lnr-icon-phone-handset"></i>
+                                <span className="title">{t("header.callNow")}</span>
+                                <Link href={`tel:${contactPhone.replace(/\s+/g, "")}`}>
+                                    {contactPhone}
+                                </Link>
+                            </div>
+                        </li>
+                        <li>
+                            <div className="contact-info-box">
+                                <span className="icon lnr-icon-envelope1"></span>
+                                <span className="title">{t("header.sendEmail")}</span>
+                                <Link href={`mailto:${contactEmail}`}>{contactEmail}</Link>
+                            </div>
+                        </li>
+                        <li>
+                            <div className="contact-info-box">
+                                <span className="icon lnr-icon-clock"></span>
+                                <span className="title">{t("header.workingHours")}</span>
+                                {t("header.workingHoursText")}
+                            </div>
+                        </li>
+                    </ul>
+
+                    <ul className="social-links">
+                        <li>
+                            <Link href="#">
+                                <i className="fab fa-twitter"></i>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="#">
+                                <i className="fab fa-facebook-f"></i>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="#">
+                                <i className="fab fa-pinterest"></i>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="#">
+                                <i className="fab fa-instagram"></i>
+                            </Link>
+                        </li>
+                    </ul>
                     </nav>
                 </div>
-                )}
 
                 {/* Search Popup */}
                 {isSearchOpen && (
@@ -291,7 +338,7 @@ function Header7 ({ scroll }: Header7Props){
                             )}
                         </div>
                         {/* <!--Mobile Navigation Toggler--> */}
-                        <div className="mobile-nav-toggler" onClick={() => setIsMobileMenuOpen(true)}><span className="icon lnr-icon-bars"></span></div>
+                        <div className="mobile-nav-toggler" onClick={handleOpen}><span className="icon lnr-icon-bars"></span></div>
                     </div>
                     </div>
                 </div>

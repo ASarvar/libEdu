@@ -3,8 +3,8 @@ import PageTitle from "@/components/sections/PageTitle";
 import ServiceDetails from "@/components/sections/ServiceDetails";
 
 export const metadata = {
-  title: "Service Details - Finclix",
-  description: "Detailed information about our services",
+  title: "Xizmat Batafsili - Raqamli Kutubxona",
+  description: "Kutubxona xizmatlari haqida batafsil ma'lumot.",
 };
 
 export default function ServiceDetailsPage() {

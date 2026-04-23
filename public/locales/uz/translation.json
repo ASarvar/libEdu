@@ -588,5 +588,56 @@
   "error": {
     "pageNotFound": "Sahifa topilmadi!",
     "pageNotFoundDescription": "Kechirasiz, bu sahifani topa olmadik! Siz qidirayotgan sahifa mavjud emas.",
-    "backToHome": "Bosh sahifaga qaytish"  }
+    "backToHome": "Bosh sahifaga qaytish"  
+  },
+  "metadata": {
+    "home": {
+      "title": "Raqamli Kutubxona - O'zbekiston Milliy Kutubxonasi",
+      "description": "O'zbekiston viloyat va tuman kutubxonalari uchun yagona raqamli platforma. Elektron katalog, kitob bronlash, raqamli kutubxona va tadbirlar."
+    },
+    "events": {
+      "title": "Tadbirlar - Raqamli Kutubxona",
+      "description": "Kutubxonalarda o'tkaziladigan tadbirlar, seminar va o'quv dasturlari haqida ma'lumot."
+    },
+    "news": {
+      "title": "Yangiliklar - Raqamli Kutubxona",
+      "description": "Raqamli kutubxona va kutubxona xizmatlari haqidagi oxirgi yangiliklar."
+    },
+    "contact": {
+      "title": "Aloqa - Raqamli Kutubxona",
+      "description": "Biz bilan bog'lanish. Savollar va takliflar uchun biz bilan muloqot qiling."
+    },
+    "about": {
+      "title": "Biz Haqimizda - Raqamli Kutubxona",
+      "description": "O'zbekiston Milliy Kutubxonasi va uning raqamli xizmatlari haqida bilib oling."
+    },
+    "faq": {
+      "title": "Tez-tez So'raladigan Savollar - Raqamli Kutubxona",
+      "description": "Raqamli kutubxona xizmatlari, bronlash va boshqa savollar boʻyicha javoblar."
+    },
+    "pricing": {
+      "title": "Tarif Rejalar - Raqamli Kutubxona",
+      "description": "Kutubxona xizmatlari uchun mavjud bo'lgan tarif rejalarini tanish."
+    },
+    "services": {
+      "title": "Xizmatlari - Raqamli Kutubxona",
+      "description": "Raqamli kutubxona orqali taqdim etilayotgan xizmatlari o'rganing."
+    },
+    "shop": {
+      "title": "Magazin - Raqamli Kutubxona",
+      "description": "Kutubxona mahsulotlari va e-resurslarini sotib olin."
+    },
+    "catalog": {
+      "title": "Elektron Katalog - Raqamli Kutubxona",
+      "description": "Kutubxona elektron katalogging kitob, jurnal va boshqa resurslarni qidiring va topingiz."
+    },
+    "digitalLibrary": {
+      "title": "Raqamli Kutubxona - Online Kitoblar va Resurslar",
+      "description": "Elektron kitoblar, audio kitoblar va video ma'ruzalarga 24/7 kirish imkoniyati."
+    },
+    "notFound": {
+      "title": "Sahifa Topilmadi - 404",
+      "description": "Izlayotgan sahifani topa olmasdik. Bosh sahifaga qaytish."
+    }
+  }
 }

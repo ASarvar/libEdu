@@ -3,8 +3,8 @@ import PageTitle from "@/components/sections/PageTitle";
 import ShopSidebar from "@/components/sections/ShopSidebar";
 
 export const metadata = {
-  title: "Shop - Finclix",
-  description: "Browse our products with filters",
+  title: "Magazin - Raqamli Kutubxona",
+  description: "Kutubxona mahsulotlari va e-resurslarini filtrlar bilan ko'ring.",
 };
 
 export default function ShopProductsSidebarPage() {

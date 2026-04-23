@@ -3,8 +3,8 @@ import PageTitle from "@/components/sections/PageTitle";
 import PricingInner from "@/components/sections/PricingInner";
 
 export const metadata = {
-  title: "Pricing Plans - Finclix",
-  description: "Choose the best pricing plan for your business",
+  title: "Tarif Rejalar - Raqamli Kutubxona",
+  description: "Kutubxona xizmatlari uchun mavjud bo'lgan tarif rejalarini tanish.",
 };
 
 export default function PricingPage() {

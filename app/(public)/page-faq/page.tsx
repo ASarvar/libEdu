@@ -3,8 +3,8 @@ import PageTitle from "@/components/sections/PageTitle";
 import FaqInner from "@/components/sections/FaqInner";
 
 export const metadata = {
-  title: "FAQ - Finclix",
-  description: "Frequently asked questions",
+  title: "Tez-tez So'raladigan Savollar - Raqamli Kutubxona",
+  description: "Raqamli kutubxona xizmatlari, bronlash va boshqa savollar boʻyicha javoblar.",
 };
 
 export default function FaqPage() {
