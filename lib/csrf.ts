@@ -38,6 +38,11 @@ export function isStateChangingMethod(method: string): boolean {
 }
 
 function isSameOriginRequest(request: NextRequest): boolean {
+  const fetchSite = request.headers.get('sec-fetch-site')?.toLowerCase();
+  if (fetchSite === 'same-origin' || fetchSite === 'same-site') {
+    return true;
+  }
+
   const requestOrigin = getRequestOrigin(request);
   const originHeader = parseOrigin(request.headers.get('origin'));
   const refererHeader = parseOrigin(request.headers.get('referer'));

@@ -62,9 +62,16 @@ export async function POST(request: NextRequest) {
     }
 
     const forwardedProto = request.headers.get('x-forwarded-proto');
+    const requestProtocol = (() => {
+      try {
+        return new URL((request as any).url || '').protocol;
+      } catch {
+        return 'http:';
+      }
+    })();
     const isSecure = forwardedProto
       ? forwardedProto.split(',')[0].trim().toLowerCase() === 'https'
-      : request.nextUrl.protocol === 'https:';
+      : requestProtocol === 'https:';
 
     // Set session cookie
     const cookieStore = await cookies();
